@@ -1,4 +1,5 @@
 **Mood Board**
+
 Image of an MPU6050, a sensor with an accelerometer and gyroscope:
 https://user-images.githubusercontent.com/107638696/241324971-43b8fe88-447d-4c2d-9296-4b3aaa50f4ce.png
 
