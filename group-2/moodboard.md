@@ -2,6 +2,8 @@
 
 Image of an MPU6050, a sensor with an accelerometer and gyroscope:
 https://user-images.githubusercontent.com/107638696/241324971-43b8fe88-447d-4c2d-9296-4b3aaa50f4ce.png
+* Should check out the MPU9250 for more axis as well as cleaner data
+* https://zbotic.in/imu-sensor-guide-mpu6050-mpu9250-and-bno055-compared/?srsltid=AU7gw4UcXRb2_O0SFwAz78L8INNkb5gx0ugbsdlqXwrWyA89GCbB0bnu
 
 AMY Synth Library, a comprehensive synth library that is optimized for the ESP32:
 https://github.com/shorepine/amy
