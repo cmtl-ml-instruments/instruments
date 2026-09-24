@@ -11,13 +11,10 @@ build next, come back here.
 
 We are building a handheld instrument that the user can move around in space to control synth parameters or pitch.
 
-The device will track its position using an accelerometer and a gyroscope.
-Specific positions from those sensors will be mapped to synth parameters.
-The mappings will be defined using an ML algorithm so that the user can smoothly transition from one position to another,
-and the synth parameters will gradually change with its position.
+The device will track its position using an accelerometer and a gyroscope. Specific positions from those sensors will be mapped to synth parameters. The mappings will be defined using an ML algorithm so that the user can smoothly transition from one position to another, and the synth parameters will gradually change with its position.
 
-All of the synthesis will happen within the device. We want to give the option to connect to a MIDI keyboard so that
-you can play notes on the synth with one hand while controlling its parameters on the other.
+All of the synthesis will happen within the device. We will use the AMY library for our synthesis.
+We want to give the option to connect to a MIDI keyboard so that you can play notes on the synth with one hand while controlling its parameters on the other.
 The audio would output from a USB cable into a computer as an input, if we add a MIDI keyboard, it would ideally connect
 wirelessly.
 
@@ -30,8 +27,9 @@ We'll work on these together in class, so a rough one is fine here.
 
 ## What already exists
 
-Two or three things from your mood board. For each: what it does, and what
-yours does differently.
+SenSynth: A mobile app that allows for synth control using the phone's accelerometer and gyroscope. Doesn't use ML for mapping, only one synth at a time.
+
+What ours does differently: We will use ML to do our parameter mappings which opens up much more complex mapping abilities. Also, since AMY lets you run more than one synth at a time, we could map positions to synth parameters to allow for smooth transition between complex sounds, and map certain gestures to drum samples, FX, etc.
 
 ## How we'll build and test it
 
@@ -40,12 +38,11 @@ besides you, and what you'll watch for when they do.
 
 ## What we're starting from
 
-Board, sensors, sketches from the class repo, libraries — anything you're not
-writing yourself. Then what you are writing yourselves.
+ESP32-S3 from Espressif, AMY Synth library, provided Accelerometer and Gyroscope, ML resources
 
 ## Who's doing what
 
-Each person, what they own, and their credit hours. This can change later.
+Connor: In the short term, exploring the AMY library, getting audio form AMY to output from the ESP32 to a computer. In the long term, goals could include; adding ML implementation to control synth parameters, helping with CAD work, helping design a GUI.
 
 ## What could sink this
 
