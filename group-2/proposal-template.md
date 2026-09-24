@@ -50,7 +50,11 @@ Build an interface so that the user can save models
 Allow the user to be able to train models that work across multiple synths
 - Again, we will test very basic models to see if our implementation works before testing complex models
 
-Add 
+Allow the ability to take in a bluetooth MIDI keyboard input
+- We know it works if we can play MIDI notes on the internal AMY synth
+
+Design a case for the ESP
+- Will do whenever we get to a stopping point this semester
 
 ## What we're starting from
 
