@@ -9,8 +9,17 @@ build next, come back here.
 
 ## What we're building
 
-A paragraph your roommate would understand. What the object is, what a player
-does with it, and what comes out of it.
+We are building a handheld instrument that the user can move around in space to control synth parameters or pitch.
+
+The device will track its position using an accelerometer and a gyroscope.
+Specific positions from those sensors will be mapped to synth parameters.
+The mappings will be defined using an ML algorithm so that the user can smoothly transition from one position to another,
+and the synth parameters will gradually change with its position.
+
+All of the synthesis will happen within the device. We want to give the option to connect to a MIDI keyboard so that
+you can play notes on the synth with one hand while controlling its parameters on the other.
+The audio would output from a USB cable into a computer as an input, if we add a MIDI keyboard, it would ideally connect
+wirelessly.
 
 ## Our research question
 
