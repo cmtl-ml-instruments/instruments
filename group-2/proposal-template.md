@@ -20,11 +20,7 @@ wirelessly.
 
 ## Our research question
 
-One sentence. Not "can we build it" — the answer is yes and you learn nothing.
-Something that could come out either way, so building it teaches you something.
-
-We'll work on these together in class, so a rough one is fine here.
-
+What assignemt of movements (rotationals and linear) to sound parameters like pitch, volume and octave create the most user friendly experience for handheld instruments.
 ## What already exists
 
 SenSynth: A mobile app that allows for synth control using the phone's accelerometer and gyroscope. Doesn't use ML for mapping, only one synth at a time.
