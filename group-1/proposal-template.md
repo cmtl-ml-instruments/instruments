@@ -29,6 +29,10 @@ What are the unique advantages of Machine Learning in terms of mapping physical 
 Two or three things from your mood board. For each: what it does, and what
 yours does differently.
 
+Air Guitar: Uses TinyML to identify gestures, in this case guitar playing gestures, and produces guitar sounds based off of the users "strumming" movements and finger position.
+
+What ours does differently: Ours will not use pre-existing sounds and will instead produce our own synthesized sounds. It won't be in the image of a guitar but instead free movemments.
+
 ## How we'll build and test it
 
 The stages you'll build in, and how you'll know each one worked. Who plays it
@@ -38,10 +42,13 @@ besides you, and what you'll watch for when they do.
 
 Board, sensors, sketches from the class repo, libraries — anything you're not
 writing yourself. Then what you are writing yourselves.
+ESP32-S3, ML resources,
 
 ## Who's doing what
 
 Each person, what they own, and their credit hours. This can change later.
+
+Caleb (1-Credit): Primary Focus on understanding the esp32 board and how to properly wire the systems that we'll need to use. Understanding what devices need to be used in order to track user movement and produce sound and how those will connect and work with the esp32. Hardware focused goals.
 
 ## What could sink this
 
