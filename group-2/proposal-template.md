@@ -62,6 +62,10 @@ Connor: In the short term, exploring the AMY library, getting audio form AMY to 
 
 Aidan: In the short term, researching gyroscopes and accelerometers to find what is compatable with our boards. In the long term, I plan to map the data outputted by the ML model onto the UI. I also would like to lead the CAD design to create an ergonomic structure that protects the electronics.
 
+Mohan: In the short term, developing the embedded hardware proof-of-concept by interfacing the accelerometer and gyroscope with the ESP32 and writing the C firmware to visualize real-time sensor data on the display. In the long term, leading the integration of the machine learning to classify gestural movements and bridging that inference data to the AMY audio engine.
+
 ## What could sink this
 
 I am most worried about the compatability of the sensors with the ML models we pull from online. We need to pay careful attention to the format in which we will receieve data from the gyroscope and accelerometer before we buy them so that it is possible to map them to the ML model.
+
+Additionally, hardware and library driver incompatibilities could bottleneck development. We need to allocate extra time for writing custom hardware definitions or adapting official manufacturer libraries to ensure the display, ML inference, and audio synthesis can all run simultaneously without crashing the microcontroller.
