@@ -22,7 +22,8 @@ Something that could come out either way, so building it teaches you something.
 
 We'll work on these together in class, so a rough one is fine here.
 
-What are the unique advantages of Machine Learning in terms of mapping physical movements to sound output.
+1) What are the unique advantages of Machine Learning in terms of mapping physical movements to sound output.
+2) How can the unique advantages of Maching Learning better map variable user expressions to produce distinct sounds when compared against movement based microcontroller systems that don't use machine learning to function.
 
 ## What already exists
 
