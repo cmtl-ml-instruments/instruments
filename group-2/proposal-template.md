@@ -60,7 +60,8 @@ ESP32-S3 from Espressif, AMY Synth library, provided Accelerometer and Gyroscope
 
 Connor: In the short term, exploring the AMY library, getting audio form AMY to output from the ESP32 to a computer. In the long term, goals could include; adding ML implementation to control synth parameters, helping with CAD work, helping design a GUI.
 
+Aidan: In the short term, researching gyroscopes and accelerometers to find what is compatable with our boards. In the long term, I plan to map the data outputted by the ML model onto the UI. I also would like to lead the CAD design to create an ergonomic structure that protects the electronics.
+
 ## What could sink this
 
-Two or three honest risks — a part that might not arrive, something none of you
-knows how to do yet. For each, what you'd do instead.
+I am most worried about the compatability of the sensors with the ML models we pull from online. We need to pay careful attention to the format in which we will receieve data from the gyroscope and accelerometer before we buy them so that it is possible to map them to the ML model.
