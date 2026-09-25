@@ -20,7 +20,7 @@ wirelessly.
 
 ## Our research question
 
-What assignemt of movements (rotationals and linear) to sound parameters like pitch, volume and octave create the most user friendly experience for handheld instruments.
+What assignment of movements (rotationals and linear) to sound parameters like pitch, volume and octave create the most user friendly experience for handheld instruments.
 ## What already exists
 
 SenSynth: A mobile app that allows for synth control using the phone's accelerometer and gyroscope. Doesn't use ML for mapping, only one synth at a time.
