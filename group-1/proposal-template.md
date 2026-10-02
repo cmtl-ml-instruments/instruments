@@ -15,6 +15,8 @@ We want to build a networked instrument with 2+ controllers connected in a mesh 
 
 We would like to take full advantage of the ML by mapping complex interactions of the microcontrollers to many synthesis parameters. Simultaneously, there still needs to be sound-action coupling with the synthesis, meaning each player can perceive the effect of their actions on the overall sound.
 
+Use a mircrocontroller attached to bike tire plus a wearable microcontroller device on person that could attach to the bike handle and use buttons as input as to not sacrifice stability and still allow for clean and creative user input. Could also link inputs to the changing of gears on the bike.
+
 ## Our research question
 
 One sentence. Not "can we build it" — the answer is yes and you learn nothing.
