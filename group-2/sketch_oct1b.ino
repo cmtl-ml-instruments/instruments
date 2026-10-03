@@ -79,7 +79,7 @@ void setup() {
   delay(500);
 
   Serial.println("\n=======================================================");
-  Serial.println("  RASCube V2 / ESP32-S3 IMU Gestural Synthesizer Scale ");
+  Serial.println("  ESP32-S3 IMU Gestural Synthesizer Scale ");
   Serial.println("=======================================================");
 
   // 1. Force Backlight Pin HIGH
