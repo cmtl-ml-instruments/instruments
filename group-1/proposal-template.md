@@ -1,9 +1,6 @@
 # Project proposal
 
-One per group, in your group's folder as `proposal.md`. A page is plenty.
-
-This is what the rest of the semester answers to. When you're stuck on what to
-build next, come back here.
+This is what the rest of the semester answers to.
 
 ---
 
@@ -11,6 +8,8 @@ build next, come back here.
 
 A paragraph your roommate would understand. What the object is, what a player
 does with it, and what comes out of it.
+
+
 We want to build a networked instrument with 2+ controllers connected in a mesh network fashion, and utilize Machine Learning algorithms to discern actions taken between the devices in relation to each other. Simply, we want microcontrollers connecting to each other, and utilizing gestural actions (or other actions) to be inputs to a Machine Learning algorithm that would convert those inputs into sound. For example, taking the movements of two boxers boxing with each other via various sensor data and translating that into sound. 
 
 We would like to take full advantage of the ML by mapping complex interactions of the microcontrollers to many synthesis parameters. Simultaneously, there still needs to be sound-action coupling with the synthesis, meaning each player can perceive the effect of their actions on the overall sound.
