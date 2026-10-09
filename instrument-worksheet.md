@@ -21,26 +21,27 @@ One sentence. All three of your names underneath it.
 
 Someone who has never seen it walks in.
 
-- What do they pick up, hold, wear, or stand next to?
-- What do they do in the first ten seconds, before anyone tells them anything?
-- What tells them it's on?
+- What do they notice first, before they touch anything?
+- What does its shape tell them to do — and is that what you want them to do?
+- What's the first thing they touch, press, tilt, or move?
+- When they do it, what tells them *they* caused the sound and not the machine?
 
-## 4. The first ten minutes
+## 4. The first ten minutes with the instrument
 
-- What do they work out on their own?
-- What gets harder?
-- What makes them not hand it back?
-- What's the first thing they do that you didn't plan for?
+- What do they try second, now that the first thing taught them something?
+- What's the one thing you'd have to say out loud for them to get it — and can you
+  design that away instead?
+- What makes them keep going instead of handing it back to you?
 
 ## 5. The setting
 
-- Where is it played — stage, gallery, bedroom, bike path, classroom?
+- Where is it played — stage, club, dive bar, gallery, bedroom, bike path, classroom?
 - Who else is in the room, and how far away?
-- Does the player stand, sit, walk, move?
+- Does the player stand, sit, walk, dance?
 
 ## 6. What it does that another instrument can't
 
-Name the one you're beating — a keyboard, a phone, a guitar pedal, a knob,
+Name the one you're beating — a keyboard, a phone, a guitar pedal, a MIDI controller, a knob,
 SenSynth, anything.
 
 > Ours can ________________, and that one can't.
