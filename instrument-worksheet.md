@@ -19,43 +19,49 @@ One sentence. All three of your names underneath it.
 
 ## 3. Picking it up
 
-Someone who has never seen it walks in.
+**Someone who has never seen it walks in. What happens in the first ten seconds,
+before anyone explains anything?**
 
-- What do they notice first, before they touch anything?
-- What does its shape tell them to do — and is that what you want them to do?
-- What's the first thing they touch, press, tilt, or move?
-- When they do it, what tells them *they* caused the sound and not the machine?
+*Worth thinking about: what they notice before they touch anything · what its shape
+tells them to do, and whether that's what you want them to do · the first thing
+they touch, press, tilt or move · what tells them they caused the sound and not the
+machine.*
 
 ## 4. The first ten minutes with the instrument
 
-- What do they try second, now that the first thing taught them something?
-- What's the one thing you'd have to say out loud for them to get it — and can you
-  design that away instead?
-- What makes them keep going instead of handing it back to you?
+**Once they've worked out the first thing, what keeps them there?**
+
+*Worth thinking about: what they try second, now that the first thing taught them
+something · the one thing you'd have to say out loud for them to get it, and
+whether you could design that away instead · what makes them keep going instead of
+handing it back to you.*
 
 ## 5. The setting
 
-- Where is it played — stage, club, dive bar, gallery, bedroom, bike path, classroom?
-- Who else is in the room, and how far away?
-- Does the player stand, sit, walk, dance?
+**Where is this instrument played, and who else is there?**
+
+*Worth thinking about: stage, club, dive bar, gallery, bedroom, bike path,
+classroom · who else is in the room, and how far away · whether the player stands,
+sits, walks, dances.*
 
 ## 6. What it does that another instrument can't
 
-Name the one you're beating — a keyboard, a phone, a guitar pedal, a MIDI controller, a knob,
-SenSynth, anything.
+**Which existing instrument is yours beating, and what can yours do that it can't?**
+
+*Name a specific one — a keyboard, a phone, a guitar pedal, a MIDI controller, a
+knob, SenSynth, anything.*
 
 > Ours can ________________, and that one can't.
 
 ## 7. Where iris fits
 
-- Pick one place where the player's movement changes the sound. Can you write that
-  as a rule in plain numbers — "tilt it 30 degrees, the pitch goes up one note"?
-- If you can't write it in numbers, that's where iris goes. Write down two examples
-  instead: hold it one way and what it should sound like, hold it another way and
-  what that should sound like.
+**Which part of your instrument is too complicated to write down as a rule?**
 
-If you could write the rule, just write the rule. iris is for the parts you can
-only show.
+*Try it: pick one place where the player's movement changes the sound, and write
+that rule in plain numbers — "tilt it 30 degrees, the pitch goes up one note." If
+you can, write it by hand. If you can't, that's where iris goes: instead of the
+rule you write down two examples — hold it one way and what it should sound like,
+hold it another way and what that should sound like.*
 
 ---
 
