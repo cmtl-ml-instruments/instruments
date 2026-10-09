@@ -83,11 +83,11 @@ Work backwards from the 13th.
 
 | Date | What exists by the end of that week | A test of it that could fail |
 |---|---|---|
-| Oct 9 (today) | | |
-| Oct 16 | | |
-| Oct 23 | | |
-| Oct 30 | | |
-| Nov 6 | | |
+| Oct 9 (today) | We have more of a direction as to what our instrument would look like | If we have difficulty connecting the two components of the instrument |
+| Oct 16 | Split up the code between the two components of the synth, figure out how to do basic ML mapping with AMY and iris | We struggle to connect the two components, we are having trouble getting it to work |
+| Oct 23 | Physical prototype of each component, start considering what the UI should look like | The parts don't fit together, still struggling with ML integration |
+| Oct 30 | Have a rough finalization of every component so that we can start working through the kinks and improving user experience | If the instrument feels unintuitive to use |
+| Nov 6 |  | |
 | **Nov 13** | **a stranger can pick it up and play it** | |
 
 ## 9. Who does what
