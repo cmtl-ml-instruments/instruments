@@ -13,9 +13,13 @@ sensors, libraries, or what's left to debug.
 
 One name. Not a project title — a name, the way a cello is called a cello.
 
+The Gutter Ball
+
 ## 2. What it is
 
 One sentence. All three of your names underneath it.
+
+A handheld movement based synth shaped as a bowling ball that utilizes machine learning to map gestures to synth parameters.
 
 ## 3. Picking it up
 
@@ -27,6 +31,8 @@ tells them to do, and whether that's what you want them to do · the first thing
 they touch, press, tilt or move · what tells them they caused the sound and not the
 machine.*
 
+The ball would have a flat side down and the finger holes facing up. Picking it up is very similar to picking up a bowling ball, so users who are familiar with bowling balls should be able to intuit that.
+
 ## 4. The first ten minutes with the instrument
 
 **Once they've worked out the first thing, what keeps them there?**
@@ -36,6 +42,8 @@ something · the one thing you'd have to say out loud for them to get it, and
 whether you could design that away instead · what makes them keep going instead of
 handing it back to you.*
 
+Turn on external component. The screen will direct you to turn on the moving component. It will default to a preset ML model so that the user can immediately start producing sound. The user will be able to switch between different preset models. There will be a button that says something like, "Create a model", and the user will be able to create a model on their computer and then import it to the device.
+
 ## 5. The setting
 
 **Where is this instrument played, and who else is there?**
@@ -44,6 +52,8 @@ handing it back to you.*
 classroom · who else is in the room, and how far away · whether the player stands,
 sits, walks, dances.*
 
+In the club, maybe like making movie soundtracks, in the bedroom, the alley, for fun, for an EDM performance
+
 ## 6. What it does that another instrument can't
 
 **Which existing instrument is yours beating, and what can yours do that it can't?**
@@ -51,7 +61,7 @@ sits, walks, dances.*
 *Name a specific one — a keyboard, a phone, a guitar pedal, a MIDI controller, a
 knob, SenSynth, anything.*
 
-> Ours can ________________, and that one can't.
+> Outs not only allows the user to interact with multiple synth parameters at once that wouldn't otherwise be possible twisting knobs, but it also allows them to define how their gestures impact those parameters.
 
 ## 7. Where iris fits
 
@@ -62,6 +72,8 @@ that rule in plain numbers — "tilt it 30 degrees, the pitch goes up one note."
 you can, write it by hand. If you can't, that's where iris goes: instead of the
 rule you write down two examples — hold it one way and what it should sound like,
 hold it another way and what that should sound like.*
+
+It fits in creating the complex ML mappings that otherwise wouldn't be possible to code by hand.
 
 ---
 
