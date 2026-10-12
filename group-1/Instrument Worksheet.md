@@ -65,8 +65,8 @@ For the prototype, connecting to a computer over wifi for external processing wi
 
 ## 6. What it does that another instrument can't
 
-- How many other instruments use rotation to create music? If the air channnel through spinning is used as a resonator, it would create novel acoustic effects. A string instrument in a unconventional way.
-- Still considering how the instrument makes sound. Connecting to an external speaker is easier. Attaching a speaker to the spinning part of the instrument creates a novel acoustic phenomenon that might be worth exploring.
+- How many other instruments use rotation to create music? If the air channnel through spinning is used as a resonator, it would create novel acoustic effects. The instrument is like a string instrument, but in an unconventional way.
+- Attaching a speaker to the spinning part of the instrument would create a novel acoustic phenomenon that might be worth exploring. However, an external speaker would be easier to implement.
 
 **Which existing instrument is yours beating, and what can yours do that it can't?**
 
