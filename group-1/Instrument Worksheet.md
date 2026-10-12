@@ -31,7 +31,7 @@ machine.*
 
 - The device has a handle, incentivizing them to pick it up
 - The instrument has many joints that it can rotate on, and it immediately begins to rotate upon being picked up (possibly it makes sound)
-- The gloves and device can be color coded to imply togetherness.
+- The gloves and device can be color coded to imply togetherness. A shared case can be used for this too.
 
 ## 4. The first ten minutes with the instrument
 
@@ -46,6 +46,8 @@ handing it back to you.*
 - The thing that might not be immediately apparent is how to use the gloves with the rope instrument. We have in mind that the gloves can trigger notes on commands or else the performer might need to stop spinning the instrument to create silence, which is less fun.
 - 
 
+
+
 ## 5. The setting
 
 **Where is this instrument played, and who else is there?**
@@ -53,12 +55,18 @@ handing it back to you.*
 *Worth thinking about: stage, club, dive bar, gallery, bedroom, bike path,
 classroom · who else is in the room, and how far away · whether the player stands,
 sits, walks, dances.*
+The player should have plenty of space to swing the instrument around them.
+- On-Stage
+  - Needs to be capable of producing loud enough sound
+- Outside
+  - Needs to be
+
+For the prototype, connecting to a computer over wifi for external processing will be easiest.
 
 ## 6. What it does that another instrument can't
 
+- How many other instruments use rotation to create music? If the air channnel through spinning is used as a resonator, it would create novel acoustic effects. A string instrument in a unconventional way.
 - Still considering how the instrument makes sound. Connecting to an external speaker is easier. Attaching a speaker to the spinning part of the instrument creates a novel acoustic phenomenon that might be worth exploring.
-
-- If the air channnel through spinning is used as a resonator, it would also create novel acoustic effects. A string instrument in a unconventional way.
 
 **Which existing instrument is yours beating, and what can yours do that it can't?**
 
