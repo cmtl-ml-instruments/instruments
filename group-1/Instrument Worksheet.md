@@ -126,5 +126,5 @@ sound design, testing, writing.
 |---|---|---|---|---|
 | Caleb | 1 | HIVE Access and a PC | CAD Design V1 | Update CAD Design to V2 and account for hardware devices and layout |
 | Sam | 2 | ML and Synthesis work |Connect ESP-32 to Max MSP and Wifi. Stetch: Learn about IRIS |Contribute to starter ML and Synthesis patches |
-| | | | | |
+| Talal | 2 | ML and Programming | Experiment with IRIS and different sensors. Understand the limitations of the ML and what it would be useful | Work with a glove prototype and simple example chain prototype as inputs for the model. Get necessary parts ordered |
 | | | | | |
