@@ -1,20 +1,18 @@
 # Project proposal
 
-This is what the rest of the semester answers to.
+This is what the rest of the semester answers to. (Also the instrument worksheet)
 
 ---
 
 ## What we're building
 
-A paragraph your roommate would understand. What the object is, what a player
-does with it, and what comes out of it.
+We want to create an interactive flexible rope instrument paired with control gloves for both continuous and discrete input, respectively.
 
 
 We want to build a networked instrument with 2+ controllers connected in a mesh network fashion, and utilize Machine Learning algorithms to discern actions taken between the devices in relation to each other. Simply, we want microcontrollers connecting to each other, and utilizing gestural actions (or other actions) to be inputs to a Machine Learning algorithm that would convert those inputs into sound. For example, taking the movements of two boxers boxing with each other via various sensor data and translating that into sound. 
 
 We would like to take full advantage of the ML by mapping complex interactions of the microcontrollers to many synthesis parameters. Simultaneously, there still needs to be sound-action coupling with the synthesis, meaning each player can perceive the effect of their actions on the overall sound.
 
-Use a mircrocontroller attached to bike tire plus a wearable microcontroller device on person that could attach to the bike handle and use buttons as input as to not sacrifice stability and still allow for clean and creative user input. Could also link inputs to the changing of gears on the bike.
 
 ## Our research question
 
@@ -52,7 +50,12 @@ Each person, what they own, and their credit hours. This can change later.
 
 Caleb (1-Credit): Primary Focus on understanding the esp32 board and how to properly wire the systems that we'll need to use. Understanding what devices need to be used in order to track user movement and produce sound and how those will connect and work with the esp32. Hardware focused goals.
 
+Sam (2-Credit, MT): Primary focus is creating the ML mapping and connecting it to the sound synthesis.
+
+Talal (1-Credit, CS): Primary focus is ML. Interested in the music and circuitry as well.
+
+
 ## What could sink this
 
-Two or three honest risks — a part that might not arrive, something none of you
-knows how to do yet. For each, what you'd do instead.
+- Running out of time. - primary risk factor.
+- ML Mapping could get tough
