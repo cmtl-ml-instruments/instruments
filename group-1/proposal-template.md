@@ -35,8 +35,7 @@ What ours does differently: Ours will not use pre-existing sounds and will inste
 
 ## How we'll build and test it
 
-The stages you'll build in, and how you'll know each one worked. Who plays it
-besides you, and what you'll watch for when they do.
+Refer to the instrument worksheet for timeline
 
 ## What we're starting from
 
