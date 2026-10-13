@@ -125,6 +125,6 @@ sound design, testing, writing.
 | Person | Credit hours | What they own | This week | Next week |
 |---|---|---|---|---|
 | Caleb | 1 | HIVE Access and a PC | CAD Design V1 | Update CAD Design to V2 and account for hardware devices and layout |
-| | | | | |
+| Sam | 2 | ML and Synthesis work |Connect ESP-32 to Max MSP and Wifi. Stetch: Learn about IRIS |Contribute to starter ML and Synthesis patches |
 | | | | | |
 | | | | | |
