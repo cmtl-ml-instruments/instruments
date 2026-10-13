@@ -123,7 +123,7 @@ Every person, every week, something specific — code, soldering, CAD, enclosure
 sound design, testing, writing.
 
 | Person | Credit hours | What they own | This week | Next week |
-| Caleb | 1 | HIVE Access and a PC | CAD Design V1 | -- |
+| Caleb | 1 | HIVE Access and a PC | CAD Design V1 | --- |
 | | | | | |
 | | | | | |
 | | | | | |
