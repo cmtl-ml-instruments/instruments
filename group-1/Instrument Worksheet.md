@@ -108,15 +108,13 @@ Work backwards from the 13th.
 
 - Machine 
 
-| Date | What exists by the end of that week | A test of it that could fail |Stretch |
+| Date | What exists by the end of that week | A test of it that could fail |
 |---|---|---|
 | Oct 9 (today) | | |
-| Oct 16 |We get enough gyroscopes and accelerometers | |
-- Caleb: Finish CAD design v1
-  - 
+| Oct 16 | We get enough gyroscopes and accelerometers - Caleb: Finish CAD design v1 | |
 | Oct 23 | | |
-| Oct 30 |We have something physical to work with | |
-| Nov 6 |The physical instrument successfully connects to the ML and synthesis mapping |Test one: Make sound. Test two: Triggering notes on command |
+| Oct 30 | We have something physical to work with | |
+| Nov 6 | The physical instrument successfully connects to the ML and synthesis mapping | Test one: Make sound. Test two: Triggering notes on command |
 | **Nov 13** | **a stranger can pick it up and play it** |Test: Doesn't work | Added embellishments - case, color coding|
 
 ## 9. Who does what
