@@ -106,14 +106,18 @@ hold it another way and what that should sound like.*
 Work backwards from the 13th.
 - 1 goal and stretch goal per 4 weeks leading up to prototype. Figure this out by monday.
 
-| Date | What exists by the end of that week | A test of it that could fail |
+- Machine 
+
+| Date | What exists by the end of that week | A test of it that could fail |Stretch |
 |---|---|---|
 | Oct 9 (today) | | |
-| Oct 16 | | |
+| Oct 16 |We get enough gyroscopes and accelerometers | |
+- Caleb: Finish CAD design v1
+  - 
 | Oct 23 | | |
-| Oct 30 | | |
-| Nov 6 | | |
-| **Nov 13** | **a stranger can pick it up and play it** | |
+| Oct 30 |We have something physical to work with | |
+| Nov 6 |The physical instrument successfully connects to the ML and synthesis mapping |Test one: Make sound. Test two: Triggering notes on command |
+| **Nov 13** | **a stranger can pick it up and play it** |Test: Doesn't work | Added embellishments - case, color coding|
 
 ## 9. Who does what
 
