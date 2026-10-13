@@ -44,9 +44,7 @@ handing it back to you.*
 
 - The second thing they might try is swinging the rope around to play with it, and that should immediately connect to music.
 - The thing that might not be immediately apparent is how to use the gloves with the rope instrument. We have in mind that the gloves can trigger notes on commands or else the performer might need to stop spinning the instrument to create silence, which is less fun.
-- 
-
-
+- The instrument is easy to start, but hard to master, which keeps the user going.
 
 ## 5. The setting
 
@@ -72,6 +70,10 @@ For the prototype, connecting to a computer over wifi for external processing wi
 
 *Name a specific one — a keyboard, a phone, a guitar pedal, a MIDI controller, a
 knob, SenSynth, anything.*
+
+- The Lethelium was a bike-wheel themed instrument at the last Guthman competition. We are beating it in the aspect of rotating the instrument changes the sound.
+- The Air Guitar is a gestural instrument that mimics the basic motions of playing a guitar. Our instrument would be more original, both in the interface, and its sound.
+  - If we use the unique mechanics of the instrument as synthesis parameters, it would theoretically be a uniquely identifiable sound.
 
 > Ours can ________________, and that one can't.
 
