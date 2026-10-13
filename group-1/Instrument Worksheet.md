@@ -89,6 +89,14 @@ hold it another way and what that should sound like.*
 
 - An instrument that can rotate on myriad joints behaves like a multipendulum, the mechanics of which are extremely non-linear. This makes ML ideal for the parameter mapping.
   -   Fill in the details here of some parameter mappings.
+  -   Speed of Rotation - accelerometer and gyroscope at different points in instrument
+  -   Types of rotational gestures
+  -   Physical Position of Instrument relative to gloves
+  -   Hand gestures. - gestures on different gloves.
+
+- We could use the gloves for note onsets, or for the notes themselves, or for synthesis tied to individual parts of the instrument.
+
+  -   
 - We can also use ML to allow the performer to switch hands in performance (control hand and spinner hand). We want to unify interesting spinning gestures with interesting music.
 
 ---
