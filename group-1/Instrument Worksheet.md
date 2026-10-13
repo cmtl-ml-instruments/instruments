@@ -111,7 +111,7 @@ Work backwards from the 13th.
 | Date | What exists by the end of that week | A test of it that could fail |
 |---|---|---|
 | Oct 9 (today) | Determine/Finalize what direction we are taking the project in. | We don't come to a consensus on what we're building |
-| Oct 16 | We compile all of the needed resources: gyroscopes, accelerometers, and magnetic sensors. Everyone starts learning in their role. | Nothing posted to the instrument folder |
+| Oct 16 | We compile all of the needed resources: gyroscopes, accelerometers, and magnetic sensors. Everyone starts learning in their role. Finish CAD Design V1 | Something posted to the instrument folder |
 | Oct 23 | Finish CAD design V2 and begin attaching hardware devices to the physical product. Have an ML patch that runs without bugs. Have a starter synthesis patch | ML runs without bugs. Functioning with sole gyroscopes or V1 prototype. |
 | Oct 30 | We have something physical to work with and test. Update the synthesis patch. |Get sound |
 | Nov 6 | The physical instrument successfully connects to the ML and synthesis mapping | Triggering notes on command. Tests of other parameters |
