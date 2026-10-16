@@ -11,3 +11,10 @@ Connect ESP-32 and Max
   - Do not open the Serial Monitor, or it won't send to Max.
 4. Upload
 5. Open [`serial-to-synthesis.maxproj`](serial-to-synthesis/serial-to-synthesis.maxproj). Press the toggle to start.
+
+- Note, maybe we all need to clone the repo now in order to download these files. I don't think you can download an entire directory in github website.
+
+## Troubleshooting
+- Check that USB is firmly inserted. Then close and reopen serial with the toggle
+- Check that USB CDC On Boot is Enabled
+- Check that the port is correct using print. It should match the arduino port. in Tools > Port.
