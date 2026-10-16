@@ -128,6 +128,3 @@ sound design, testing, writing.
 | Sam | 2 | ML and Synthesis work |Connect ESP-32 to Max MSP and Wifi. Stetch: Learn about IRIS |Contribute to starter ML and Synthesis patches |
 | Talal | 2 | ML and Programming | Experiment with IRIS and different sensors. Understand the limitations of the ML and what it would be useful | Work with a glove prototype and simple example chain prototype as inputs for the model. Get necessary parts ordered |
 | | | | | |
-
-## 10. Needed Resources List
-- A few USB holders to prevent the connection from dropping while developing and especially performing.
