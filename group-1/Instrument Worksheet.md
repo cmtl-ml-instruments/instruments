@@ -161,8 +161,8 @@ sound design, testing, writing.
 
 | Person | Credit hours | What they own | This week | Next week |
 |---|---|---|---|---|
-| Caleb | 1 | Hardware and Physical Design | Update CAD Design to V2 and account for sensor location (every 10/15 inches) and length of design (30 inches) | Have design printed out and attach sensors to determined locations |
-| Sam | 2 | ML and Synthesis work |Connect ESP-32 to Max MSP and Wifi. Stetch: Learn about IRIS |Contribute to starter ML and Synthesis patches |
+| Caleb | 1 | Hardware and Physical Design | Update CAD Design to V2 and account for sensor location (every 10/15 inches) and length of design (30 inches) Print something | Have design printed out and attach sensors to determined locations |
+| Sam | 2 |Learn to use the acc/gyro. Then modify my existing granular synthesis patch from sampling synthesis to something more intrinsic (physical modelling). The cloud generator should be primed to connect to the ML. | Go in depth with IRIS and connect the ML patch to the granular. |
 | Talal | 2 | ML and Programming | Experiment with IRIS and different sensors. Understand the limitations of the ML and what it would be useful | Work with a glove prototype and simple example chain prototype as inputs for the model. Get necessary parts ordered |
 | | | | | |
 
