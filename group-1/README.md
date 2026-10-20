@@ -16,5 +16,5 @@ Can use magnetic sensors to detect the distance between the gloves. One sends a 
 **Material Needs**
 - A few USB holders to prevent the connection from dropping while developing and especially performing.
 
-Copy this to clone our stuff only.
+Copy this to clone our stuff only.  
 `git clone --filter=blob:none --sparse https://github.com/cmtl-ml-instruments/instruments.git && git -C instruments sparse-checkout set group-1`
