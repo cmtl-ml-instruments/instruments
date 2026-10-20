@@ -101,7 +101,15 @@ hold it another way and what that should sound like.*
 
 ---
 
-## 8. The timeline
+## Decision Points - 10/19/26  
+1. how many sensors
+2. how each gestural motion should affect the sound
+3. length of the chain
+4. synthesis method(s)
+5. role of the gloves etc.
+
+
+## 9. The timeline
 
 Work backwards from the 13th.
 - 1 goal and stretch goal per 4 weeks leading up to prototype. Figure this out by monday.
@@ -117,7 +125,7 @@ Work backwards from the 13th.
 | Nov 6 | The physical instrument successfully connects to the ML and synthesis mapping | Triggering notes on command. Tests of other parameters |
 | **Nov 13** | **a stranger can pick it up and play it** | Test: Doesn't work | Added embellishments - case, color coding|
 
-## 9. Who does what
+## 10. Who does what
 
 Every person, every week, something specific — code, soldering, CAD, enclosure,
 sound design, testing, writing.
@@ -128,3 +136,5 @@ sound design, testing, writing.
 | Sam | 2 | ML and Synthesis work |Connect ESP-32 to Max MSP and Wifi. Stetch: Learn about IRIS |Contribute to starter ML and Synthesis patches |
 | Talal | 2 | ML and Programming | Experiment with IRIS and different sensors. Understand the limitations of the ML and what it would be useful | Work with a glove prototype and simple example chain prototype as inputs for the model. Get necessary parts ordered |
 | | | | | |
+
+
