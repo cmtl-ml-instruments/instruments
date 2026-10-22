@@ -2,8 +2,8 @@
 Connect ESP-32 and Max 
   - I might write this in Pd later to make it more accessible.
 
-## Setup (order matters)
-
+## Setup (missing a step might make it fail)
+0. Connect the sonar sensor to the board, and the board to the computer via USB. Go to the sonar_screen code in starter for more details.
 1. Open [`sensors-to-serial.ino`](sensors-to-serial/sensors-to-serial.ino)
 2. Made for ESP32-S3 2.8'' LCD board
   - Connect with **Tools → Board → esp32 → ESP32S3 Dev Module**
@@ -11,10 +11,10 @@ Connect ESP-32 and Max
   - Do not open the Serial Monitor, or it won't send to Max.
 4. Upload
 5. Open [`serial-to-synthesis.maxproj`](serial-to-synthesis/serial-to-synthesis.maxproj). Press the toggle to start.
-
-- Note, maybe we all need to clone the repo now in order to download these files. I don't think you can download an entire directory in github website.
+- Note, downloading these files is easier if you clone the repo. The maxproject has to be in a folder of the same name.
 
 ## Troubleshooting
 - Check that USB is firmly inserted. Then close and reopen serial with the toggle
 - Check that USB CDC On Boot is Enabled
 - Check that the port is correct using print. It should match the arduino port. in Tools > Port.
+- Always have the serial toggle off when reuploading, or you will get a cryptic error.
