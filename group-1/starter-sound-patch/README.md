@@ -2,6 +2,10 @@
 Connect ESP-32 and Max 
   - I might write this in Pd later to make it more accessible.
 
+## Required Tech
+- ESP32-S3 2.8'' LCD board
+- Max from Cycling74. This is costly for non-music tech majors.
+
 ## Setup (missing a step might make it fail)
 0. Connect the sonar sensor to the board, and the board to the computer via USB. Go to the sonar_screen code in starter for more details.
 1. Open [`sensors-to-serial.ino`](sensors-to-serial/sensors-to-serial.ino)
