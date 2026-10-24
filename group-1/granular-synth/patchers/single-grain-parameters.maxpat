@@ -10,20 +10,19 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 531.0, 117.0, 715.0, 582.0 ],
+		"rect" : [ 531.0, 117.0, 644.0, 309.0 ],
 		"openrect" : [ 0.0, 0.0, 643.606417119708567, 100.407100072747198 ],
 		"openinpresentation" : 1,
 		"default_fontname" : "Avenir",
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
-					"comment" : "Parameter message for poly",
-					"id" : "obj-14",
-					"index" : 0,
-					"maxclass" : "outlet",
+					"id" : "obj-3",
+					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 180.236246347427368, 586.440691947937012, 30.0, 30.0 ]
+					"patching_rect" : [ 180.236246347427368, 582.0, 108.0, 25.0 ],
+					"text" : "s grain-parameters"
 				}
 
 			}
@@ -70,11 +69,11 @@
 				"box" : 				{
 					"comment" : "Bang for new grain",
 					"id" : "obj-1",
-					"index" : 0,
+					"index" : 1,
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"outlettype" : [ "bang" ],
 					"patching_rect" : [ 174.698801636695862, 86.746991157531738, 30.0, 30.0 ]
 				}
 
@@ -95,7 +94,7 @@
 						"valueof" : 						{
 							"parameter_initial" : [ 0.0 ],
 							"parameter_initial_enable" : 1,
-							"parameter_longname" : "slider",
+							"parameter_longname" : "slider[3]",
 							"parameter_mmax" : 1.0,
 							"parameter_modmode" : 3,
 							"parameter_shortname" : "slider",
@@ -164,7 +163,7 @@
 						"valueof" : 						{
 							"parameter_initial" : [ 63 ],
 							"parameter_initial_enable" : 1,
-							"parameter_longname" : "slider[1]",
+							"parameter_longname" : "slider[4]",
 							"parameter_modmode" : 3,
 							"parameter_shortname" : "slider[1]",
 							"parameter_type" : 0
@@ -194,7 +193,7 @@
 						"valueof" : 						{
 							"parameter_initial" : [ 1.0 ],
 							"parameter_initial_enable" : 1,
-							"parameter_longname" : "number[2]",
+							"parameter_longname" : "number[6]",
 							"parameter_mmax" : 4.0,
 							"parameter_mmin" : -4.0,
 							"parameter_modmode" : 3,
@@ -225,7 +224,7 @@
 							"parameter_initial" : [ 500 ],
 							"parameter_initial_enable" : 1,
 							"parameter_invisible" : 1,
-							"parameter_longname" : "number[1]",
+							"parameter_longname" : "number[5]",
 							"parameter_modmode" : 0,
 							"parameter_shortname" : "number[1]",
 							"parameter_type" : 3
@@ -254,7 +253,7 @@
 							"parameter_initial" : [ 0 ],
 							"parameter_initial_enable" : 1,
 							"parameter_invisible" : 1,
-							"parameter_longname" : "number",
+							"parameter_longname" : "number[7]",
 							"parameter_modmode" : 0,
 							"parameter_shortname" : "number",
 							"parameter_type" : 3
@@ -319,7 +318,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-14", 0 ],
+					"destination" : [ "obj-3", 0 ],
 					"source" : [ "obj-21", 0 ]
 				}
 
@@ -359,27 +358,7 @@
 				}
 
 			}
- ],
-		"parameters" : 		{
-			"obj-4" : [ "number[2]", "number[2]", 0 ],
-			"obj-5" : [ "number[1]", "number[1]", 0 ],
-			"obj-6" : [ "number", "number", 0 ],
-			"obj-7" : [ "slider[1]", "slider[1]", 0 ],
-			"obj-94" : [ "slider", "slider", 0 ],
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
-		"dependency_cache" : [  ],
-		"autosave" : 0
+ ]
 	}
 
 }
