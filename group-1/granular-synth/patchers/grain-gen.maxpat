@@ -10,75 +10,149 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 134.0, 111.0, 542.0, 608.0 ],
+		"rect" : [ 134.0, 111.0, 471.0, 608.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-17",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 544.0, 216.0, 150.0, 20.0 ]
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-29",
+					"maxclass" : "number~",
+					"mode" : 2,
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "signal", "float" ],
+					"patching_rect" : [ 447.0, 462.0, 56.0, 22.0 ],
+					"sig" : 0.0
 				}
 
 			}
 , 			{
 				"box" : 				{
+					"id" : "obj-28",
+					"linecount" : 2,
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "signal" ],
+					"patching_rect" : [ 447.0, 424.0, 46.0, 35.0 ],
+					"text" : "cycle~ 440"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-26",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 173.255807757377625, 99.0, 168.0, 20.0 ],
+					"text" : " end = start + dur*transratio"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-22",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 46.0, 262.372084498405457, 175.0, 20.0 ],
+					"text" : "start_ms, end_ms, dur_ms"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-20",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 284.0, 373.0, 195.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-18",
+					"maxclass" : "number~",
+					"mode" : 2,
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "signal", "float" ],
+					"patching_rect" : [ 358.0, 415.0, 56.0, 22.0 ],
+					"sig" : 0.0
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-16",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 282.0, 341.0, 150.0, 20.0 ],
+					"text" : "debug"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontface" : 0,
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-7",
+					"maxclass" : "number~",
+					"mode" : 2,
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "signal", "float" ],
+					"patching_rect" : [ 274.0, 411.0, 56.0, 22.0 ],
+					"sig" : 0.0
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Avenir",
 					"id" : "obj-15",
 					"linecount" : 2,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 520.0, 99.0, 150.0, 33.0 ],
+					"patching_rect" : [ 337.0, 262.372084498405457, 149.0, 39.0 ],
 					"text" : "Need to get rid of sampling synthesis."
 				}
 
 			}
 , 			{
 				"box" : 				{
+					"fontname" : "Avenir",
 					"id" : "obj-8",
 					"linecount" : 6,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 282.0, 385.0, 150.0, 87.0 ],
+					"patching_rect" : [ 282.0, 458.0, 150.0, 105.0 ],
 					"text" : "The output signal is used to signal to poly that the patcher is open for use. The automute stops DSP in this instance based on that too."
 				}
 
 			}
 , 			{
 				"box" : 				{
+					"fontname" : "Avenir",
 					"id" : "obj-6",
-					"linecount" : 7,
+					"linecount" : 10,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 311.0, 135.0, 162.0, 114.0 ],
-					"text" : "Synthesize a single grain of sound subject to many parameters:\n1.\n2.\n3.\n4.\n"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-4",
-					"linecount" : 2,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 295.0, 74.418601989746094, 194.0, 33.0 ],
-					"text" : "Param:\nstart, dur, pitch, envInterp, pan"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-13",
-					"linecount" : 2,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 295.0, 74.418601989746094, 182.0, 33.0 ],
-					"text" : "Param:\nstart, dur, pitch, envInterp, pan"
+					"patching_rect" : [ 343.255807757377625, 52.0, 160.0, 187.0 ],
+					"text" : "Synthesize a single grain of sound subject to many parameters:\n1. start (ms)\n2. grain-dur (ms)\n3. grain pitch ratio\n4. grain envelope interpolation factor\n5. pan\n\n"
 				}
 
 			}
@@ -231,7 +305,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "signal", "bang" ],
-					"patching_rect" : [ 36.046510338783264, 277.906966805458069, 101.0, 22.0 ],
+					"patching_rect" : [ 36.046510338783264, 288.372082710266113, 101.0, 22.0 ],
 					"text" : "play~ sampleBuff"
 				}
 
@@ -266,9 +340,20 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 34.0, 62.0, 1212.0, 704.0 ],
+						"rect" : [ 225.0, 197.0, 905.0, 632.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
 						"boxes" : [ 							{
+								"box" : 								{
+									"id" : "obj-5",
+									"maxclass" : "comment",
+									"numinlets" : 1,
+									"numoutlets" : 0,
+									"patching_rect" : [ 126.0, 64.0, 60.0, 20.0 ],
+									"text" : "dur (ms)"
+								}
+
+							}
+, 							{
 								"box" : 								{
 									"id" : "obj-13",
 									"maxclass" : "newobj",
@@ -516,13 +601,15 @@
 , 			{
 				"box" : 				{
 					"fontface" : 1,
+					"fontname" : "Avenir",
 					"fontsize" : 22.547671219335388,
 					"id" : "obj-2",
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 36.046510338783264, 9.302325248718262, 255.536590337753296, 32.0 ],
-					"text" : "Grain Generator"
+					"patching_rect" : [ 36.046510338783264, 9.302325248718262, 243.0, 37.0 ],
+					"text" : "Grain Generator",
+					"underline" : 1
 				}
 
 			}
@@ -531,6 +618,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-11", 0 ],
 					"midpoints" : [ 45.546510338783264, 111.0, 182.755807757377625, 111.0 ],
+					"order" : 1,
+					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-20", 1 ],
 					"order" : 0,
 					"source" : [ "obj-1", 0 ]
 				}
@@ -539,7 +634,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-30", 0 ],
-					"order" : 1,
+					"order" : 2,
 					"source" : [ "obj-1", 0 ]
 				}
 
@@ -554,7 +649,16 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-18", 0 ],
+					"order" : 0,
+					"source" : [ "obj-12", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-27", 1 ],
+					"order" : 1,
 					"source" : [ "obj-12", 0 ]
 				}
 
@@ -600,6 +704,13 @@
 					"destination" : [ "obj-45", 0 ],
 					"order" : 0,
 					"source" : [ "obj-27", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-29", 0 ],
+					"source" : [ "obj-28", 0 ]
 				}
 
 			}
@@ -661,6 +772,15 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-27", 0 ],
+					"order" : 1,
+					"source" : [ "obj-64", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"order" : 0,
 					"source" : [ "obj-64", 0 ]
 				}
 
