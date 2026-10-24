@@ -10,9 +10,67 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 87.0, 542.0, 582.0 ],
+		"rect" : [ 134.0, 111.0, 542.0, 608.0 ],
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-17",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 544.0, 216.0, 150.0, 20.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-15",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 520.0, 99.0, 150.0, 33.0 ],
+					"text" : "Need to get rid of sampling synthesis."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"linecount" : 6,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 282.0, 385.0, 150.0, 87.0 ],
+					"text" : "The output signal is used to signal to poly that the patcher is open for use. The automute stops DSP in this instance based on that too."
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-6",
+					"linecount" : 7,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 311.0, 135.0, 162.0, 114.0 ],
+					"text" : "Synthesize a single grain of sound subject to many parameters:\n1.\n2.\n3.\n4.\n"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-4",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 295.0, 74.418601989746094, 194.0, 33.0 ],
+					"text" : "Param:\nstart, dur, pitch, envInterp, pan"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-13",
 					"linecount" : 2,
@@ -54,8 +112,12 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 92.0, 466.0, 42.0, 22.0 ],
-					"text" : "out~ 2"
+					"patching_rect" : [ 66.046510338783264, 445.0, 195.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : "audio ch2"
+					}
+,
+					"text" : "out~ 2 @attr_comment \"audio ch2\""
 				}
 
 			}
@@ -65,8 +127,12 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 36.0, 466.0, 42.0, 22.0 ],
-					"text" : "out~ 1"
+					"patching_rect" : [ 36.0, 478.0, 195.0, 22.0 ],
+					"saved_object_attributes" : 					{
+						"attr_comment" : "audio ch1"
+					}
+,
+					"text" : "out~ 1 @attr_comment \"audio ch1\""
 				}
 
 			}
@@ -200,7 +266,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 34.0, 87.0, 668.0, 631.0 ],
+						"rect" : [ 34.0, 62.0, 1212.0, 704.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
 						"boxes" : [ 							{
 								"box" : 								{
@@ -599,7 +665,16 @@
 				}
 
 			}
- ]
+ ],
+		"dependency_cache" : [ 			{
+				"name" : "pan2.maxpat",
+				"bootpath" : "~/git/instruments/group-1/granular-synth/patchers",
+				"patcherrelativepath" : ".",
+				"type" : "JSON",
+				"implicit" : 1
+			}
+ ],
+		"autosave" : 0
 	}
 
 }
