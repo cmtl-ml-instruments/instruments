@@ -164,7 +164,7 @@ sound design, testing, writing.
 |---|---|---|---|---|
 | Caleb | 1 | Hardware and Physical Design | Update CAD Design to V2 and account for sensor location (every 10/15 inches) and length of design (30 inches) Print something | Have design printed out and attach sensors to determined locations |
 | Sam | 2 |Sound synthesis-ML connection. | Then modify my existing granular synthesis patch from sampling synthesis to something more intrinsic (physical modelling). Adjustments for Grain Duration, Density, Bandwidth, and macro pitch. The cloud generator should be primed to connect to the ML. | Go in depth with IRIS and connect the ML patch to the granular.|
-| Talal | 2 | ML and Programming | Experiment with IRIS and different sensors. Understand the limitations of the ML and what it would be useful | Work with a glove prototype and simple example chain prototype as inputs for the model. Get necessary parts ordered |
+| Talal | 2 | ML and Programming | Work with a glove prototype (mechanical keys) and simple example chain prototype as inputs for the model. Solder stemma connections for accelerometer/gyroscope. | Interface with IRIS, getting a proper connection and data flow from sensors, getting a proper connection for the glove keys. Further understand IRIS's part within the workflow. |
 | | | | | |
 
 
