@@ -151,8 +151,9 @@ Work backwards from the 13th.
 | Oct 16 | We compile all of the needed resources: gyroscopes, accelerometers, and magnetic sensors. Everyone starts learning in their role. Finish CAD Design V1 | Something posted to the instrument folder |
 | Oct 23 | Finish CAD design V2 and begin attaching hardware devices to the physical product. Have an ML patch that runs without bugs. Have a starter synthesis patch | ML runs without bugs. Functioning with sole gyroscopes or V1 prototype. |
 | Oct 30 | We have something physical to work with and test. Update the synthesis patch. |Get sound |
-| Nov 6 | The physical instrument successfully connects to the ML and synthesis mapping | Triggering notes on command. Tests of other parameters |
-| **Nov 13** | **a stranger can pick it up and play it** | Test: Doesn't work | Added embellishments - case, color coding|
+| Nov 6 | (tentative) We wire the instrument. Starting the IRIS patch | Get numbers from accel/gyro produced by instrument. |
+| Nov 13 | The physical instrument successfully connects to the ML and synthesis mapping | Triggering notes on command. Tests of other parameters |
+|**Nov 20**|**a stranger can pick it up and play it** Extra: case, color coding |Test: Doesn't work |
 
 ## 10. Who does what
 
@@ -162,7 +163,7 @@ sound design, testing, writing.
 | Person | Credit hours | What they own | This week | Next week |
 |---|---|---|---|---|
 | Caleb | 1 | Hardware and Physical Design | Update CAD Design to V2 and account for sensor location (every 10/15 inches) and length of design (30 inches) Print something | Have design printed out and attach sensors to determined locations |
-| Sam | 2 |Sound synthesis-ML connection. | Learn to use the acc/gyro. Then modify my existing granular synthesis patch from sampling synthesis to something more intrinsic (physical modelling). The cloud generator should be primed to connect to the ML. | Go in depth with IRIS and connect the ML patch to the granular.|
+| Sam | 2 |Sound synthesis-ML connection. | Then modify my existing granular synthesis patch from sampling synthesis to something more intrinsic (physical modelling). Adjustments for Grain Duration, Density, Bandwidth, and macro pitch. The cloud generator should be primed to connect to the ML. | Go in depth with IRIS and connect the ML patch to the granular.|
 | Talal | 2 | ML and Programming | Experiment with IRIS and different sensors. Understand the limitations of the ML and what it would be useful | Work with a glove prototype and simple example chain prototype as inputs for the model. Get necessary parts ordered |
 | | | | | |
 
