@@ -101,23 +101,33 @@ hold it another way and what that should sound like.*
 
 ---
 
-## Decision Points - 10/19/26  
--. how many sensors
-  - right now we have 2-3 accelerometer/gyroscopes w/o touchscreens.
-  - we're gonna start with 3 spaced 10 inches apart.
-  - Prep the ml for a short radius, middle radius, and long radius.
--. how each gestural motion should affect the sound
-Motion parameters:
-- small acc/gryo
-- mid acc/gyro
-- large acc/gyro
+## Decision Points - Updated 10/31/2026  
+- Denote the 6 degrees of freedom accelerometer/gyroscopes as _6dofs_
+**Physical Design**
+- length of the chain: 30 inches based on a good holding height. Not super long.
+- Joints: Building a true multipendulum might be out of scope given the 360 degree rotating joints. We will go forward with the chain link design and see if it is flexible enough.
+- Sensors
+  - right now we have 2-3 6dofs.
+  - we're gonna start with 2-3 spaced 10 inches apart. The multiplexer has to be used after 2.
+  - Prep the ml for a short radius, middle radius, and long radius.  
 
-Some guides for the sound
+**Sound**  
+- Sparkly, String Bending
 can use speed of rotation to control granular density.
 an electric guitar type
 or moving a lot through the air - wood winds.
 I could use the frequency spectrum of it as a start
 or we could use physical modelling
+
+
+**Parameter Mapping**  
+- how each gestural motion should affect the sound
+- Role of the gloves: 5 buttons
+  - 1: Control Note/on
+  - 2-5: Hold Duration, Density, Bandwidth, and Pitch, respectively
+  - 
+- - trigger the stream of granular information
+- trigger note on - but pitch comes from some other parameter (going with this for now)
 
 Sound parameters:
 - Volume
@@ -129,13 +139,9 @@ Sound parameters:
  synthesis method(s)
 - 
 
-- length of the chain - 30 inches based on a good holding height. Not super long.
-- Joints
-  - building a true multipendulum might be out of scope given the 360 degree rotating joints. We will go forward with the chain link design and see if it is flexible enough.
   
--. role of the gloves etc.
-- trigger the stream of granular information
-- trigger note on - but pitch comes from some other parameter (going with this for now)
+
+
 
 
 ## 9. The timeline
