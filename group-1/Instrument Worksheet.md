@@ -1,9 +1,9 @@
 # Instrument worksheet
 
-**Prototype deadline: Friday 13 November.**
-[Decision Points](#8-decision-points)
-[The Timeline](#9-the-timeline)
-[Who Does What](#10-who-does-what)
+**Prototype deadline: Friday 13 November.**  
+[Decision Points](#8-decision-points)  
+[The Timeline](#9-the-timeline)  
+[Who Does What](#10-who-does-what)  
 
 ---
 
@@ -119,10 +119,31 @@ or we could use physical modelling
 
 
 **Parameter Mapping**  
+Grain Cloud Parameters (controlled by instrument)
+- Grain Duration (seconds\grain): Time that each grain plays for
+- Grain Density (grains/second): Number of grains generated per second
+- Bandwidth (Hz): Pitches are randomly chosen in an interval of this width
+  - Not sure whether to quantize this process yet. 
+- Pitch (Hz):  Center frequency of the band
+
+How Grain Duration, Density, and Bandwidth, Affect the Sound
+|Duration|Density|Bandwidth|Sound|
+|--------|--------|--------|----|
+|  long  |  high  |  broad | wall of sound |
+|  long  |  high  | narrow | sustained formant[^1] |
+|  long  |  low   |  broad | chords/sustained melody |
+|  long  |  low   | narrow | simple sustained note |
+|  short |  high  |  broad | staccato noise |
+|  short |  high  | narrow | sparse formant |
+|  short |  low   |  broad | staccato melody |
+|  short |  low   | narrow | simple staccato note |
+
+[^1]: A formant is a clear pitch with nice spectra. 
+
 - how each gestural motion should affect the sound
 - Role of the gloves: 5 buttons
   - 1: Control Note/on
-  - 2-5: Hold Duration, Density, Bandwidth, and Pitch, respectively
+  - 2-5: Hold Duration, Density, Pitch, and Bandwidth, respectively (button order undecided)
   - 
 - - trigger the stream of granular information
 - trigger note on - but pitch comes from some other parameter (going with this for now)
