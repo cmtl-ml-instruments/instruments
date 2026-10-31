@@ -1,6 +1,6 @@
 # Instrument worksheet
 
-**Prototype deadline: Friday 13 November.**  
+**Minimum Viable Prototype deadline: Friday 13 November.**  
 [Decision Points](#8-decision-points)  
 [The Timeline](#9-the-timeline)  
 [Who Does What](#10-who-does-what)  
@@ -140,35 +140,31 @@ How Grain Duration, Density, and Bandwidth, Affect the Sound
 
 [^1]: A formant is a clear pitch with nice spectra. 
 
-- how each gestural motion should affect the sound
+- How each gestural motion should affect the sound (Tentative)
+  - Map _angular_ acceleration to the bandwidth. That makes stable rotation pitched and erratic rotation noisy
+    - TODO: calculate this from gyroscope measurements
+  - Map angular velocity to either pitch or grain density.
+    - Spinning faster either makes the texture denser or makes the pitch higher
+  - Map position of the handle relative to some calibration to pitch.
+    - TODO: Buy absolute orientation compass and put it near the handle, (or inside)
+  - Map _linear_ velocity or acceleration of the handle to grain duration. That hopefully makes whip motions produce sharper sounds
+  - Map position of the handle relative to the glove to spatial effects like reverb.
+  - Note these motions are coupled. The gloves let you uncouple them.
+  
 - Role of the gloves: 5 buttons
   - 1: Control Note/on
-  - 2-5: Hold Duration, Density, Pitch, and Bandwidth, respectively (button order undecided)
-  - 
-- - trigger the stream of granular information
-- trigger note on - but pitch comes from some other parameter (going with this for now)
+  - 2-5: Hold Duration, Density, Pitch, and Bandwidth, respectively[^2] (button order undecided)
+    - When you press them, the value would remain fixed regardless of the motion. When you let go, the value would ramp to its current value 
 
-Sound parameters:
-- Volume
-- Pitch
-- Timbre
-- Spatial effects
-- Filtering
-- Granular parameters: each of the above, but for a single grain of sound
- synthesis method(s)
-- 
+[^2]: Credit to Hayden Sebastian for this idea
 
-  
-
-
-
+- Physical modelling synthesis parameters may become relevant later too.
+- The randomness of the other per-grain parameters is not fully decided.
 
 ## 9. The timeline
 
 Work backwards from the 13th.
 - 1 goal and stretch goal per 4 weeks leading up to prototype. Figure this out by monday.
-
-- Machine 
 
 | Date | What exists by the end of that week | A test of it that could fail |
 |---|---|---|
@@ -177,7 +173,7 @@ Work backwards from the 13th.
 | Oct 23 | Finish CAD design V2 and begin attaching hardware devices to the physical product. Have an ML patch that runs without bugs. Have a starter synthesis patch | ML runs without bugs. Functioning with sole gyroscopes or V1 prototype. |
 | Oct 30 | We have something physical to work with and test. Update the synthesis patch. |Get sound |
 | Nov 6 | (tentative) We wire the instrument. Starting the IRIS patch | Get numbers from accel/gyro produced by instrument. |
-| Nov 13 | The physical instrument successfully connects to the ML and synthesis mapping | Triggering notes on command. Tests of other parameters |
+| Nov 13 | **Minimum viable prototype.** The physical instrument successfully connects to the ML and synthesis mapping | Triggering notes on command. Tests of other parameters |
 |**Nov 20**|**a stranger can pick it up and play it** Extra: case, color coding |Test: Doesn't work |
 
 ## 10. Who does what
@@ -190,6 +186,5 @@ sound design, testing, writing.
 | Caleb | 1 | Hardware and Physical Design | Update CAD Design to V2 and account for sensor location (every 10/15 inches) and length of design (30 inches) Print something | Have design printed out and attach sensors to determined locations |
 | Sam | 2 |Sound synthesis-ML connection. | Then modify my existing granular synthesis patch from sampling synthesis to something more intrinsic (physical modelling). Adjustments for Grain Duration, Density, Bandwidth, and macro pitch. The cloud generator should be primed to connect to the ML. | Go in depth with IRIS and connect the ML patch to the granular.|
 | Talal | 2 | ML and Programming | Work with a glove prototype (mechanical keys) and simple example chain prototype as inputs for the model. Solder stemma connections for accelerometer/gyroscope. | Interface with IRIS, getting a proper connection and data flow from sensors, getting a proper connection for the glove keys. Further understand IRIS's part within the workflow. |
-| | | | | |
 
 
