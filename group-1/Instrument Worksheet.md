@@ -1,11 +1,9 @@
 # Instrument worksheet
 
-Copy this into your group's folder and fill it in together.
-
-Every question here is about a person holding the thing. None of them are about
-sensors, libraries, or what's left to debug.
-
-**Prototype deadline: Friday 13 November.** Today, then four more meetings.
+**Prototype deadline: Friday 13 November.**
+[Decision Points](#8-decision-points)
+[The Timeline](#9-the-timeline)
+[Who Does What](#10-who-does-what)
 
 ---
 
@@ -101,7 +99,7 @@ hold it another way and what that should sound like.*
 
 ---
 
-## Decision Points - Updated 10/31/2026  
+## 8. Decision Points
 - Denote the 6 degrees of freedom accelerometer/gyroscopes as _6dofs_
 **Physical Design**
 - length of the chain: 30 inches based on a good holding height. Not super long.
