@@ -161,6 +161,12 @@ How Grain Duration, Density, and Bandwidth, Affect the Sound
 - Physical modelling synthesis parameters may become relevant later too.
 - The randomness of the other per-grain parameters is not fully decided.
 
+- Design Changes
+  - Make chain links smaller to reduce chance for tangling
+  - Reduce size of sensor points by around half
+  - Increase size of the handle, allow for inclusion of a button.
+  - Determine how to set sensors upon chain with proper wiring
+
 ## 9. The timeline
 
 Work backwards from the 13th.
@@ -183,7 +189,7 @@ sound design, testing, writing.
 
 | Person | Credit hours | What they own | This week | Next week |
 |---|---|---|---|---|
-| Caleb | 1 | Hardware and Physical Design | Update CAD Design to V2 and account for sensor location (every 10/15 inches) and length of design (30 inches) Print something | Have design printed out and attach sensors to determined locations |
+| Caleb | 1 | Hardware and Physical Design | Wiring and connecting the instrument and sensors. | Have wiring complete and ready for sensor mapping testing. |
 | Sam | 2 |Sound synthesis-ML connection. | Then modify my existing granular synthesis patch from sampling synthesis to something more intrinsic (physical modelling). Adjustments for Grain Duration, Density, Bandwidth, and macro pitch. The cloud generator should be primed to connect to the ML. | Go in depth with IRIS and connect the ML patch to the granular.|
 | Talal | 2 | ML and Programming | Work with a glove prototype (mechanical keys) and simple example chain prototype as inputs for the model. Solder stemma connections for accelerometer/gyroscope. | Interface with IRIS, getting a proper connection and data flow from sensors, getting a proper connection for the glove keys. Further understand IRIS's part within the workflow. |
 
