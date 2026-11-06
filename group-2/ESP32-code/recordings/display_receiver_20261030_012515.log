@@ -1,0 +1,26 @@
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=WAITING mac=00:00:00:00:00:00 channel=1 packets=0 hz=0.0 missed=0 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=0
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LOST mac=44:1B:F6:CE:62:E4 channel=1 packets=418 hz=16.0 missed=1041 invalid=0 old=0 queue_drops=1212 foreign=0 age_ms=1694
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0xa (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4037a9ba
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x10cc
+load:0x403c8700,len:0xc2c
+load:0x403cb700,len:0x30b0
+entry 0x403c88b8
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=WAITING mac=00:00:00:00:00:00 channel=1 packets=0 hz=0.0 missed=0 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=0
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=84 hz=0.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3
+# AXES -2.75294,-4.59542,8.49931,-0.00244,-0.00947,-0.00611 sequence=13805 session=4230134097
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=195 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=2
+# AXES -2.67039,-4.45185,8.47179,0.00367,-0.01741,-0.02688 sequence=13916 session=4230134097
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=400 hz=102.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3
+# AXES -2.78166,-4.54995,8.47657,-0.00305,-0.01313,-0.01313 sequence=14121 session=4230134097
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=605 hz=102.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3
+# AXES -2.67637,-4.44108,8.54357,-0.01252,0.00183,-0.01283 sequence=14326 session=4230134097
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=810 hz=102.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4
+# AXES -2.75414,-4.55115,8.52563,-0.01038,-0.00031,-0.00702 sequence=14531 session=4230134097
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=1015 hz=102.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4
+# AXES -2.66441,-4.48176,8.58904,-0.02138,0.01497,0.00092 sequence=14736 session=4230134097
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=1220 hz=102.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4

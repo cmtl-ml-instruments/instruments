@@ -1,0 +1,13 @@
+# Feather LSM6DSOX: 104 Hz, +/-4 g, +/-500 deg/s; raw, uncalibrated
+# h=header/help; d=diagnostics; acceleration includes gravity
+# ESP-NOW channel 1 -> display 44:1B:F6:CE:62:E4; USB does not gate wireless
+sequence,sample_us,ax_m_s2,ay_m_s2,az_m_s2,gx_rad_s,gy_rad_s,gz_rad_s
+# ERROR: LSM6DSOX not ready; check power, SDA/SCL and sensor model; retrying
+# Feather LSM6DSOX: 104 Hz, +/-4 g, +/-500 deg/s; raw, uncalibrated
+# h=header/help; d=diagnostics; acceleration includes gravity
+# ESP-NOW channel 1 -> display 44:1B:F6:CE:62:E4; USB does not gate wireless
+sequence,sample_us,ax_m_s2,ay_m_s2,az_m_s2,gx_rad_s,gy_rad_s,gz_rad_s
+# ERROR: LSM6DSOX not ready; check power, SDA/SCL and sensor model; retrying
+# ready=0 address=0x6B samples=0 read_errors=0 serial_drops=0 uptime_ms=115880
+# radio=1 tx_delivered=0 tx_failed=0 tx_skipped=0 session=2298903343 mac=F0:9E:9E:74:26:90
+# ERROR: LSM6DSOX not ready; check power, SDA/SCL and sensor model; retrying

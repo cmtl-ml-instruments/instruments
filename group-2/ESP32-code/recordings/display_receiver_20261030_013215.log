@@ -1,0 +1,9 @@
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=7736 hz=102.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=2
+# AXES -6.74417,-2.05304,7.03849,0.18265,0.18998,-0.05101 sequence=56914 session=4230134097
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=7781 hz=102.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4
+# AXES -7.00499,-1.23829,6.82553,0.29444,0.01527,-0.08002 sequence=56959 session=4230134097
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LOST mac=44:1B:F6:CE:62:E4 channel=1 packets=7803 hz=12.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=1790
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LOST mac=44:1B:F6:CE:62:E4 channel=1 packets=7803 hz=0.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3790
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LOST mac=44:1B:F6:CE:62:E4 channel=1 packets=7803 hz=0.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=5790
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LOST mac=44:1B:F6:CE:62:E4 channel=1 packets=7803 hz=0.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=7790
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LOST mac=44:1B:F6:CE:62:E4 channel=1 packets=7803 hz=0.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=9790

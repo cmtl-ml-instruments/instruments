@@ -1,0 +1,4 @@
+# Feather LSM6DSOX: 104 Hz, +/-4 g, +/-500 deg/s; raw, uncalibrated
+# h=header/help; d=diagnostics; acceleration includes gravity
+sequence,sample_us,ax_m_s2,ay_m_s2,az_m_s2,gx_rad_s,gy_rad_s,gz_rad_s
+# ready=1 address=0x6A samples=3804 read_errors=0 serial_drops=0 uptime_ms=37232

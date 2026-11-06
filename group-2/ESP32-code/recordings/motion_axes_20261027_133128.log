@@ -1,0 +1,229 @@
+ F5 (77) | Roll: 29.2 deg | Pitch: -5.2 deg | Cutoff: 2154 Hz
+[GESTURE] Note: G4 (67) | Roll: 2.4 deg | Pitch: 3.7 deg | Cutoff: 2615 Hz
+[GESTURE] Note: A4 (69) | Roll: 10.2 deg | Pitch: 3.6 deg | Cutoff: 2613 Hz
+[GESTURE] Note: G4 (67) | Roll: 5.0 deg | Pitch: 0.4 deg | Cutoff: 2446 Hz
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x2b (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4038032d
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x10cc
+load:0x403c8700,len:0xc2c
+load:0x403cb700,len:0x30b0
+entry 0x403c88b8
+
+=======================================================
+  RASCube V2 / ESP32-S3 IMU Gestural Synthesizer Scale 
+=======================================================
+Initializing ST77922 display over QSPI...
+[ES8311] Chip found at 0x18
+[ES8311] Configured for 44.1 kHz, PA amplifier enabled!
+[OK] ES8311 Audio Codec ready at 44.1 kHz
+Initializing LSM6DSOX sensor (0x6A)...
+[OK] LSM6DSOX Sensor ready (104 Hz sample rate)!
+[OK] AMY Engine running!
+# Hold still to calibrate gyro bias. The tilt range stays fixed.
+# Send h for calibration and labeled recording commands.
+# CAL count=0/156 ready=0 collecting=1 rejected=0 reason=collecting std=0.0000 norm_a=0.0000 norm_g=0.0000
+# RAW accel_m_s2=0.0000,0.0000,0.0000 gyro_rad_s=0.0000,0.0000,0.0000
+# CAL count=0/156 ready=0 collecting=1 rejected=1 reason=rotation rate std=0.0000 norm_a=9.9654 norm_g=1.2073
+# RAW accel_m_s2=-2.0518,-1.3017,9.6646 gyro_rad_s=-0.8570,-0.3009,0.7953
+# CAL count=0/156 ready=0 collecting=1 rejected=1 reason=rotation rate std=0.0000 norm_a=9.9654 norm_g=1.2073
+# RAW accel_m_s2=-2.0518,-1.3017,9.6646 gyro_rad_s=-0.8570,-0.3009,0.7953
+# CAL count=0/156 ready=0 collecting=1 rejected=1 reason=rotation rate std=0.0000 norm_a=9.9654 norm_g=1.2073
+# RAW accel_m_s2=-2.0518,-1.3017,9.6646 gyro_rad_s=-0.8570,-0.3009,0.7953
+# CAL count=16/156 ready=0 collecting=1 rejected=2 reason=rotation rate std=0.0000 norm_a=9.9610 norm_g=0.0227
+# RAW accel_m_s2=-2.1009,-1.2873,9.6515 gyro_rad_s=0.0095,-0.0095,-0.0183
+# CAL count=37/156 ready=0 collecting=1 rejected=2 reason=rotation rate std=0.0000 norm_a=9.9424 norm_g=0.0187
+# RAW accel_m_s2=-2.1212,-1.2981,9.6263 gyro_rad_s=0.0009,-0.0089,-0.0165
+# CAL count=57/156 ready=0 collecting=1 rejected=2 reason=rotation rate std=0.0000 norm_a=9.9607 norm_g=0.0217
+# RAW accel_m_s2=-2.1165,-1.2957,9.6467 gyro_rad_s=-0.0162,-0.0043,-0.0137
+# CAL count=78/156 ready=0 collecting=1 rejected=2 reason=rotation rate std=0.0000 norm_a=9.9537 norm_g=0.0212
+# RAW accel_m_s2=-2.1416,-1.2981,9.6335 gyro_rad_s=-0.0150,-0.0046,-0.0144
+# CAL count=98/156 ready=0 collecting=1 rejected=2 reason=rotation rate std=0.0000 norm_a=9.9539 norm_g=0.0183
+# RAW accel_m_s2=-2.1212,-1.2885,9.6395 gyro_rad_s=-0.0107,-0.0049,-0.0140
+# CAL count=120/156 ready=0 collecting=1 rejected=2 reason=rotation rate std=0.0000 norm_a=9.9619 norm_g=0.0216
+# RAW accel_m_s2=-2.1057,-1.2778,9.6526 gyro_rad_s=-0.0150,-0.0052,-0.0147
+# CAL count=140/156 ready=0 collecting=1 rejected=2 reason=rotation rate std=0.0000 norm_a=9.9609 norm_g=0.0205
+# RAW accel_m_s2=-2.0925,-1.2826,9.6538 gyro_rad_s=-0.0128,-0.0049,-0.0153
+# Calibration complete. Gyro bias corrected; fixed tilt mapping unchanged.
+[GESTURE] Note: D4 (62) | Roll: -7.6 deg | Pitch: 12.0 deg | Cutoff: 3046 Hz
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0782,-1.2933,9.6574 gyro_rad_s=-0.0089,-0.0064,-0.0159
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0758,-1.2945,9.6467 gyro_rad_s=-0.0046,-0.0067,-0.0162
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0734,-1.2909,9.6670 gyro_rad_s=-0.0024,-0.0070,-0.0159
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0614,-1.2993,9.6467 gyro_rad_s=-0.0018,-0.0067,-0.0168
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0674,-1.3005,9.6562 gyro_rad_s=-0.0018,-0.0073,-0.0168
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0722,-1.2969,9.6622 gyro_rad_s=0.0000,-0.0073,-0.0165
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0674,-1.2957,9.6491 gyro_rad_s=-0.0009,-0.0070,-0.0162
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0746,-1.2933,9.6550 gyro_rad_s=-0.0003,-0.0073,-0.0168
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0602,-1.2766,9.6574 gyro_rad_s=-0.0012,-0.0076,-0.0165
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0674,-1.2849,9.6598 gyro_rad_s=0.0009,-0.0073,-0.0162
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0722,-1.2897,9.6467 gyro_rad_s=-0.0012,-0.0079,-0.0171
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0578,-1.2873,9.6670 gyro_rad_s=0.0006,-0.0079,-0.0168
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0686,-1.2909,9.6586 gyro_rad_s=0.0009,-0.0076,-0.0171
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0674,-1.2993,9.6562 gyro_rad_s=0.0009,-0.0073,-0.0162
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0770,-1.2921,9.6634 gyro_rad_s=-0.0006,-0.0073,-0.0165
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0602,-1.2921,9.6550 gyro_rad_s=0.0000,-0.0079,-0.0165
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0626,-1.2945,9.6670 gyro_rad_s=-0.0009,-0.0082,-0.0168
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0566,-1.2945,9.6598 gyro_rad_s=-0.0006,-0.0076,-0.0162
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0590,-1.2873,9.6550 gyro_rad_s=-0.0006,-0.0070,-0.0168
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0722,-1.2921,9.6562 gyro_rad_s=-0.0018,-0.0073,-0.0165
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0614,-1.2981,9.6586 gyro_rad_s=-0.0009,-0.0082,-0.0165
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0949,-1.2969,9.6503 gyro_rad_s=0.0003,-0.0082,-0.0168
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1344,-1.2861,9.6335 gyro_rad_s=-0.0012,-0.0064,-0.0159
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1488,-1.2742,9.6371 gyro_rad_s=-0.0049,-0.0064,-0.0159
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1595,-1.2837,9.6323 gyro_rad_s=-0.0165,-0.0040,-0.0137
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1129,-1.2754,9.6586 gyro_rad_s=-0.0205,-0.0015,-0.0119
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0243,-1.2897,9.6634 gyro_rad_s=0.0006,-0.0082,-0.0165
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0375,-1.3161,9.6730 gyro_rad_s=0.0015,-0.0079,-0.0162
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0064,-1.2993,9.6742 gyro_rad_s=0.0150,-0.0101,-0.0183
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0459,-1.2921,9.6610 gyro_rad_s=0.0128,-0.0104,-0.0189
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0985,-1.2730,9.6658 gyro_rad_s=0.0049,-0.0079,-0.0171
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0554,-1.2873,9.6586 gyro_rad_s=-0.0064,-0.0070,-0.0174
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0638,-1.2921,9.6515 gyro_rad_s=-0.0064,-0.0064,-0.0165
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0746,-1.2873,9.6562 gyro_rad_s=-0.0098,-0.0055,-0.0150
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0399,-1.2885,9.6550 gyro_rad_s=-0.0052,-0.0064,-0.0153
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0363,-1.3005,9.6718 gyro_rad_s=0.0095,-0.0101,-0.0189
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0542,-1.3041,9.6526 gyro_rad_s=0.0156,-0.0107,-0.0183
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0518,-1.2873,9.6562 gyro_rad_s=0.0137,-0.0113,-0.0189
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0830,-1.2778,9.6610 gyro_rad_s=0.0116,-0.0089,-0.0177
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0901,-1.2897,9.6455 gyro_rad_s=0.0052,-0.0089,-0.0180
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0985,-1.3041,9.6538 gyro_rad_s=0.0003,-0.0073,-0.0171
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1117,-1.2897,9.6371 gyro_rad_s=-0.0113,-0.0064,-0.0150
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1009,-1.2957,9.6407 gyro_rad_s=-0.0150,-0.0040,-0.0128
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0686,-1.2885,9.6491 gyro_rad_s=-0.0168,-0.0031,-0.0137
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0614,-1.2981,9.6574 gyro_rad_s=-0.0061,-0.0070,-0.0153
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0483,-1.2837,9.6562 gyro_rad_s=0.0040,-0.0070,-0.0159
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0327,-1.2897,9.6718 gyro_rad_s=0.0082,-0.0104,-0.0183
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0542,-1.3125,9.6574 gyro_rad_s=0.0113,-0.0104,-0.0192
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0698,-1.2933,9.6634 gyro_rad_s=0.0027,-0.0070,-0.0159
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1057,-1.2837,9.6538 gyro_rad_s=0.0009,-0.0073,-0.0171
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0518,-1.3017,9.6491 gyro_rad_s=-0.0177,-0.0043,-0.0144
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0770,-1.2921,9.6526 gyro_rad_s=-0.0131,-0.0058,-0.0159
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1093,-1.2897,9.6503 gyro_rad_s=0.0031,-0.0086,-0.0174
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0662,-1.2921,9.6431 gyro_rad_s=0.0061,-0.0107,-0.0186
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0865,-1.2897,9.6670 gyro_rad_s=0.0119,-0.0098,-0.0183
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1332,-1.2993,9.6455 gyro_rad_s=0.0034,-0.0073,-0.0165
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1117,-1.2909,9.6407 gyro_rad_s=-0.0064,-0.0061,-0.0147
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0698,-1.3017,9.6550 gyro_rad_s=-0.0104,-0.0052,-0.0150
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0423,-1.2981,9.6658 gyro_rad_s=-0.0076,-0.0061,-0.0156
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0387,-1.2885,9.6622 gyro_rad_s=0.0070,-0.0089,-0.0174
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0219,-1.2873,9.6814 gyro_rad_s=0.0122,-0.0110,-0.0192
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0578,-1.2885,9.6622 gyro_rad_s=0.0049,-0.0089,-0.0183
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0626,-1.2909,9.6526 gyro_rad_s=0.0027,-0.0086,-0.0177
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0973,-1.3017,9.6491 gyro_rad_s=-0.0092,-0.0064,-0.0159
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1105,-1.2921,9.6371 gyro_rad_s=-0.0180,-0.0037,-0.0147
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1045,-1.2885,9.6455 gyro_rad_s=-0.0205,-0.0037,-0.0134
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0411,-1.2873,9.6682 gyro_rad_s=-0.0037,-0.0061,-0.0162
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0506,-1.2861,9.6718 gyro_rad_s=0.0153,-0.0095,-0.0177
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0865,-1.2909,9.6515 gyro_rad_s=0.0131,-0.0110,-0.0192
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0662,-1.2873,9.6538 gyro_rad_s=0.0134,-0.0098,-0.0180
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0554,-1.2969,9.6515 gyro_rad_s=0.0098,-0.0104,-0.0195
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1129,-1.2861,9.6479 gyro_rad_s=-0.0089,-0.0052,-0.0137
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0698,-1.2921,9.6503 gyro_rad_s=-0.0162,-0.0046,-0.0140
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0566,-1.2861,9.6622 gyro_rad_s=-0.0122,-0.0055,-0.0153
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0399,-1.2957,9.6682 gyro_rad_s=0.0015,-0.0086,-0.0168
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0315,-1.3077,9.6742 gyro_rad_s=0.0119,-0.0110,-0.0183
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0136,-1.2921,9.6718 gyro_rad_s=0.0092,-0.0095,-0.0180
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0578,-1.2921,9.6598 gyro_rad_s=0.0092,-0.0098,-0.0180
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0961,-1.2945,9.6419 gyro_rad_s=-0.0003,-0.0086,-0.0177
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0698,-1.2957,9.6574 gyro_rad_s=0.0037,-0.0086,-0.0183
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1009,-1.2945,9.6503 gyro_rad_s=-0.0092,-0.0061,-0.0162
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0985,-1.2790,9.6431 gyro_rad_s=-0.0128,-0.0046,-0.0150
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1117,-1.3005,9.6467 gyro_rad_s=-0.0180,-0.0034,-0.0144
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0973,-1.2969,9.6443 gyro_rad_s=-0.0183,-0.0034,-0.0140
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0973,-1.2873,9.6503 gyro_rad_s=-0.0131,-0.0037,-0.0140
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.1093,-1.2885,9.6443 gyro_rad_s=-0.0147,-0.0037,-0.0140
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0722,-1.2873,9.6622 gyro_rad_s=-0.0049,-0.0061,-0.0150
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0638,-1.2861,9.6598 gyro_rad_s=-0.0049,-0.0064,-0.0156
+# CAL count=156/156 ready=1 collecting=0 rejected=2 reason=complete std=0.0000 norm_a=9.9620 norm_g=0.0214
+# RAW accel_m_s2=-2.0459,-1.2897,9.6503 gyro_rad_s=-0.0052,-0.0073,-0.0165

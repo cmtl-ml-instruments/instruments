@@ -1,5 +1,6 @@
 #include "ES8311.h"
 
+// Configure the onboard codec over I2C. AMY supplies the I2S audio samples.
 ES8311 es8311;
 
 ES8311::ES8311() : _wire(&Wire) {}

@@ -1,0 +1,67 @@
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=4756 hz=103.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=8 note=OFF armed=0
+# AXES -0.28116,-9.78664,-0.87338,0.01374,-0.00519,-0.01772 sequence=4263 session=2298939080 roll_deg=-95.1
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=4777 hz=103.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3 note=OFF armed=0
+# AXES -0.30389,-9.78425,-0.85184,0.00214,-0.00336,-0.01344 sequence=4284 session=2298939080 roll_deg=-95.0
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=4982 hz=103.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3 note=OFF armed=0
+# AXES -0.28953,-9.77468,-0.86740,0.01191,-0.00672,-0.01497 sequence=4489 session=2298939080 roll_deg=-95.1
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=5187 hz=103.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3 note=OFF armed=0
+# AXES -0.30269,-9.78904,-0.87697,-0.00489,-0.00489,-0.01252 sequence=4694 session=2298939080 roll_deg=-95.1
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=5392 hz=103.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3 note=OFF armed=0
+# AXES -0.24287,-9.79622,-1.07797,-0.11087,0.01100,0.01405 sequence=4899 session=2298939080 roll_deg=-96.3
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=5597 hz=103.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3 note=OFF armed=0
+# AXES -0.27398,-9.74716,-1.16172,0.03848,0.01863,-0.02443 sequence=5104 session=2298939080 roll_deg=-96.8
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=5802 hz=103.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3 note=OFF armed=0
+# AXES -0.20818,-9.76391,-1.13181,0.01436,0.00031,-0.01588 sequence=5309 session=2298939080 roll_deg=-96.6
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=6007 hz=103.0 missed=2 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4 note=OFF armed=0
+# AXES -0.25723,-9.76032,-1.17847,0.00977,-0.01222,-0.01436 sequence=5514 session=2298939080 roll_deg=-96.9
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=6211 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4 note=OFF armed=0
+# AXES -0.28475,-9.75554,-1.14138,0.01741,-0.00458,-0.02505 sequence=5719 session=2298939080 roll_deg=-96.7
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=6416 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4 note=OFF armed=0
+# AXES -0.29073,-9.74357,-1.19521,0.00489,-0.00825,-0.01527 sequence=5924 session=2298939080 roll_deg=-97.0
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=6621 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3 note=OFF armed=0
+# AXES -0.20339,-9.75913,-1.17727,0.00886,-0.00855,-0.02321 sequence=6129 session=2298939080 roll_deg=-96.9
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=6826 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4 note=OFF armed=0
+# AXES -0.22014,-9.74238,-1.20957,-0.02199,0.00397,-0.01619 sequence=6334 session=2298939080 roll_deg=-97.1
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=7031 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4 note=OFF armed=0
+# AXES -0.22014,-9.77947,-1.10668,0.01497,-0.01283,-0.02505 sequence=6539 session=2298939080 roll_deg=-96.5
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=7236 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4 note=OFF armed=0
+# AXES -0.44626,-9.74956,-1.03968,0.09774,0.00947,0.01863 sequence=6744 session=2298939080 roll_deg=-96.1
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=7441 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=5 note=OFF armed=0
+# AXES -0.74058,-9.76272,-0.67238,0.03726,-0.02199,-0.01588 sequence=6949 session=2298939080 roll_deg=-93.9
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=7646 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=5 note=OFF armed=0
+# AXES -0.92124,-9.69691,-0.70110,-0.02077,-0.01527,0.02321 sequence=7154 session=2298939080 roll_deg=-94.1
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=7851 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=4 note=OFF armed=0
+# AXES -0.90209,-9.73879,-0.66042,0.03696,-0.00611,-0.03512 sequence=7359 session=2298939080 roll_deg=-93.9
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=8056 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=5 note=OFF armed=0
+# AXES -0.96670,-9.78425,-0.69870,-0.02841,-0.01374,-0.01436 sequence=7564 session=2298939080 roll_deg=-94.1
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=8261 hz=103.0 missed=3 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=5 note=OFF armed=0
+# AXES -0.97986,-9.76391,-0.66281,0.04581,0.00092,-0.01924 sequence=7769 session=2298939080 roll_deg=-93.9
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=8465 hz=103.0 missed=4 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=5 note=OFF armed=0
+# AXES -0.99900,-9.76750,-0.68794,-0.02566,-0.00672,-0.01649 sequence=7974 session=2298939080 roll_deg=-94.0
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=8670 hz=103.0 missed=4 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=5 note=OFF armed=0
+# AXES 0.03829,-9.60359,-2.38564,0.56261,0.00458,0.25198 sequence=8179 session=2298939080 roll_deg=-104.0
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=8875 hz=103.0 missed=4 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=5 note=OFF armed=0
+# AXES -5.19482,-8.18944,-1.29930,-0.14569,0.11087,-0.04123 sequence=8384 session=2298939080 roll_deg=-99.0
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=9080 hz=103.0 missed=4 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=6 note=OFF armed=0
+# AXES -5.10150,-8.48136,-1.25982,-0.44807,-0.10415,0.01955 sequence=8589 session=2298939080 roll_deg=-98.4
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=9285 hz=103.0 missed=4 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=6 note=OFF armed=0
+# AXES -4.50568,-9.34995,-2.12602,-1.79655,0.78252,-1.91476 sequence=8794 session=2298939080 roll_deg=-102.8
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=9490 hz=103.0 missed=4 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=6 note=OFF armed=0
+# AXES -4.40160,-8.72662,-0.97508,-0.09865,-0.05925,-0.04826 sequence=8999 session=2298939080 roll_deg=-96.4
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=9694 hz=103.0 missed=5 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=6 note=OFF armed=1
+# AXES 8.90848,-5.18046,-4.10608,-6.63247,-1.98714,2.32068 sequence=9204 session=2298939080 roll_deg=-128.4
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=9899 hz=103.0 missed=5 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=6 note=OFF armed=1
+# AXES 7.06242,-6.38884,-0.02632,-3.41352,1.55007,-0.64630 sequence=9409 session=2298939080 roll_deg=-90.2
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=10103 hz=103.0 missed=6 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=6 note=OFF armed=1
+# AXES 6.08973,-5.91027,-3.33081,5.58392,1.56534,-2.33534 sequence=9614 session=2298939080 roll_deg=-119.4
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=10308 hz=103.0 missed=6 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=6 note=OFF armed=1
+# AXES -7.80539,-9.09632,5.58604,-0.55803,-0.63316,-5.01490 sequence=9819 session=2298939080 roll_deg=-58.4
+# NOTE ON midi=60 reason=tilt event=1
+# NOTE OFF midi=60 reason=released event=2
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LIVE mac=44:1B:F6:CE:62:E4 channel=1 packets=10513 hz=103.0 missed=6 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=6 note=OFF armed=1
+# AXES -3.46600,-6.55394,7.85205,1.14873,0.37568,0.39523 sequence=10024 session=2298939080 roll_deg=-39.9
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LOST mac=44:1B:F6:CE:62:E4 channel=1 packets=10519 hz=0.0 missed=6 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=1948 note=OFF armed=0
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LOST mac=44:1B:F6:CE:62:E4 channel=1 packets=10519 hz=0.0 missed=6 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=3948 note=OFF armed=0
+# RECEIVER mode=HEADLESS radio=1 selftest=1 link=LOST mac=44:1B:F6:CE:62:E4 channel=1 packets=10519 hz=0.0 missed=6 invalid=0 old=0 queue_drops=0 foreign=0 age_ms=5948 note=OFF armed=0
+# NOTE ON midi=60 reason=tilt event=3
+# NOTE OFF midi=60 reason=released event=4
