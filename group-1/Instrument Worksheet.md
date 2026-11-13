@@ -162,12 +162,12 @@ How Grain Duration, Density, and Bandwidth, Affect the Sound
 - The randomness of the other per-grain parameters is not fully decided.
 
 - Design Changes
-  - Make chain links smaller to reduce chance for tangling
+  - Make chain links smaller to reduce chance for tangling (Smaller but more total links, may increase print time be wary)
   - Reduce size of sensor points by around half
-  - Increase size of the handle, allow for inclusion of a button.
-  - Determine how to set sensors upon chain with proper wiring
-  - Make handle more comfortable to hold for faster spin velocity
-  - Add another platform close to handle for microcontroller to sit so it doesn't have to be on the handle
+  - Increase size of the handle, allow for inclusion of a button. (May not work with a rounded handle, experiment)
+  - Determine how to set sensors upon chain with proper wiring (Sensor at base/make first link from handle a platform - linear movement, second sensor at end of chain, same as current mode, middle platform for multiplexor and ESP32)
+  - Make handle more comfortable to hold for faster spin velocity (Rounded design?)
+~~- Add another platform close to handle for microcontroller to sit so it doesn't have to be on the handle~~
 
 ## 9. The timeline
 
