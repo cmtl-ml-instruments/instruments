@@ -166,6 +166,8 @@ How Grain Duration, Density, and Bandwidth, Affect the Sound
   - Reduce size of sensor points by around half
   - Increase size of the handle, allow for inclusion of a button.
   - Determine how to set sensors upon chain with proper wiring
+  - Make handle more comfortable to hold for faster spin velocity
+  - Add another platform close to handle for microcontroller to sit so it doesn't have to be on the handle
 
 ## 9. The timeline
 
