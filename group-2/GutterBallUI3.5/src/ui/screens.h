@@ -57,6 +57,10 @@ typedef struct _objects_t {
     lv_obj_t *a_feedback_value_label;
     lv_obj_t *b_feedback_value_label;
     lv_obj_t *c_feedback_value_label;
+    lv_obj_t *offset_label;
+    lv_obj_t *pitch_offset_a_dropdown;
+    lv_obj_t *pitch_offset_b_dropdown;
+    lv_obj_t *pitch_offset_c_dropdown;
     lv_obj_t *a_filter_type_dropdown;
     lv_obj_t *filter_type_label;
     lv_obj_t *a_ratio_label_1;
@@ -115,6 +119,9 @@ typedef struct _objects_t {
     lv_obj_t *arp_range_max_value_label;
     lv_obj_t *arp_pattern_label;
     lv_obj_t *arp_pattern_dropdown;
+    lv_obj_t *arp_speed_label;
+    lv_obj_t *arp_speed_slider;
+    lv_obj_t *arp_speed_value_label;
     lv_obj_t *save_button;
     lv_obj_t *save_button_label;
     lv_obj_t *delete_button;

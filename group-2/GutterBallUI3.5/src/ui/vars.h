@@ -73,7 +73,12 @@ enum FlowGlobalVariables {
     FLOW_GLOBAL_VARIABLE_ARP_RANGE_MAX = 57,
     FLOW_GLOBAL_VARIABLE_ARP_RANGE_MAX_VALUE = 58,
     FLOW_GLOBAL_VARIABLE_ARP_PATTERN = 59,
-    FLOW_GLOBAL_VARIABLE_STARTING_NOTE_VALUE = 60
+    FLOW_GLOBAL_VARIABLE_STARTING_NOTE_VALUE = 60,
+    FLOW_GLOBAL_VARIABLE_ARP_SPEED = 61,
+    FLOW_GLOBAL_VARIABLE_ARP_SPEED_VALUE = 62,
+    FLOW_GLOBAL_VARIABLE_PITCH_OFFSET_A = 63,
+    FLOW_GLOBAL_VARIABLE_PITCH_OFFSET_B = 64,
+    FLOW_GLOBAL_VARIABLE_PITCH_OFFSET_C = 65
 };
 
 // Native global variables
@@ -200,6 +205,16 @@ extern int32_t get_var_arp_pattern();
 extern void set_var_arp_pattern(int32_t value);
 extern const char *get_var_starting_note_value();
 extern void set_var_starting_note_value(const char *value);
+extern int32_t get_var_arp_speed();
+extern void set_var_arp_speed(int32_t value);
+extern const char *get_var_arp_speed_value();
+extern void set_var_arp_speed_value(const char *value);
+extern int32_t get_var_pitch_offset_a();
+extern void set_var_pitch_offset_a(int32_t value);
+extern int32_t get_var_pitch_offset_b();
+extern void set_var_pitch_offset_b(int32_t value);
+extern int32_t get_var_pitch_offset_c();
+extern void set_var_pitch_offset_c(int32_t value);
 
 #ifdef __cplusplus
 }

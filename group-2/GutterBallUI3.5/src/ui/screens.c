@@ -150,6 +150,39 @@ static void event_handler_cb_sources_c_feedback_slider(lv_event_t *e) {
     }
 }
 
+static void event_handler_cb_sources_pitch_offset_a_dropdown(lv_event_t *e) {
+    lv_event_code_t event = lv_event_get_code(e);
+    if (event == LV_EVENT_VALUE_CHANGED) {
+        lv_obj_t *ta = lv_event_get_target(e);
+        if (tick_value_change_obj != ta) {
+            int32_t value = lv_dropdown_get_selected(ta);
+            set_var_pitch_offset_a(value);
+        }
+    }
+}
+
+static void event_handler_cb_sources_pitch_offset_b_dropdown(lv_event_t *e) {
+    lv_event_code_t event = lv_event_get_code(e);
+    if (event == LV_EVENT_VALUE_CHANGED) {
+        lv_obj_t *ta = lv_event_get_target(e);
+        if (tick_value_change_obj != ta) {
+            int32_t value = lv_dropdown_get_selected(ta);
+            set_var_pitch_offset_b(value);
+        }
+    }
+}
+
+static void event_handler_cb_sources_pitch_offset_c_dropdown(lv_event_t *e) {
+    lv_event_code_t event = lv_event_get_code(e);
+    if (event == LV_EVENT_VALUE_CHANGED) {
+        lv_obj_t *ta = lv_event_get_target(e);
+        if (tick_value_change_obj != ta) {
+            int32_t value = lv_dropdown_get_selected(ta);
+            set_var_pitch_offset_c(value);
+        }
+    }
+}
+
 static void event_handler_cb_filters_a_filter_type_dropdown(lv_event_t *e) {
     lv_event_code_t event = lv_event_get_code(e);
     if (event == LV_EVENT_VALUE_CHANGED) {
@@ -399,6 +432,17 @@ static void event_handler_cb_pitch_arp_pattern_dropdown(lv_event_t *e) {
     }
 }
 
+static void event_handler_cb_pitch_arp_speed_slider(lv_event_t *e) {
+    lv_event_code_t event = lv_event_get_code(e);
+    if (event == LV_EVENT_VALUE_CHANGED) {
+        lv_obj_t *ta = lv_event_get_target(e);
+        if (tick_value_change_obj != ta) {
+            int32_t value = lv_slider_get_value(ta);
+            set_var_arp_speed(value);
+        }
+    }
+}
+
 //
 // Screens
 //
@@ -626,7 +670,7 @@ void create_screen_sources() {
             lv_obj_t *obj = lv_slider_create(parent_obj);
             objects.a_mod_index_slider = obj;
             lv_obj_set_pos(obj, 118, 105);
-            lv_obj_set_size(obj, 140, 10);
+            lv_obj_set_size(obj, 93, 10);
             lv_slider_set_range(obj, 0, 80);
             lv_obj_add_event_cb(obj, event_handler_cb_sources_a_mod_index_slider, LV_EVENT_ALL, 0);
         }
@@ -634,8 +678,8 @@ void create_screen_sources() {
             // a_feedback_slider
             lv_obj_t *obj = lv_slider_create(parent_obj);
             objects.a_feedback_slider = obj;
-            lv_obj_set_pos(obj, 276, 105);
-            lv_obj_set_size(obj, 140, 10);
+            lv_obj_set_pos(obj, 231, 104);
+            lv_obj_set_size(obj, 93, 10);
             lv_obj_add_event_cb(obj, event_handler_cb_sources_a_feedback_slider, LV_EVENT_ALL, 0);
         }
         {
@@ -643,7 +687,7 @@ void create_screen_sources() {
             lv_obj_t *obj = lv_slider_create(parent_obj);
             objects.b_mod_index_slider = obj;
             lv_obj_set_pos(obj, 118, 160);
-            lv_obj_set_size(obj, 140, 10);
+            lv_obj_set_size(obj, 93, 10);
             lv_slider_set_range(obj, 0, 80);
             lv_obj_add_event_cb(obj, event_handler_cb_sources_b_mod_index_slider, LV_EVENT_ALL, 0);
         }
@@ -651,8 +695,8 @@ void create_screen_sources() {
             // b_feedback_slider
             lv_obj_t *obj = lv_slider_create(parent_obj);
             objects.b_feedback_slider = obj;
-            lv_obj_set_pos(obj, 276, 160);
-            lv_obj_set_size(obj, 140, 10);
+            lv_obj_set_pos(obj, 231, 159);
+            lv_obj_set_size(obj, 93, 10);
             lv_obj_add_event_cb(obj, event_handler_cb_sources_b_feedback_slider, LV_EVENT_ALL, 0);
         }
         {
@@ -660,7 +704,7 @@ void create_screen_sources() {
             lv_obj_t *obj = lv_slider_create(parent_obj);
             objects.c_mod_index_slider = obj;
             lv_obj_set_pos(obj, 118, 217);
-            lv_obj_set_size(obj, 140, 10);
+            lv_obj_set_size(obj, 93, 10);
             lv_slider_set_range(obj, 0, 80);
             lv_obj_add_event_cb(obj, event_handler_cb_sources_c_mod_index_slider, LV_EVENT_ALL, 0);
         }
@@ -668,8 +712,8 @@ void create_screen_sources() {
             // c_feedback_slider
             lv_obj_t *obj = lv_slider_create(parent_obj);
             objects.c_feedback_slider = obj;
-            lv_obj_set_pos(obj, 276, 217);
-            lv_obj_set_size(obj, 140, 10);
+            lv_obj_set_pos(obj, 231, 216);
+            lv_obj_set_size(obj, 93, 10);
             lv_obj_add_event_cb(obj, event_handler_cb_sources_c_feedback_slider, LV_EVENT_ALL, 0);
         }
         {
@@ -684,7 +728,7 @@ void create_screen_sources() {
             // feedback_label
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.feedback_label = obj;
-            lv_obj_set_pos(obj, 276, 75);
+            lv_obj_set_pos(obj, 231, 74);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text_static(obj, "Feedback:");
         }
@@ -716,7 +760,7 @@ void create_screen_sources() {
             // a_feedback_value_label
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.a_feedback_value_label = obj;
-            lv_obj_set_pos(obj, 276, 123);
+            lv_obj_set_pos(obj, 231, 122);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "");
         }
@@ -724,7 +768,7 @@ void create_screen_sources() {
             // b_feedback_value_label
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.b_feedback_value_label = obj;
-            lv_obj_set_pos(obj, 276, 180);
+            lv_obj_set_pos(obj, 231, 179);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "");
         }
@@ -732,9 +776,49 @@ void create_screen_sources() {
             // c_feedback_value_label
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.c_feedback_value_label = obj;
-            lv_obj_set_pos(obj, 276, 241);
+            lv_obj_set_pos(obj, 231, 240);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_label_set_text(obj, "");
+        }
+        {
+            // offset_label
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.offset_label = obj;
+            lv_obj_set_pos(obj, 337, 75);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text_static(obj, "Offset:");
+        }
+        {
+            lv_obj_t *obj = lv_obj_create(parent_obj);
+            lv_obj_set_pos(obj, 424, 56);
+            lv_obj_set_size(obj, 52, 231);
+        }
+        {
+            // pitch_offset_a_dropdown
+            lv_obj_t *obj = lv_dropdown_create(parent_obj);
+            objects.pitch_offset_a_dropdown = obj;
+            lv_obj_set_pos(obj, 337, 105);
+            lv_obj_set_size(obj, 62, LV_SIZE_CONTENT);
+            lv_dropdown_set_options_static(obj, "-12\n-7\n0\n+7\n+12");
+            lv_obj_add_event_cb(obj, event_handler_cb_sources_pitch_offset_a_dropdown, LV_EVENT_ALL, 0);
+        }
+        {
+            // pitch_offset_b_dropdown
+            lv_obj_t *obj = lv_dropdown_create(parent_obj);
+            objects.pitch_offset_b_dropdown = obj;
+            lv_obj_set_pos(obj, 337, 161);
+            lv_obj_set_size(obj, 62, LV_SIZE_CONTENT);
+            lv_dropdown_set_options_static(obj, "-12\n-7\n0\n+7\n+12");
+            lv_obj_add_event_cb(obj, event_handler_cb_sources_pitch_offset_b_dropdown, LV_EVENT_ALL, 0);
+        }
+        {
+            // pitch_offset_c_dropdown
+            lv_obj_t *obj = lv_dropdown_create(parent_obj);
+            objects.pitch_offset_c_dropdown = obj;
+            lv_obj_set_pos(obj, 337, 218);
+            lv_obj_set_size(obj, 62, LV_SIZE_CONTENT);
+            lv_dropdown_set_options_static(obj, "-12\n-7\n0\n+7\n+12");
+            lv_obj_add_event_cb(obj, event_handler_cb_sources_pitch_offset_c_dropdown, LV_EVENT_ALL, 0);
         }
     }
     
@@ -883,6 +967,39 @@ void tick_screen_sources() {
             tick_value_change_obj = NULL;
         }
     }
+    {
+        if (!(lv_obj_get_state(objects.pitch_offset_a_dropdown) & LV_STATE_EDITED)) {
+            int32_t new_val = get_var_pitch_offset_a();
+            int32_t cur_val = lv_dropdown_get_selected(objects.pitch_offset_a_dropdown);
+            if (new_val != cur_val) {
+                tick_value_change_obj = objects.pitch_offset_a_dropdown;
+                lv_dropdown_set_selected(objects.pitch_offset_a_dropdown, new_val);
+                tick_value_change_obj = NULL;
+            }
+        }
+    }
+    {
+        if (!(lv_obj_get_state(objects.pitch_offset_b_dropdown) & LV_STATE_EDITED)) {
+            int32_t new_val = get_var_pitch_offset_b();
+            int32_t cur_val = lv_dropdown_get_selected(objects.pitch_offset_b_dropdown);
+            if (new_val != cur_val) {
+                tick_value_change_obj = objects.pitch_offset_b_dropdown;
+                lv_dropdown_set_selected(objects.pitch_offset_b_dropdown, new_val);
+                tick_value_change_obj = NULL;
+            }
+        }
+    }
+    {
+        if (!(lv_obj_get_state(objects.pitch_offset_c_dropdown) & LV_STATE_EDITED)) {
+            int32_t new_val = get_var_pitch_offset_c();
+            int32_t cur_val = lv_dropdown_get_selected(objects.pitch_offset_c_dropdown);
+            if (new_val != cur_val) {
+                tick_value_change_obj = objects.pitch_offset_c_dropdown;
+                lv_dropdown_set_selected(objects.pitch_offset_c_dropdown, new_val);
+                tick_value_change_obj = NULL;
+            }
+        }
+    }
 }
 
 void create_screen_filters() {
@@ -979,6 +1096,8 @@ void create_screen_filters() {
             lv_obj_set_size(obj, 90, 10);
             lv_slider_set_range(obj, -30, 30);
             lv_obj_add_event_cb(obj, event_handler_cb_filters_a_relative_cutoff_slider, LV_EVENT_ALL, 0);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_KNOB | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_INDICATOR | LV_STATE_DEFAULT);
         }
         {
             // b_relative_cutoff_slider
@@ -988,6 +1107,8 @@ void create_screen_filters() {
             lv_obj_set_size(obj, 89, 10);
             lv_slider_set_range(obj, -30, 30);
             lv_obj_add_event_cb(obj, event_handler_cb_filters_b_relative_cutoff_slider, LV_EVENT_ALL, 0);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_KNOB | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_INDICATOR | LV_STATE_DEFAULT);
         }
         {
             // c_relative_cutoff_slider
@@ -997,6 +1118,8 @@ void create_screen_filters() {
             lv_obj_set_size(obj, 89, 10);
             lv_slider_set_range(obj, -30, 30);
             lv_obj_add_event_cb(obj, event_handler_cb_filters_c_relative_cutoff_slider, LV_EVENT_ALL, 0);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_KNOB | LV_STATE_DEFAULT);
         }
         {
             // relative_cutoff_label
@@ -1056,7 +1179,7 @@ void create_screen_filters() {
             objects.global_filter_cutoff_slider = obj;
             lv_obj_set_pos(obj, 100, 241);
             lv_obj_set_size(obj, 134, 10);
-            lv_slider_set_range(obj, 100, 8000);
+            lv_slider_set_range(obj, 0, 1000);
             lv_obj_add_event_cb(obj, event_handler_cb_filters_global_filter_cutoff_slider, LV_EVENT_ALL, 0);
         }
         {
@@ -1131,8 +1254,8 @@ void create_screen_filters() {
             // fe_decay_value_label
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.fe_decay_value_label = obj;
-            lv_obj_set_pos(obj, 369, 263);
-            lv_obj_set_size(obj, 32, LV_SIZE_CONTENT);
+            lv_obj_set_pos(obj, 360, 263);
+            lv_obj_set_size(obj, 49, LV_SIZE_CONTENT);
             lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "");
         }
@@ -1461,6 +1584,8 @@ void create_screen_motion___fx() {
             lv_obj_set_pos(obj, 249, 122);
             lv_obj_set_size(obj, 10, 122);
             lv_obj_add_event_cb(obj, event_handler_cb_motion___fx_chorus_slider, LV_EVENT_ALL, 0);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_KNOB | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_INDICATOR | LV_STATE_DEFAULT);
         }
         {
             // chorus_value_label
@@ -1478,6 +1603,8 @@ void create_screen_motion___fx() {
             lv_obj_set_pos(obj, 311, 122);
             lv_obj_set_size(obj, 10, 122);
             lv_obj_add_event_cb(obj, event_handler_cb_motion___fx_echo_slider, LV_EVENT_ALL, 0);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_KNOB | LV_STATE_DEFAULT);
         }
         {
             // echo_value_label
@@ -1495,6 +1622,8 @@ void create_screen_motion___fx() {
             lv_obj_set_pos(obj, 371, 122);
             lv_obj_set_size(obj, 10, 122);
             lv_obj_add_event_cb(obj, event_handler_cb_motion___fx_reverb_slider, LV_EVENT_ALL, 0);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_KNOB | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_INDICATOR | LV_STATE_DEFAULT);
         }
         {
             // reverb_value_label
@@ -1682,7 +1811,7 @@ void create_screen_pitch() {
             objects.scale_dropdown = obj;
             lv_obj_set_pos(obj, 179, 72);
             lv_obj_set_size(obj, 123, LV_SIZE_CONTENT);
-            lv_dropdown_set_options_static(obj, "Pentatonic\nMajor\nMinor");
+            lv_dropdown_set_options_static(obj, "Pentatonic\nMajor\nMinor\nChromatic");
             lv_obj_add_event_cb(obj, event_handler_cb_pitch_scale_dropdown, LV_EVENT_ALL, 0);
         }
         {
@@ -1701,6 +1830,8 @@ void create_screen_pitch() {
             lv_obj_set_size(obj, 308, 10);
             lv_slider_set_range(obj, 36, 84);
             lv_obj_add_event_cb(obj, event_handler_cb_pitch_starting_note_slider, LV_EVENT_ALL, 0);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+            lv_obj_set_style_bg_color(obj, lv_color_hex(0x86a5bd), LV_PART_KNOB | LV_STATE_DEFAULT);
         }
         {
             // starting_note_label
@@ -1768,6 +1899,32 @@ void create_screen_pitch() {
             lv_obj_set_size(obj, 143, LV_SIZE_CONTENT);
             lv_dropdown_set_options_static(obj, "Up\nDown\nUp & Down\nDown & Up\nRandom\nRandom Walk\nConverge\nThumb");
             lv_obj_add_event_cb(obj, event_handler_cb_pitch_arp_pattern_dropdown, LV_EVENT_ALL, 0);
+        }
+        {
+            // arp_speed_label
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.arp_speed_label = obj;
+            lv_obj_set_pos(obj, 179, 213);
+            lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_label_set_text_static(obj, "Arp Speed:");
+        }
+        {
+            // arp_speed_slider
+            lv_obj_t *obj = lv_slider_create(parent_obj);
+            objects.arp_speed_slider = obj;
+            lv_obj_set_pos(obj, 179, 244);
+            lv_obj_set_size(obj, 152, 10);
+            lv_slider_set_range(obj, 60, 200);
+            lv_obj_add_event_cb(obj, event_handler_cb_pitch_arp_speed_slider, LV_EVENT_ALL, 0);
+        }
+        {
+            // arp_speed_value_label
+            lv_obj_t *obj = lv_label_create(parent_obj);
+            objects.arp_speed_value_label = obj;
+            lv_obj_set_pos(obj, 343, 241);
+            lv_obj_set_size(obj, 34, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_RIGHT, LV_PART_MAIN | LV_STATE_DEFAULT);
+            lv_label_set_text(obj, "");
         }
     }
     
@@ -1878,6 +2035,24 @@ void tick_screen_pitch() {
                 lv_dropdown_set_selected(objects.arp_pattern_dropdown, new_val);
                 tick_value_change_obj = NULL;
             }
+        }
+    }
+    {
+        int32_t new_val = get_var_arp_speed();
+        int32_t cur_val = lv_slider_get_value(objects.arp_speed_slider);
+        if (new_val != cur_val) {
+            tick_value_change_obj = objects.arp_speed_slider;
+            lv_slider_set_value(objects.arp_speed_slider, new_val, LV_ANIM_OFF);
+            tick_value_change_obj = NULL;
+        }
+    }
+    {
+        const char *new_val = get_var_arp_speed_value();
+        const char *cur_val = lv_label_get_text(objects.arp_speed_value_label);
+        if (strcmp(new_val, cur_val) != 0) {
+            tick_value_change_obj = objects.arp_speed_value_label;
+            lv_label_set_text(objects.arp_speed_value_label, new_val);
+            tick_value_change_obj = NULL;
         }
     }
 }

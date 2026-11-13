@@ -11,8 +11,13 @@
 #include <SPI.h>
 #include <AMY-Arduino.h>
 #include <ES8311.h>
-#include <Preferences.h>     //ESP32 flash storage, used to keep presets after power-off
+#include <Preferences.h>
 #include "src/ui/vars.h"
+#include <Adafruit_LSM6DSOX.h>
+#include <LittleFS.h>
+
+#define IRIS_MAX_OUT 32   //iris allows 16 outputs by default; we learn 18, so raise the limit (must come before the #include)
+#include "iris.h"
 
 #define LCD_BL_PIN   41   // Screen backlight
 
@@ -77,19 +82,19 @@ struct Param {
 //  osc  amyCode  start value  scale    label format
 Param params[] = {
   //Mix page: 0-100 -> 0.00-1.00
-  {0, nullptr, 0,    100.0f, "%.2f"    },   //A level
-  {0, nullptr, 0,    100.0f, "%.2f"    },   //B level
-  {0, nullptr, 0,    100.0f, "%.2f"    },   //C level
+  {0, "a",     0,    100.0f, "%.2f"    },   //A level
+  {3, "a",     0,    100.0f, "%.2f"    },   //B level
+  {6, "a",     0,    100.0f, "%.2f"    },   //C level
   //Sources page: mod index 0-100 -> 0.0-10.0 (adjust scale by ear once it's connected to AMY)
-  {0, nullptr, 0,    10.0f,  "%.1f"    },   //A mod index
-  {0, nullptr, 0,    10.0f,  "%.1f"    },   //B mod index
-  {0, nullptr, 0,    10.0f,  "%.1f"    },   //C mod index
+  {2, "a",     0,    10.0f,  "%.1f"    },   //A mod index
+  {5, "a",     0,    10.0f,  "%.1f"    },   //B mod index
+  {8, "a",     0,    10.0f,  "%.1f"    },   //C mod index
   //Sources page: feedback 0-100 -> 0.00-1.00 (AMY's feedback range is 0-1)
-  {0, nullptr, 0,    100.0f, "%.2f"    },   //A feedback
-  {0, nullptr, 0,    100.0f, "%.2f"    },   //B feedback
-  {0, nullptr, 0,    100.0f, "%.2f"    },   //C feedback
+  {0, "b",     0,    100.0f, "%.2f"    },   //A feedback
+  {3, "b",     0,    100.0f, "%.2f"    },   //B feedback
+  {6, "b",     0,    100.0f, "%.2f"    },   //C feedback
   //Filters page (set each slider's min/max in EEZ to the range in the comment)
-  {0, nullptr, 2000, 1.0f,   "%.0f"      },   //Global cutoff:     100 to 8000       -> Hz
+  {0, nullptr, 684,  1.0f,   "%.0f"      },   //Global cutoff:     100 to 8000       -> Hz
   {0, nullptr, 7,    10.0f,  "%.1f"      },   //Global resonance:  0 to 100          -> 0.0-10.0
   {0, nullptr, 0,    10.0f,  "%+.1f"     },   //A relative cutoff: -30 to 30         -> -3.0 to +3.0 octaves
   {0, nullptr, 0,    10.0f,  "%+.1f"     },   //B relative cutoff: -30 to 30
@@ -107,20 +112,44 @@ Param params[] = {
 
 char labelBufs[NUM_PARAMS][24];   //One 24-character text buffer per parameter
 
-void updateFilterCutoffs();   //defined in the FILTERS section below
+void updateFilterCutoffs(); //defined in FILTERS section
+void sendResonance(); //defined in FILTERS section
+void sendFilterEnvelope(); //defined in FILTERS section
+void sendFx(int id); //defined in FX section
 
 void sendParam(int id) {
   //The cutoff sliders don't go to AMY directly: each pair's cutoff is worked out from the global
   //cutoff and that pair's relative cutoff, so any of those four sliders updates all three filters.
   if (id == P_GLOBAL_CUTOFF || id == P_A_RELATIVE_CUTOFF ||
-      id == P_B_RELATIVE_CUTOFF || id == P_C_RELATIVE_CUTOFF) {
+      id == P_B_RELATIVE_CUTOFF || id == P_C_RELATIVE_CUTOFF || id == P_FE_AMOUNT) {
     updateFilterCutoffs();
     return;
   }
+
+  if (id == P_GLOBAL_RESONANCE) {
+    sendResonance();
+    return;
+  }
+
+  if (id == P_FE_DECAY) {
+    sendFilterEnvelope();
+    return;
+  }
+
+  if (id >= P_VIBRATO_DEPTH) {
+    sendFx(id);
+    return;
+  }
+
   const Param& p = params[id];
   if (!p.amyCode) return;   //no AMY letter yet: the slider and label still work, AMY just isn't told
   char msg[32];
-  snprintf(msg, sizeof(msg), "i1v%d%s%.3f", p.osc, p.amyCode, p.value / p.scale);
+  snprintf(msg, sizeof(msg), "v%d%s%.3f", p.osc, p.amyCode, p.value / p.scale);
+  if (strcmp(p.amyCode, "a") == 0 && p.osc % 3 != 0) { //strcamp comparers two strings and returns 0 when they are ==
+    strcat(msg, ",,0,0"); //adds ",,0,0" at the end of msgs not sent to ALGO osc. This makes the messasges something like v2a3.500,,0,0
+                          //so that it doesn't mess with the other components of amplitude
+  }
+  Serial.println(msg);
   amy_add_message(msg);
 }
 
@@ -141,7 +170,7 @@ void sendAllParams() {
   }
 
 // ============================================================================
-// RATIOS: the Sources page dropdowns report a POSITION in their list (0, 1, 2...),
+// Ratios: the Sources page dropdowns report a position in their list (0, 1, 2...),
 // so this table turns that position into the actual ratio.
 // ============================================================================
 
@@ -151,13 +180,21 @@ static constexpr int NUM_RATIOS = sizeof(RATIOS) / sizeof(RATIOS[0]);
 
 #define RATIO_START 1                   //position each dropdown starts on (1 = ratio 1)
 static int32_t ratioSel[3] = { RATIO_START, RATIO_START, RATIO_START };   //pairs A, B, C
+static const int PITCH_OFFSETS[] = { -12, -7, 0, 7, 12 };
+static const int NUM_PITCH_OFFSETS = 5;
+#define PITCH_OFFSET_START 2
+static int32_t pitchOffsetSel[3] = { PITCH_OFFSET_START, PITCH_OFFSET_START, PITCH_OFFSET_START };
 
-//Sends pair (0 = A, 1 = B, 2 = C)'s ratio to AMY. Not connected yet: AMY's ratio letter is I,
-//but which oscillator it goes to depends on how the FM pairs get set up.
 void sendRatio(int pair) {
-  float r = RATIOS[ratioSel[pair]];
-  Serial.printf("Ratio %c = %.2f\n", 'A' + pair, r);
-  //TODO: amy_add_message() with "I" and r, on pair's modulator oscillator
+  float cents = params[P_DETUNE].value / params[P_DETUNE].scale;
+  float sign = (pair == 1) ? 1.0f : (pair == 2) ? -1.0f : 0.0f; //A stays at 0, B detunes up from A, C detunes down from A
+  float semitones = sign * cents / 100.0f + PITCH_OFFSETS[pitchOffsetSel[pair]];
+  float factor = powf(2.0, semitones / 12.0f);
+  char msg[24];
+  snprintf(msg, sizeof msg, "v%dI%.4f", pair * 3 + 1, factor); //pair A (0) has carrier in osc 1, B (1) has carrier in osc 4, C (2) has carrier in osc 7
+  amy_add_message(msg);
+  snprintf(msg, sizeof msg, "v%dI%.4f", pair * 3 + 2, RATIOS[ratioSel[pair]] * factor); //modulator
+  amy_add_message(msg);
 }
 
 void sendAllRatios() {
@@ -172,37 +209,82 @@ void sendAllRatios() {
     sendRatio(pair);                                                        \
   }
 
+#define EEZ_PITCH_OFFSET(name, pair)                                        \
+  int32_t get_var_##name() { return pitchOffsetSel[pair]; }                 \
+  void set_var_##name(int32_t v) {                                          \
+    pitchOffsetSel[pair] = constrain(v, 0, NUM_PITCH_OFFSETS - 1);          \
+    sendRatio(pair);                                                        \
+    updateFilterCutoffs();                                                  \
+  }
+
 // ============================================================================
-// FILTERS: each pair's cutoff = global cutoff x 2^(relative cutoff in octaves),
+// Filters: each pair's cutoff = global cutoff x 2^(relative cutoff in octaves),
 // and each pair's filter type comes from its dropdown.
 // ============================================================================
 
-#define CUTOFF_MIN_HZ   50.0f      //keeps a low global cutoff + negative offset from going too low
-#define CUTOFF_MAX_HZ   15000.0f   //and a high one + positive offset from going too high
+#define CUTOFF_MIN_HZ     50.0f      //keeps a low global cutoff + negative offset from going too low
+#define CUTOFF_MAX_HZ     15000.0f   //and a high one + positive offset from going too high
+#define CUTOFF_LOW_HZ     100.0f    //cutoff at the bottom of the slider
+#define CUTOFF_HIGH_HZ    8000.0f   //cutoff at the top
+#define CUTOFF_SLIDER_MAX 1000
+#define FE_MAX_OCTAVES    4.0f
+#define KEY_TRACKING 0.75f
+#define KEY_TRACKING_REFERENCE 60
+float currentNote = KEY_TRACKING_REFERENCE;
 float pairCutoffHz[3];             //the cutoff each pair actually gets, A B C
 
 //Recalculates all three pairs' cutoffs. Runs whenever the global or a relative cutoff changes.
+
+float sliderToCutoff(int32_t pos) {
+  return CUTOFF_LOW_HZ * powf(CUTOFF_HIGH_HZ / CUTOFF_LOW_HZ, pos / (float)CUTOFF_SLIDER_MAX);
+}
+
 void updateFilterCutoffs() {
-  float global = params[P_GLOBAL_CUTOFF].value / params[P_GLOBAL_CUTOFF].scale;
+  float global = sliderToCutoff(params[P_GLOBAL_CUTOFF].value);
   const ParamId rel[3] = { P_A_RELATIVE_CUTOFF, P_B_RELATIVE_CUTOFF, P_C_RELATIVE_CUTOFF };
   for (int i = 0; i < 3; i++) {
+    float pairNote = currentNote + PITCH_OFFSETS[pitchOffsetSel[i]];
+    float keyOctaves = KEY_TRACKING * (pairNote - KEY_TRACKING_REFERENCE) / 12.0f;
     float octaves = params[rel[i]].value / params[rel[i]].scale;
-    pairCutoffHz[i] = constrain(global * powf(2.0f, octaves), CUTOFF_MIN_HZ, CUTOFF_MAX_HZ);
-    Serial.printf("Cutoff %c = %.0f Hz\n", 'A' + i, pairCutoffHz[i]);
-    //TODO: amy_add_message() with "F" and pairCutoffHz[i], on pair i's filtered oscillator
+    float feOctaves = params[P_FE_AMOUNT].value / params[P_FE_AMOUNT].scale * FE_MAX_OCTAVES;
+    pairCutoffHz[i] = constrain(global * powf(2.0f, octaves + keyOctaves), CUTOFF_MIN_HZ, CUTOFF_MAX_HZ);
+    char msg[32];
+    snprintf(msg, sizeof msg, "v%dF%.1f,,,,%.2f", i * 3, pairCutoffHz[i], feOctaves);
+    // Serial.println(msg); //debug
+    amy_add_message(msg);
   }
 }
 
-//Dropdown position = AMY's filter type (G): 0 none, 1 low-pass, 2 band-pass, 3 high-pass,
+void sendResonance() {
+  float q = params[P_GLOBAL_RESONANCE].value / params[P_GLOBAL_RESONANCE].scale; //applies the scale defined in the parameters array to the value
+  for (int i = 0; i < 3; i++) {
+    char msg[24];
+    snprintf(msg, sizeof msg, "v%dR%.2f", i * 3, q);
+    amy_add_message(msg);
+  }
+}
+
+void sendFilterEnvelope() {
+  int decayMs = params[P_FE_DECAY].value;
+  for (int i = 0; i < 3; i++) {
+    char msg[32];
+    snprintf(msg, sizeof msg, "v%dB0,1,%d,0,0,0", i* 3, decayMs);
+    Serial.println(msg);
+    amy_add_message(msg);
+  }
+}
+
+//Dropdown position = AMY's filter type (G): 0 low-pass, 1 band-pass, 2 high-pass (sendFilterType() adds 1 for proper AMY formatting)
 //as long as the dropdown options are in that order in EEZ.
-#define NUM_FILTER_TYPES  4
-#define FILTER_TYPE_START 1   //low-pass, same as the G1 the sketch already sends
-static const char *FILTER_TYPE_NAMES[NUM_FILTER_TYPES] = { "None", "Low-pass", "Band-pass", "High-pass" };
+#define NUM_FILTER_TYPES  3
+#define FILTER_TYPE_START 0   //low-pass, same as the G1 the sketch already sends
+static const char *FILTER_TYPE_NAMES[NUM_FILTER_TYPES] = { "Low-pass", "Band-pass", "High-pass" };
 static int32_t filterType[3] = { FILTER_TYPE_START, FILTER_TYPE_START, FILTER_TYPE_START };   //A B C
 
 void sendFilterType(int pair) {
-  Serial.printf("Filter %c type = %s\n", 'A' + pair, FILTER_TYPE_NAMES[filterType[pair]]);
-  //TODO: amy_add_message() with "G" and filterType[pair], on pair's filtered oscillator
+  char msg[16];
+  snprintf(msg, sizeof msg, "v%dG%d", pair * 3, (int)filterType[pair] + 1);
+  amy_add_message(msg);
 }
 
 void sendAllFilterTypes() {
@@ -218,7 +300,47 @@ void sendAllFilterTypes() {
   }
 
 // ============================================================================
-// PITCH: performance mode, starting note, relative pitch, scale, and the arpeggiator settings.
+// FX: Vibrato (LFO on osc9), detune, and AMY's global FX (reverb, chorus, echo)
+// ============================================================================
+
+#define ECHO_DELAY_MS     300
+#define ECHO_MAX_DELAY_MS 1000 //longest echo AMY sets aside memory for
+#define ECHO_FEEDBACK     0.4f
+
+void sendFx(int id) {
+  float v = params[id].value / params[id].scale;
+  char msg[40];
+  switch (id) { //switch executes the code block under the case that matches the input, and then continues executing the following code blocks until a return or break statement
+    case P_VIBRATO_DEPTH:
+      for (int i = 0; i < 3; i++) {
+        snprintf(msg, sizeof msg, "v%df,,,,,%.4f", i * 3, v / 1200.0f);
+        amy_add_message(msg);
+      }
+      return; //leaves the whole function
+    case P_VIBRATO_RATE:
+      snprintf(msg, sizeof msg, "v9f%.2f", v);
+      break; //leaves the switch block but executes the last line of the function
+    case P_DETUNE:
+      sendAllRatios();
+      return;
+    case P_CHORUS:
+      snprintf(msg, sizeof msg, "k%.2f", v);
+      break;
+    case P_ECHO:
+      snprintf(msg, sizeof msg, "M%.2f,%d,%d,%.2f,0", v, ECHO_DELAY_MS, ECHO_MAX_DELAY_MS, ECHO_FEEDBACK);
+      break;
+    case P_REVERB:
+      snprintf(msg, sizeof msg, "h%.2f", v);
+      break;
+    default: //safety for if the code changes later
+      return;
+  }
+  amy_add_message(msg);
+}
+
+
+// ============================================================================
+// Pitch: performance mode, starting note, relative pitch, scale, and the arpeggiator settings.
 // The dropdowns report a POSITION, so each list below must match its dropdown's options in EEZ,
 // in the same order.
 // ============================================================================
@@ -232,9 +354,10 @@ static int32_t performanceMode = PERF_ARPEGGIATE;   //the current behavior: note
 //Scale dropdown: options in this order. Each scale is its notes in semitones above the root.
 struct Scale { const char *name; int count; int steps[12]; };
 static const Scale SCALES[] = {
-  { "Pentatonic", 5, { 0, 2, 4, 7, 9 } },              //major pentatonic: C D E G A
-  { "Major",      7, { 0, 2, 4, 5, 7, 9, 11 } },       //C D E F G A B
-  { "Minor",      7, { 0, 2, 3, 5, 7, 8, 10 } },       //natural minor: C D Eb F G Ab Bb
+  { "Pentatonic", 5,  { 0, 2, 4, 7, 9 } },
+  { "Major",      7,  { 0, 2, 4, 5, 7, 9, 11 } },
+  { "Minor",      7,  { 0, 2, 3, 5, 7, 8, 10 } },
+  { "Chromatic",  12, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11} },
 };
 static constexpr int NUM_SCALES = sizeof(SCALES) / sizeof(SCALES[0]);
 static int32_t scaleSel = 0;
@@ -259,8 +382,14 @@ static int32_t relativePitch = 0;
 static int32_t arpRangeMin = -12;   //one octave below the starting note
 static int32_t arpRangeMax =  12;   //one octave above
 
-#define NOTE_LOWEST  24    //C1: the played note is kept between these
-#define NOTE_HIGHEST 108   //C8
+//Arp speed: slider, 60 to 200 BPM
+#define ARP_SPEED_MIN 60
+#define ARP_SPEED_MAX 200
+static int32_t arpSpeedBpm = 120;
+static char arpSpeedBuf[8];
+
+#define NOTE_LOWEST  24
+#define NOTE_HIGHEST 108
 
 static const char *NOTE_NAMES[12] = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
 
@@ -327,6 +456,15 @@ static void hookArpRange() {
   hooked = true;
 }
 
+//Sets the arp speed slider's range to 60-200 BPM once it exists
+//(named arp_speed_slider in EEZ)
+static void setupArpSpeed() {
+  static bool done = false;
+  if (done || !objects.arp_speed_slider) return;
+  lv_slider_set_range(objects.arp_speed_slider, ARP_SPEED_MIN, ARP_SPEED_MAX);
+  done = true;
+}
+
 //Shows or hides one widget. Skips it if its page hasn't been built yet.
 void showIf(lv_obj_t *obj, bool show) {
   if (!obj) return;
@@ -339,6 +477,7 @@ void showIf(lv_obj_t *obj, bool show) {
 //page was just built).
 void updatePitchUI() {
   hookArpRange();   //once the Pitch page exists, take over reading the arp range knobs
+  setupArpSpeed();  //and set the arp speed slider's range
 
   bool arp       = (performanceMode == PERF_ARPEGGIATE);
   bool usesScale = (performanceMode != PERF_CONTINUOUS);   //Quantized and Arpeggiate
@@ -355,10 +494,152 @@ void updatePitchUI() {
   showIf(objects.arp_range_max_value_label, arp);
   showIf(objects.arp_pattern_dropdown,      arp);
   showIf(objects.arp_pattern_label,         arp);
+  showIf(objects.arp_speed_slider,          arp);   //arp speed slider
+  showIf(objects.arp_speed_label,           arp);
+  showIf(objects.arp_speed_value_label,     arp);
 
   //Scale: Quantized and Arpeggiate (Continuous doesn't snap to notes)
   showIf(objects.scale_dropdown, usesScale);
   showIf(objects.scale_label,    usesScale);
+}
+
+// ============================================================================
+// Play Modes:
+// ============================================================================
+
+#define PITCH_INTERVAL_MS 10
+
+static int32_t lastMode = -1;       //the mode loop() played last time to notice a change
+static int quantizedNote = -1;          //Quantized: the current note
+static int continuousBaseNote = 60;       //Continuous: the note that was last played, bend is measured
+static float lastBend = 0;          //Continuous: the bend last sent in octaves
+static float lastTrackedNote = 0;   //Continuous: the pitch cutoffs were last updated for
+
+void sendPitchBend(float octaves) { //Bends the pitch that was playing rather than starting a new note
+  char msg[16];
+  snprintf(msg, sizeof msg, "s%.4f", octaves);
+  amy_add_message(msg);
+  lastBend = octaves;
+}
+
+//For the quantized mode, plays a new pitch whenever pitch is snapped to a new note
+void playQuantized(bool entering) {
+  int note = nearestScaleNote(targetNote());
+  if (entering || note != quantizedNote) {
+    quantizedNote = note;
+    updateSynthSound(note);
+  }
+}
+
+void playContinuous(bool entering) {
+  float target = targetNote();
+  if (entering) {
+    continuousBaseNote = (int)roundf(target);
+    sendPitchBend(0);
+    updateSynthSound(continuousBaseNote);
+    lastTrackedNote = continuousBaseNote;
+  }
+
+  float bend = (target - continuousBaseNote) / 12.0f;
+  if (fabsf(bend - lastBend) > 0.0005f) { //fabsf finds the absolute value of a float and returns a float
+    sendPitchBend(bend);
+  }
+
+  if (fabsf(target - lastTrackedNote) > 0.1f) {
+    currentNote = target;
+    updateFilterCutoffs();
+    lastTrackedNote = target;
+  }
+}
+
+// ============================================================================
+// Arpeggiator:
+// ============================================================================
+
+#define MAX_ARP_NOTES 64
+static int arpNotes[MAX_ARP_NOTES];
+static int arpCount = 0;
+static int arpStep = 0;
+static int arpWalk = 0;
+
+bool inScale(int note) {
+  const Scale &sc = SCALES[scaleSel]; //&sc makes a reference to SCALES[scaleSel] rather than a copy of it
+  int degree = ((note - startingNote()) % 12 + 12) % 12; //finds the note's position within its octave
+  for (int k = 0; k < sc.count; k++) { //sc.count is the number of notes in the scale
+    if (sc.steps[k] == degree) { //checks each scale degree and returns true if the given note is in the scale
+      return true;
+    }
+  }
+  return false; //returns false otherwise
+}
+
+void buildArpNotes() {
+  int low = arpRangeNote(arpRangeMin);
+  int high = arpRangeNote(arpRangeMax);
+  arpCount = 0;
+  for (int n = low; n <= high && arpCount < MAX_ARP_NOTES; n++) {
+    if (inScale(n)) {
+      arpNotes[arpCount++] = n;
+    }
+  }
+}
+
+int nextArpNote() {
+  buildArpNotes();
+  if (arpCount == 0) {
+    return startingNote();
+  }
+  int n = arpCount;
+  int idx; //index
+  switch (arpPattern) { //each pattern is a different rule for choosing the nextArpNote() index
+    case 0: //up
+      idx = arpStep % n;
+      break;
+    case 1: //down
+      idx = n - 1 - arpStep % n;
+      break;
+    case 2: //Up-Down
+    case 3: { //Down-UP
+      int cycle = (n > 1) ? 2 * (n - 1) : 1; //up and down, without repeating ends
+      int s = arpStep % cycle;
+      idx = (s < n) ? s : cycle - s;
+      if (arpPattern == 3) {
+        idx = n - 1 - idx; //Down-Up is flipped
+      }
+      break;
+    }
+    case 4: //random
+      idx = random(n);
+      break;
+    case 5: //Random walk
+      arpWalk += random(2) ? 1 : -1;
+      if (arpWalk < 0) {
+        arpWalk = (n > 1) ? 1 : 0;
+      }
+      if (arpWalk >= n) {
+        arpWalk = (n > 1) ? n - 2 : 0;
+      }
+      idx = arpWalk;
+      break;
+    case 6: { //Converge: lowest, highest, second lowest, secont highest, etc.
+      int s = arpStep % n;
+      idx = (s % 2 == 0) ? s / 2 : n - 1 - s / 2;
+      break;
+    }
+    case 7: { //Thumb: the lowest note plays after every note
+      if (n == 1) {
+        idx = 0;
+        break;
+      }
+      int s = arpStep % (2 * (n - 1));
+      idx = (s % 2 == 0) ? 0 : 1 + s / 2;
+      break;
+    }
+    default: //just in case
+      idx = 0;
+  }
+  arpStep++;
+  return arpNotes[idx];
 }
 
 // ============================================================================
@@ -444,22 +725,33 @@ void navCreate() {
 }
 
 // ============================================================================
-// VOLUME: a vertical master-volume slider on the right edge, on LVGL's top layer (every page)
+// Volume: a vertical master-volume slider on the right edge, on LVGL's top layer (every page)
 // ============================================================================
-// Sets the ES8311 codec's output volume, so it never changes how the synth itself sounds.
+// Sets AMY's global volume (wire code V). The codec stays at a fixed level, set in setup().
 // Only the knob can be grabbed (not the track), so a hand holding the device's edge won't bump it.
 
 #define VOLUME_START   0    // volume at power-on, 0-100
 #define VOLUME_PANEL_W 52    // pixels; keep the right 56 px of every EEZ page empty
+#define AMY_VOLUME_MAX 2.0f // AMY volume at the top of the slider (AMY's default is 1.0, max about 10)
+#define CODEC_VOLUME   75   // fixed codec output level, 0-100
 
 bool codecReady = false;     // set in setup() once the codec answers
+bool amyReady   = false;     // set in setup() once AMY has started
 static int32_t   masterVolume = VOLUME_START;
 static lv_obj_t *volLabel     = nullptr;
+
+//Slider 0-100 -> AMY volume 0 to AMY_VOLUME_MAX
+void sendVolume() {
+  if (!amyReady) return;
+  char msg[16];
+  snprintf(msg, sizeof msg, "V%.2f", masterVolume / 100.0f * AMY_VOLUME_MAX);
+  amy_add_message(msg);
+}
 
 static void volume_cb(lv_event_t *e) {
   lv_obj_t *slider = lv_event_get_target(e);
   masterVolume = lv_slider_get_value(slider);
-  if (codecReady) es8311.setVolume(masterVolume);
+  sendVolume();
   lv_label_set_text_fmt(volLabel, "%d", (int)masterVolume);
 }
 
@@ -512,14 +804,19 @@ void volumeCreate() {
 // UI only for now: the buttons call onRecord() / onUndo(), which just report that they were
 // pressed. When iris is added, its code goes inside those two functions.
 
+void irisRecord();       //defined in the IRIS section
+void irisUndo();         //defined in the IRIS section
+void irisToggleMode();   //defined in the IRIS section
+
 static lv_obj_t *recBtn = nullptr, *undoBtn = nullptr, *statusLbl = nullptr, *presetsBtn = nullptr;
+static lv_obj_t *modeBtn = nullptr;   //TEACH / PLAY button; statusLbl is the text inside it
 
 #define TOPBAR_HIDE_ON_PAGE SCREEN_ID_PRESETS   //the whole top bar is hidden on this page
 
 //Shows Record, Undo, status and the Presets button on every page except TOPBAR_HIDE_ON_PAGE.
 //(On the Presets page, the nav bar gets you back.) Called on every page change.
 void topBarUpdate(enum ScreensEnum id) {
-  lv_obj_t *parts[4] = { recBtn, undoBtn, statusLbl, presetsBtn };
+  lv_obj_t *parts[4] = { recBtn, undoBtn, modeBtn, presetsBtn };
   for (int i = 0; i < 4; i++) {
     if (!parts[i]) continue;   //not created yet
     if (id == TOPBAR_HIDE_ON_PAGE) lv_obj_add_flag(parts[i], LV_OBJ_FLAG_HIDDEN);
@@ -532,20 +829,21 @@ void setStatus(const char *text) {
   if (statusLbl) lv_label_set_text(statusLbl, text);
 }
 
-//TODO iris: record a take (current gesture + the learned sliders' values in params[])
+//Record a take (current gesture + the learned sliders' values in params[])
 void onRecord() {
   Serial.println("[UI] Record pressed");
-  setStatus("Record (not connected yet)");
+  irisRecord();
 }
 
-//TODO iris: delete the most recent take
+//Delete the most recent take
 void onUndo() {
   Serial.println("[UI] Undo pressed");
-  setStatus("Undo (not connected yet)");
+  irisUndo();
 }
 
 static void rec_cb(lv_event_t *e)     { onRecord(); }
 static void undo_cb(lv_event_t *e)    { onUndo(); }
+static void mode_cb(lv_event_t *e)    { irisToggleMode(); }
 static void presets_cb(lv_event_t *e) { goToPage(SCREEN_ID_PRESETS); }
 
 //Builds the buttons and label. Called once in setup(), after ui_init().
@@ -567,16 +865,15 @@ void topBarCreate() {
   lv_label_set_text(undoLbl, "Undo");
   lv_obj_center(undoLbl);
 
-  statusLbl = lv_label_create(lv_layer_top());
-  lv_obj_align_to(statusLbl, undoBtn, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
-  lv_obj_set_style_bg_color(statusLbl, lv_color_black(), 0);   //dark backing so it reads on any page
-  lv_obj_set_style_bg_opa(statusLbl, LV_OPA_60, 0);
-  lv_obj_set_style_text_color(statusLbl, lv_color_white(), 0);
-  lv_obj_set_style_pad_all(statusLbl, 4, 0);
-  lv_obj_set_style_radius(statusLbl, 4, 0);
-  lv_obj_set_width(statusLbl, 160);                            //stops before the Presets button
-  lv_label_set_long_mode(statusLbl, LV_LABEL_LONG_DOT);        //too-long text ends in "..." instead
+  //Mode button: shows TEACH or PLAY and the number of poses; tap to switch
+  modeBtn = lv_btn_create(lv_layer_top());
+  lv_obj_set_size(modeBtn, 150, 40);
+  lv_obj_align_to(modeBtn, undoBtn, LV_ALIGN_OUT_RIGHT_MID, 8, 0);
+  lv_obj_set_style_bg_color(modeBtn, lv_color_hex(0x404040), 0);   //grey: TEACH
+  lv_obj_add_event_cb(modeBtn, mode_cb, LV_EVENT_CLICKED, NULL);
+  statusLbl = lv_label_create(modeBtn);   //the text inside the button
   lv_label_set_text(statusLbl, "TEACH");
+  lv_obj_center(statusLbl);
 
   //Presets button: top-right corner, kept apart from the sound-design pages in the nav bar
   presetsBtn = lv_btn_create(lv_layer_top());
@@ -637,6 +934,10 @@ void hookDropdowns() {
 // and Delete (asks first). Presets are kept in flash, so they survive power-off.
 // ============================================================================
 
+void irisSaveToPreset(int i);                              //defined in the IRIS section
+void irisLoadFromPreset(int i);                            //defined in the IRIS section
+void irisDeletePresetFile(int removed, int countBefore);   //defined in the IRIS section
+
 #define MAX_PRESETS     16
 #define PRESET_NAME_LEN 24   //including the end-of-text character, so names are up to 23 letters
 
@@ -645,8 +946,8 @@ void hookDropdowns() {
 struct Preset {
   char    name[PRESET_NAME_LEN];
   int32_t values[NUM_PARAMS];          //every slider in params[]
-  int32_t ratio[3], filterTypes[3];    //Sources and Filters dropdowns
-  int32_t perfMode, scale, startNote, relPitch, arpMin, arpMax, arpPat;   //Pitch page
+  int32_t ratio[3], filterTypes[3], pitchOffsets[3];    //Sources and Filters dropdowns
+  int32_t perfMode, scale, startNote, relPitch, arpMin, arpMax, arpPat, arpSpeed;   //Pitch page
 };
 
 static Preset presets[MAX_PRESETS];
@@ -663,10 +964,10 @@ static Preferences presetStore;
 void snapshotTo(int i) {
   Preset &p = presets[i];
   for (int k = 0; k < NUM_PARAMS; k++) p.values[k] = params[k].value;
-  for (int k = 0; k < 3; k++) { p.ratio[k] = ratioSel[k]; p.filterTypes[k] = filterType[k]; }
+  for (int k = 0; k < 3; k++) { p.ratio[k] = ratioSel[k]; p.filterTypes[k] = filterType[k]; p.pitchOffsets[k] = pitchOffsetSel[k]; }
   p.perfMode = performanceMode;  p.scale = scaleSel;     p.startNote = startingNoteRaw;
   p.relPitch = relativePitch;    p.arpMin = arpRangeMin; p.arpMax = arpRangeMax;
-  p.arpPat   = arpPattern;
+  p.arpPat   = arpPattern;     p.arpSpeed = arpSpeedBpm;
 }
 
 //Put preset number i's settings back. The sliders and labels follow on EEZ's next ui_tick();
@@ -674,14 +975,15 @@ void snapshotTo(int i) {
 void applyPreset(int i) {
   const Preset &p = presets[i];
   for (int k = 0; k < NUM_PARAMS; k++) params[k].value = p.values[k];
-  for (int k = 0; k < 3; k++) { ratioSel[k] = p.ratio[k]; filterType[k] = p.filterTypes[k]; }
+  for (int k = 0; k < 3; k++) { ratioSel[k] = p.ratio[k]; filterType[k] = p.filterTypes[k]; pitchOffsetSel[k] = constrain(p.pitchOffsets[k], 0, NUM_PITCH_OFFSETS - 1); }
   performanceMode = p.perfMode;  scaleSel = p.scale;     startingNoteRaw = p.startNote;
   relativePitch   = p.relPitch;  arpRangeMin = p.arpMin; arpRangeMax = p.arpMax;
-  arpPattern      = p.arpPat;
+  arpPattern      = p.arpPat;    arpSpeedBpm = constrain(p.arpSpeed, ARP_SPEED_MIN, ARP_SPEED_MAX);
   sendAllParams();
   sendAllRatios();
   sendAllFilterTypes();
   updatePitchUI();   //show the right Pitch page controls for the loaded mode
+  irisLoadFromPreset(i);   //and the iris poses it was saved with
 }
 
 // ---- Flash storage (one entry per preset: "p0", "p1", ...) ----
@@ -780,6 +1082,7 @@ void showMessage(const char *title, const char *text) {
 void deletePreset(int i) {
   if (i < 0 || i >= presetCount) return;
   for (int k = i; k < presetCount - 1; k++) presets[k] = presets[k + 1];   //close the gap
+  irisDeletePresetFile(i, presetCount);                                    //and shift the iris files to match
   presetCount--;
   presetSel = -1;
   savePresetsToFlash();
@@ -802,7 +1105,6 @@ static void closeNamePopup() {
   namePopup = nameTextarea = nullptr;
 }
 
-//✓ on the keyboard saves (or renames); the keyboard-hide key cancels
 static void name_keyboard_cb(lv_event_t *e) {
   lv_event_code_t code = lv_event_get_code(e);
   if (code == LV_EVENT_CANCEL) { closeNamePopup(); return; }
@@ -815,6 +1117,7 @@ static void name_keyboard_cb(lv_event_t *e) {
 
   if (renameIndex < 0) {                       //new preset: today's settings, under this name
     snapshotTo(presetCount);
+    irisSaveToPreset(presetCount);             //and the iris poses
     strcpy(presets[presetCount].name, name);
     presetSel = presetCount;
     presetCount++;
@@ -859,8 +1162,6 @@ void openNamePopup(const char *startText, int rename) {
   lv_keyboard_set_textarea(kb, nameTextarea);         //key presses type into the text box
   lv_obj_add_event_cb(kb, name_keyboard_cb, LV_EVENT_ALL, NULL);
 }
-
-// ---- The four buttons ----
 
 static void save_preset_cb(lv_event_t *e) {
   if (presetCount >= MAX_PRESETS) {
@@ -908,6 +1209,10 @@ void presetsUIHook() {
   hooked = true;
 }
 
+// ============================================================================
+// EEZ UI to Variable Connection
+// ============================================================================
+
 extern "C" {
   // Sliders: EEZ integer variable name, and which params[] row it controls
   EEZ_PARAM(a_level, P_A_LEVEL)
@@ -940,8 +1245,21 @@ extern "C" {
   EEZ_RATIO(b_ratio, 1)
   EEZ_RATIO(c_ratio, 2)
 
+  //Pitch offset dropdowns
+  EEZ_PITCH_OFFSET(pitch_offset_a, 0)
+  EEZ_PITCH_OFFSET(pitch_offset_b, 1)
+  EEZ_PITCH_OFFSET(pitch_offset_c, 2)
+
   // Filters page sliders
   EEZ_PARAM(global_cutoff,     P_GLOBAL_CUTOFF)
+
+  //Global cutoff label: shows the actual frequency as scaled by sliderToCutoff()
+  const char *get_var_global_cutoff_value() {
+    snprintf(labelBufs[P_GLOBAL_CUTOFF], sizeof labelBufs[P_GLOBAL_CUTOFF], "%.0f",
+             sliderToCutoff(params[P_GLOBAL_CUTOFF].value));
+    return labelBufs[P_GLOBAL_CUTOFF];
+  }
+
   EEZ_PARAM(global_resonance,  P_GLOBAL_RESONANCE)
   EEZ_PARAM(a_relative_cutoff, P_A_RELATIVE_CUTOFF)
   EEZ_PARAM(b_relative_cutoff, P_B_RELATIVE_CUTOFF)
@@ -949,9 +1267,7 @@ extern "C" {
   EEZ_PARAM(fe_amount,         P_FE_AMOUNT)
   EEZ_PARAM(fe_decay,          P_FE_DECAY)
 
-  // Filters page value labels: these string variables don't exist in EEZ yet.
-  // Add them with exactly these names, bind each label's Text to one, and they'll work.
-  EEZ_LABEL(global_cutoff_value,     P_GLOBAL_CUTOFF)
+  // EEZ_LABEL(global_cutoff_value,     P_GLOBAL_CUTOFF)
   EEZ_LABEL(global_resonance_value,  P_GLOBAL_RESONANCE)
   EEZ_LABEL(a_relative_cutoff_value, P_A_RELATIVE_CUTOFF)
   EEZ_LABEL(b_relative_cutoff_value, P_B_RELATIVE_CUTOFF)
@@ -995,6 +1311,7 @@ extern "C" {
   int32_t get_var_arp_pattern() { return arpPattern; }
   void set_var_arp_pattern(int32_t v) {
     arpPattern = constrain(v, 0, NUM_ARP_PATTERNS - 1);
+    arpStep = 0; //start new pattern from the first note
     Serial.printf("Arp pattern = %s\n", ARP_PATTERNS[arpPattern]);
   }
 
@@ -1030,11 +1347,22 @@ extern "C" {
   const char *get_var_arp_range_min_value() { noteName(arpRangeNote(arpRangeMin), arpMinBuf, sizeof arpMinBuf); return arpMinBuf; }
   const char *get_var_arp_range_max_value() { noteName(arpRangeNote(arpRangeMax), arpMaxBuf, sizeof arpMaxBuf); return arpMaxBuf; }
 
+  // Pitch page: arp speed slider, kept between 60 and 200 BPM
+  int32_t get_var_arp_speed() { return arpSpeedBpm; }
+  void set_var_arp_speed(int32_t v) { arpSpeedBpm = constrain(v, ARP_SPEED_MIN, ARP_SPEED_MAX); }
+  const char *get_var_arp_speed_value() {
+    snprintf(arpSpeedBuf, sizeof arpSpeedBuf, "%d", (int)arpSpeedBpm);
+    return arpSpeedBuf;
+  }
+
   //For each new slider: add a ParamId entry and a params[] row, then a pair like this:
   //EEZ_PARAM(my_slider_variable,       P_MY_PARAM)
   //EEZ_LABEL(my_slider_variable_value, P_MY_PARAM)
 }
 
+// ============================================================================
+// Display and Touchscreen
+// ============================================================================
 
 ST77922 mylcd = ST77922();
 ST77922_TOUCH touch_st77922;
@@ -1086,35 +1414,293 @@ void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
   }
 }
 
-// --- Scale Definition (C Major / Pentatonic 2-Octave Span) ---
-const int scaleNotes[] = { 
-  48, 50, 52, 53, 55, 57, 59,  // C3, D3, E3, F3, G3, A3, B3
-  60, 62, 64, 65, 67, 69, 71,  // C4, D4, E4, F4, G4, A4, B4
-  72, 74, 76, 77, 79, 81, 83,  // C5, D5, E5, F5, G5, A5, B5
-  84                           // C6
-};
-const char* noteNames[] = {
-  "C3", "D3", "E3", "F3", "G3", "A3", "B3",
-  "C4", "D4", "E4", "F4", "G4", "A4", "B4",
-  "C5", "D5", "E5", "F5", "G5", "A5", "B5",
-  "C6"
-};
-const int totalScaleNotes = sizeof(scaleNotes) / sizeof(scaleNotes[0]);
+// ============================================================================
+// IMU: LMS6DSOX accelerometer and gyroscope information, smoothed for IRIS training
+// ============================================================================
+// #define IMU_ADDRESS         0x6A  //I2C has all devices on the same two wires (SDA and SCL, pins 38 and 39). So this is the IMU controller's specific "address"
+// #define IMU_INTERVAL_MS     10    //Read IMU data 100 times per second
+// #define TILT_SMOOTHING      0.1f  //Value from 0-1. A lower value is smoother but slower to follow
+// #define ACTIVITY_SMOOTHING  0.02f //averages motion over about half a second since accelerometer data can be much more shaky
 
-// Dynamic Instrument State
-int activeNoteIndex = 7;     //default center note: C4 (index 7)
-int octaveShift = 0;              
-bool synthPlaying = false;
+// Adafruit_LSM6DSOX sox;
+// bool imuReady = false;
 
-// Convert MIDI Note to Base Frequency in Hz
-float midiToFreq(int note) {
-  return 440.0f * powf(2.0f, (note - 69.0f) / 12.0f);
+// float tiltX = 0;
+// float tiltY = 0;
+// float tiltZ = 0;
+
+// float activity = 0;
+
+// void readImu() {
+//   sensors_event_t accel; //sensors_event_t is a struct containing int32_t of sensor_id (who did the reading), type (what kind of reading), timestamp (when it was read)
+//   sensors_event_t gyro;
+//   sensors_event_t temp;
+
+//   sox.getEvent(&accel, &gyro, &temp); //writes the results directly to the location of the three variables
+
+//   float ax = accel.acceleration.x / 9.81f;
+//   float ay = accel.acceleration.y / 9.81f;
+//   float az = accel.acceleration.z / 9.81f;
+
+//   tiltX += TILT_SMOOTHING * (ax - tiltX);
+//   tiltY += TILT_SMOOTHING * (ay - tiltY);
+//   tiltZ += TILT_SMOOTHING * (az - tiltZ);
+
+//   float gx = gyro.gyro.x;
+//   float gy = gyro.gyro.y;
+//   float gz = gyro.gyro.z;
+//   float spin = sqrtf(gx * gx + gy * gy + gz * gz);
+//   activity += ACTIVITY_SMOOTHING * (spin - activity);
+// }
+
+
+// ============================================================================
+// Iris: Maps poses/motion to synth parameters.
+// Teach mode: When the record button is pressed and IRIS is training
+// Play mode: Whenever IRIS is not training. Allows the user to play the instrument.
+// ============================================================================
+
+#define IRIS_INPUTS       4     //tiltX, tiltY, tiltZ, activity
+#define IRIS_HIDDEN       32    //allocated size of iris
+#define IRIS_MAX_POSES    16    //most recordings it can hold
+#define IRIS_INTERVAL_MS  20    //how often Play updates (50 times per second)
+#define ACTIVITY_MAX      5.0f  //rad/s of smoothed spin that counts as full activity (IRIS compares poses by how far apart they are and since tilts lie between -1 and 1, a vigorous shake value of 10 would over power the tilts, so this caps the activity amount)
+
+struct Learned { int param; int32_t *var; int32_t lo; int32_t hi; };
+static const Learned LEARNED[] = {
+  { P_A_LEVEL,           nullptr, 0,   100 },
+  { P_B_LEVEL,           nullptr, 0,   100 },
+  { P_C_LEVEL,           nullptr, 0,   100 },
+  { P_A_MOD_INDEX,       nullptr, 0,   80  },
+  { P_B_MOD_INDEX,       nullptr, 0,   80  },
+  { P_C_MOD_INDEX,       nullptr, 0,   80  },
+  { P_A_FEEDBACK,        nullptr, 0,   100 },
+  { P_B_FEEDBACK,        nullptr, 0,   100 },
+  { P_C_FEEDBACK,        nullptr, 0,   100 },
+  { P_GLOBAL_CUTOFF,     nullptr, 0,   1000 },
+  { P_GLOBAL_RESONANCE,  nullptr, 0,   100 },
+  { P_FE_AMOUNT,         nullptr, 0,   100 },
+  { P_FE_DECAY,          nullptr, 10,  2000 },
+  { P_VIBRATO_DEPTH,     nullptr, 0,   100 },
+  { P_VIBRATO_RATE,      nullptr, 5,   100 },
+  { P_DETUNE,            nullptr, 0,   50  },
+  { -1, &relativePitch, -240, 240 },                     //relative pitch (Pitch page)
+  { -1, &arpSpeedBpm,   ARP_SPEED_MIN, ARP_SPEED_MAX },  //arp speed
+};
+
+static constexpr int IRIS_OUTPUTS = sizeof(LEARNED) / sizeof(LEARNED[0]);
+
+static unsigned char irisMemory[IRIS_ARENA(IRIS_INPUTS, IRIS_HIDDEN, IRIS_OUTPUTS, IRIS_MAX_POSES)];
+static iris *irisModel = nullptr;
+static bool irisPlaying = false; // false = Teach, true = Play
+static bool fsReady = false;     // true once LittleFS has started (needed for poses in presets)
+
+static float recIn[IRIS_MAX_POSES][IRIS_INPUTS];
+static float recOut[IRIS_MAX_POSES][IRIS_OUTPUTS];
+static int32_t recCount = 0;
+static Preferences irisStore;
+
+//Working memory for iris's fast closed-form trainer (iris_train_elm), which solves in milliseconds
+//where iris_train would freeze the screen for many seconds
+#define IRIS_LAM0 5.1e-4f   //iris.h's recommended ridge for 32 hidden units
+static unsigned char irisScratch[IRIS_ELM_SCRATCH(IRIS_HIDDEN, IRIS_OUTPUTS)];
+
+//A learned parameter's current slider value (for training)
+int32_t learnedGet(int i) {
+  const Learned &L = LEARNED[i]; //& returns physical memory location in this case
+  return L.var ? *L.var : params[L.param].value;
 }
 
+//Sets a learned parameter's slider position
+void learnedSet(int i, int32_t v) {
+  const Learned &L = LEARNED[i];
+  if (L.var) {
+    *L.var = v;
+  } else {
+    params[L.param].value = v;
+    sendParam(L.param);
+  }
+}
+
+void irisInputs(float *in) {
+  in[0] = tiltX;
+  in[1] = tiltY;
+  in[2] = tiltZ;
+  in[3] = constrain(activity / ACTIVITY_MAX, 0.0f, 1.0f);
+}
+
+void irisRetrain() {
+  if (!irisModel) return;   //iris_init failed (see irisBegin)
+  iris_clear(irisModel);
+  for (int i = 0; i < recCount; i++) {
+    iris_record(irisModel, recIn[i], recOut[i]);
+  }
+
+  if (recCount > 0) {
+    int r = iris_train_elm(irisModel, IRIS_LAM0, irisScratch, sizeof irisScratch);
+    if (r < 0) Serial.println("[IRIS] training refused");
+  }
+  Serial.printf("[IRIS] retrained: %d poses stored, iris has %d\n", (int)recCount, iris_count(irisModel)); //DEBUG
+
+  //For storing iris presets (from Preferences Library)
+  irisStore.begin("iris", false);
+  irisStore.putInt("count", recCount);
+  irisStore.putInt("outputs", IRIS_OUTPUTS);   //so a changed LEARNED[] table is detected
+  irisStore.putBytes("in", recIn, sizeof recIn);
+  irisStore.putBytes("out", recOut, sizeof recOut);
+  irisStore.end();
+}
+
+//Sets the visible status next to the record button
+void irisShowStatus() {
+  char buf[24];
+  snprintf(buf, sizeof buf, "%s (%d)", irisPlaying ? "PLAY" : "TEACH", (int)recCount);
+  setStatus(buf);
+  if (modeBtn) {
+    lv_obj_set_style_bg_color(modeBtn,
+      irisPlaying ? lv_palette_main(LV_PALETTE_GREEN) : lv_color_hex(0x404040), 0);
+  }
+}
+
+void irisBegin() {
+  irisModel = iris_init(irisMemory, sizeof irisMemory, IRIS_INPUTS, IRIS_HIDDEN, IRIS_OUTPUTS, IRIS_MAX_POSES, 1234);
+  if (!irisModel) Serial.println("[IRIS] iris_init failed: check IRIS_MAX_OUT / IRIS_MAX_IN / IRIS_MAX_HID");
+  irisStore.begin("iris", true);
+  recCount = constrain(irisStore.getInt("count", 0), 0, IRIS_MAX_POSES);
+  if (irisStore.getInt("outputs", 0) != IRIS_OUTPUTS) recCount = 0;   //made with a different table: start fresh
+  if (recCount > 0) {
+    irisStore.getBytes("in", recIn, sizeof recIn);
+    irisStore.getBytes("out", recOut, sizeof recOut);
+  }
+  irisStore.end();
+  irisRetrain();
+  irisShowStatus();
+}
+
+void irisRecord() {
+  if (irisPlaying) {
+    showMessage("Playing", "Tap PLAY to switch to TEACH before recording.");
+    return;
+  }
+  if (recCount >= IRIS_MAX_POSES) {
+    showMessage("Poses full", "Press Undo to make room.");
+    return;
+  }
+  irisInputs(recIn[recCount]);
+  for (int i = 0; i < IRIS_OUTPUTS; i++) {
+    const Learned &L = LEARNED[i];
+    recOut[recCount][i] = (learnedGet(i) - L.lo) / (float)(L.hi - L.lo);   //slider -> 0 to 1
+  }
+  recCount++;
+  irisRetrain();
+  irisShowStatus();
+}
+
+void irisUndo() {
+  if (recCount == 0) return;
+  recCount--;
+  if (recCount == 0) irisPlaying = false;   //nothing left to play from
+  irisRetrain();
+  irisShowStatus();
+}
+
+void irisToggleMode() {
+  if (!irisPlaying && recCount == 0) {
+    showMessage("No poses yet", "Record at least one pose before playing.");
+    return;
+  }
+  irisPlaying = !irisPlaying;
+  irisShowStatus();
+}
+
+//Play mode: iris turns the ball's pose into slider values. Called from loop() on a timer.
+void irisUpdate() {
+  if (!irisModel || !irisPlaying || recCount == 0) return;
+  float in[IRIS_INPUTS], out[IRIS_OUTPUTS] = {0};
+  irisInputs(in);
+  iris_predict(irisModel, in, out);
+  static unsigned long lastPrint = 0; //DEBUG: shows iris's raw predictions once a second
+  if (millis() - lastPrint >= 1000) {
+    lastPrint = millis();
+    Serial.printf("[IRIS] in %.2f %.2f %.2f %.2f -> out %.2f %.2f %.2f %.2f\n",
+                  in[0], in[1], in[2], in[3], out[0], out[1], out[2], out[3]);
+  }
+  for (int i = 0; i < IRIS_OUTPUTS; i++) {
+    const Learned &L = LEARNED[i];
+    if (!isfinite(out[i])) continue;                          //SAFETY: skip a prediction that isn't a real number (NaN)
+    float t = constrain(out[i], 0.0f, 1.0f);
+    int32_t v = L.lo + (int32_t)roundf(t * (L.hi - L.lo));   //0 to 1 -> slider
+    v = constrain(v, L.lo, L.hi);                            //SAFETY: never outside the slider's range
+    if (v != learnedGet(i)) learnedSet(i, v);                //only send what changed
+  }
+}
+
+//Iris poses in presets: one file per preset, /iris_p0.bin, /iris_p1.bin, ...
+//These do nothing if LittleFS isn't available (needs a partition scheme with SPIFFS).
+void irisPresetPath(int i, char *buf, size_t len) {
+  snprintf(buf, len, "/iris_p%d.bin", i);
+}
+
+void irisSaveToPreset(int i) {
+  if (!fsReady) return;
+  char path[20];
+  irisPresetPath(i, path, sizeof path);
+  File f = LittleFS.open(path, "w");
+  if (!f) { Serial.printf("[IRIS] Could not write %s\n", path); return; }
+  int32_t header[3] = { IRIS_INPUTS, IRIS_OUTPUTS, recCount };
+  f.write((uint8_t *)header, sizeof header);
+  f.write((uint8_t *)recIn,  sizeof(float) * IRIS_INPUTS  * recCount);
+  f.write((uint8_t *)recOut, sizeof(float) * IRIS_OUTPUTS * recCount);
+  f.close();
+}
+
+void irisLoadFromPreset(int i) {
+  if (!fsReady) return;   //no files: keep the current poses
+  char path[20];
+  irisPresetPath(i, path, sizeof path);
+  recCount = 0;   //if the file is missing or doesn't match, the preset has no poses
+  File f = LittleFS.open(path, "r");
+  if (f) {
+    int32_t header[3];
+    if (f.read((uint8_t *)header, sizeof header) == sizeof header &&
+        header[0] == IRIS_INPUTS && header[1] == IRIS_OUTPUTS) {
+      int32_t n = constrain(header[2], 0, IRIS_MAX_POSES);
+      f.read((uint8_t *)recIn,  sizeof(float) * IRIS_INPUTS  * n);
+      f.read((uint8_t *)recOut, sizeof(float) * IRIS_OUTPUTS * n);
+      recCount = n;
+    }
+    f.close();
+  }
+  if (recCount == 0) irisPlaying = false;   //nothing to play from
+  irisRetrain();
+  irisShowStatus();
+}
+
+void irisDeletePresetFile(int removed, int countBefore) {
+  if (!fsReady) return;
+  char from[20], to[20];
+  irisPresetPath(removed, to, sizeof to);
+  LittleFS.remove(to);
+  for (int k = removed + 1; k < countBefore; k++) {
+    irisPresetPath(k, from, sizeof from);
+    irisPresetPath(k - 1, to, sizeof to);
+    LittleFS.rename(from, to);
+  }
+}
+
+
+// ============================================================================
+// Update synth state:
+// ============================================================================       
+bool synthPlaying = false;
+
 void updateSynthSound(int note) {
+  currentNote = note;
+  updateFilterCutoffs();
   char msg[96];
-  snprintf(msg, sizeof(msg), "i1n%dl0.5", note);
-  amy_add_message(msg);
+  snprintf(msg, sizeof(msg), "v0n%dl1", note);  amy_add_message(msg);
+  snprintf(msg, sizeof(msg), "v3n%dl1", note);  amy_add_message(msg);
+  snprintf(msg, sizeof(msg), "v6n%dl1", note);  amy_add_message(msg);
   synthPlaying = true;
 }
 
@@ -1181,6 +1767,8 @@ void setup() {
   topBarUpdate(SCREEN_ID_MIX);   // start on Mix, so make sure they're showing
   hookDropdowns();            // DROPDOWNS: open lists appear above the overlay
   updatePitchUI();            // PITCH: start with the right controls showing for the starting mode
+  fsReady = LittleFS.begin(true);   // FILES: for iris poses in presets (needs a partition scheme with SPIFFS)
+  if (!fsReady) Serial.println("[WARN] LittleFS not available: presets won't save iris poses");
   loadPresetsFromFlash();     // PRESETS: read the saved presets...
   presetsUIHook();            // ...and fill the list (if the Presets page already exists)
 
@@ -1188,12 +1776,24 @@ void setup() {
   // ES8311 Codec Init
   if (es8311.begin(Wire, I2C_SDA, I2C_SCL, 400000)) {
     codecReady = true;
-    es8311.setVolume(masterVolume);
+    es8311.setVolume(CODEC_VOLUME);
     Serial.println("[OK] ES8311 Audio Codec ready at 44.1 kHz");
   } else {
     Serial.println("[WARN] ES8311 Codec not responding; will continue synthesis.");
   }
 
+  // LSM6DSOX Sensor Init
+  Serial.println("Initializing LSM6DSOX sensor (0x6A)...");
+  if (sox.begin_I2C(IMU_ADDRESS, &Wire)) {
+    imuReady = true;
+    sox.setAccelRange(LSM6DS_ACCEL_RANGE_4_G);
+    sox.setGyroRange(LSM6DS_GYRO_RANGE_500_DPS);
+    sox.setAccelDataRate(LSM6DS_RATE_104_HZ);
+    sox.setGyroDataRate(LSM6DS_RATE_104_HZ);
+    Serial.println("[OK] LSM6DSOX Sensor ready (104 Hz sample rate)!");
+  } else {
+    Serial.println("[FAIL] Could not find LSM6DSOX at 0x6A!");
+  }
 
   // AMY Synth Engine Init
   amy_config_t amy_config = amy_default_config();
@@ -1210,31 +1810,87 @@ void setup() {
 
   amy_start(amy_config);
   Serial.println("[OK] AMY Engine running!");
-  amy_add_message("i1iv1K128");
-  amy_add_message("i1v0G1");
+  amyReady = true;
+  sendVolume();   //start at the volume slider's position
+
+  // amy_add_message("V0.5");               // AMY volume 1.0, ignoring the slider
+  // amy_add_message("v20w0f440a1l1");    // osc 20: sine wave, 440 Hz, amplitude 1, start it
+
+  //FM Pair A
+  amy_add_message("v2w0I2a1,,0,0"); //modulator
+  amy_add_message("v1w0I1a1,,0,0"); //carrier
+  amy_add_message("v0w8o1O,,,,2,1"); //ALGO (the actual output osc)
+
+  //FM Pair B
+  amy_add_message("v5w0I2a1,,0,0");
+  amy_add_message("v4w0I1a1,,0,0");
+  amy_add_message("v3w8o1O,,,,5,4");
+
+  //FM Pair C
+  amy_add_message("v8w0I2a1,,0,0");
+  amy_add_message("v7w0I1a1,,0,0");
+  amy_add_message("v6w8o1O,,,,8,7");
+
+  amy_add_message("v9w0f5a1"); //osc 9: a sine wave LFO to control vibrato, 5hz, amplitude 1
+  amy_add_message("v0L9"); //each pair's ALGO osc takes osc 9 as its mod source
+  amy_add_message("v3L9");
+  amy_add_message("v6L9");
+
   sendAllParams();
   sendAllRatios();
   sendAllFilterTypes();
+
+  irisBegin();   //IRIS: load the recordings from last time
+
   delay(10);
-  
-  // Start with default note
-  updateSynthSound(scaleNotes[activeNoteIndex]);
 }
 
 void loop() {
   lv_timer_handler();
   ui_tick();
 
+  bool entering = (performanceMode != lastMode);
+  if (entering) {
+    if (lastMode == PERF_CONTINUOUS) {
+      sendPitchBend(0);
+    }
+    lastMode = performanceMode;
+  }
+
   static unsigned long lastNoteChangeTime = 0;
-  if (millis() - lastNoteChangeTime > 1500) {
+  if (performanceMode == PERF_ARPEGGIATE && millis() - lastNoteChangeTime >= 60000UL / arpSpeedBpm) {
     lastNoteChangeTime = millis();
-    
-    activeNoteIndex = (activeNoteIndex + 1) % totalScaleNotes; 
+    updateSynthSound(nextArpNote());
+  }
 
-    Serial.printf("A %d  B %d  C %d\n", params[P_A_LEVEL].value, params[P_B_LEVEL].value, params[P_C_LEVEL].value);
+  static unsigned long lastPitchCheck = 0;
+  if (performanceMode != PERF_ARPEGGIATE && (entering || millis() - lastPitchCheck >= PITCH_INTERVAL_MS)) {
+    lastPitchCheck = millis();
+    if (performanceMode == PERF_QUANTIZED) {
+      playQuantized(entering);
+    } else {
+      playContinuous(entering);
+    }
+  }
 
-    updateSynthSound(scaleNotes[activeNoteIndex]);
-    Serial.printf("[PURE SOFTWARE] Active Scale Degree: %s (%0.1f Hz)\n", noteNames[activeNoteIndex], midiToFreq(scaleNotes[activeNoteIndex]));
+  //IMU
+  static unsigned long lastImuRead = 0;
+  if (imuReady && millis() - lastImuRead >= IMU_INTERVAL_MS) {
+    lastImuRead = millis();
+    readImu();
+  }
+
+  static unsigned long lastImuPrint = 0;
+  if (imuReady && millis() - lastImuPrint >= 200) {
+    lastImuPrint = millis();
+    Serial.printf("tilt %.2f %.2f %.2f   activity %.2f\n", tiltX, tiltY, tiltZ, activity);
+  }
+
+  //IRIS: in Play mode, turn the ball's pose into slider values
+  static unsigned long lastIris = 0;
+  if (millis() - lastIris >= IRIS_INTERVAL_MS) {
+    lastIris = millis();
+    irisUpdate();
   }
 
   delay(1);
