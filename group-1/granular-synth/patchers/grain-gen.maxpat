@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 87.0, 653.0, 608.0 ],
+		"rect" : [ 76.0, 87.0, 653.0, 608.0 ],
 		"default_fontname" : "Avenir",
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
@@ -105,7 +105,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 343.255807757377625, 52.0, 160.0, 187.0 ],
+					"patching_rect" : [ 464.0, 48.0, 160.0, 187.0 ],
 					"text" : "Synthesize a single grain of sound subject to many parameters:\n1. start (ms)\n2. grain-dur (ms)\n3. grain pitch ratio\n4. grain envelope interpolation factor\n5. pan\n\n"
 				}
 
@@ -147,12 +147,12 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 36.0, 74.418601989746094, 228.0, 25.0 ],
+					"patching_rect" : [ 36.0, 74.418601989746094, 395.0, 25.0 ],
 					"saved_object_attributes" : 					{
-						"attr_comment" : "grain parameters"
+						"attr_comment" : "dur (ms), pitch (midi) env interm (0-1), pan (0-127)"
 					}
 ,
-					"text" : "in 1 @attr_comment \"grain parameters\""
+					"text" : "in 1 @attr_comment \"dur (ms), pitch (midi) env interm (0-1), pan (0-127)\""
 				}
 
 			}
@@ -234,7 +234,7 @@
 						}
 ,
 						"classnamespace" : "box",
-						"rect" : [ 34.0, 87.0, 905.0, 632.0 ],
+						"rect" : [ 480.0, 178.0, 905.0, 632.0 ],
 						"gridsize" : [ 15.0, 15.0 ],
 						"boxes" : [ 							{
 								"box" : 								{
