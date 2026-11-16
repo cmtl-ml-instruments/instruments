@@ -192,7 +192,7 @@ sound design, testing, writing.
 | Person | Credit hours | What they own | This week | Next week |
 |---|---|---|---|---|
 | Caleb | 1 | Hardware and Physical Design | Extend Wiring between multiplexor and top sensor, physically attach all hardware to the prototype, begin designing final model with listed changes in mind | Have project ready for hand-off experimental testing |
-| Sam | 2 |Sound synthesis-ML connection. | Then modify my existing granular synthesis patch from sampling synthesis to something more intrinsic (physical modelling). Adjustments for Grain Duration, Density, Bandwidth, and macro pitch. The cloud generator should be primed to connect to the ML. | Go in depth with IRIS and connect the ML patch to the granular.|
+| Sam | 2 |Sound synthesis-ML connection. | Integrate violin-poly into the granular synth. Finish the iris script (including wifi connection) with Talal so that everything connects! | Create plan for next steps post user testing. |
 | Talal | 2 | ML and Programming | Work with a glove prototype (mechanical keys) and simple example chain prototype as inputs for the model. Solder stemma connections for accelerometer/gyroscope. | Interface with IRIS, getting a proper connection and data flow from sensors, getting a proper connection for the glove keys. Further understand IRIS's part within the workflow. |
 
 
