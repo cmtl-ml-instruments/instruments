@@ -5,9 +5,8 @@
 
 // Board: Adafruit ESP32-S3 NO PSRAM
 
-#define INPUTS  6        // numbers from the sensor
+#define INPUTS  4        // numbers from the sensor
 #define OUTPUTS 4        // numbers iris controls
-#define POSES   3        // rows you will teach
 #define SAVE    0        // the BOOT button
 
 /* TARGET POSES: {Duration, Density, Bandwidth, Pitch} */
@@ -18,9 +17,11 @@ float sounds[][4] = {
 };
 const int POSES = sizeof sounds / sizeof sounds[0];
 
-// IRIS Configuration: 7 inputs (in[0] to in[6]), 12 hidden units, 4 outputs
-unsigned char memory[IRIS_ARENA(7, 12, 4, POSES)];
+unsigned char memory[IRIS_ARENA(INPUTS, 12, OUTPUTS, POSES)];  // iris lives here
+unsigned char saved[sizeof memory];                             // its copy for flash
 iris *k;
+Preferences flash;
+Adafruit_LSM6DSOX imu;
 
 /* GLOBALS FOR DELTA MATH */
 unsigned long prevMillis = 0;
@@ -38,26 +39,26 @@ float mag(float x, float y, float z) {
 }
 
 void send_scaled(const float *out) {
-  // Qusetion for Kyle: do inputs have to be 0-1 too?
+  // Question for Kyle: do inputs have to be 0-1 too?
   float duration  = scale_val(out[0], 2, 3000);
   float density   = scale_val(out[1], 0, 200);
   float bandwidth = scale_val(out[2], 0, 80);
   float pitch     = scale_val(out[3], 12, 108);
 
-  Serial.print(duration);  Serial.print(' ');
-  Serial.print(density);   Serial.print(' ');
-  Serial.print(bandwidth); Serial.print(' ');
-  Serial.println(pitch);
+  Serial.print(duration);  Serial.print(' '); // handle
+  Serial.print(density);   Serial.print(' '); // end
+  Serial.print(bandwidth); Serial.print(' '); // end
+  Serial.println(pitch); // handle
 }
-
+// Need an SD card to save the state. Should training be part of the loop?
 void setup() {
   Serial.begin(115200);
   pinMode(SAVE, INPUT_PULLUP);
   pinMode(7, OUTPUT);
   digitalWrite(7, HIGH);                         // switch on the Feather's STEMMA QT port
   Wire.begin(3, 4);                              // the Feather's I2C pins
-  delay(10);                                     // let the IMU wake up
-  if (!imu.begin_I2C(0x6A, &Wire)) Serial.println("no IMU found: check the cable");
+  delay(10);                                     // let the imu wake up
+  if (!imu.begin_I2C(0x6A, &Wire)) Serial.println("no imu found: check the cable");
   imu.setAccelRange(LSM6DS_ACCEL_RANGE_16_G);    // a spinning chain needs the widest range
 
   k = iris_init(memory, sizeof memory, INPUTS, 12, OUTPUTS, POSES, 1234);
@@ -71,6 +72,7 @@ void setup() {
 }
 
 void loop() {
+  float in[INPUTS], out[OUTPUTS];
   // 1. Calculate delta_t from millis()
   unsigned long currentMillis = millis();
   // Convert milliseconds to seconds for accurate physics math
@@ -78,10 +80,8 @@ void loop() {
 
 // once we get wifi, just read the values and send over to the other ESP32
   float ax, ay, az, gx, gy, gz;
-  IMU.readAcceleration(ax, ay, az);
-  IMU.readGyroscope(gx, gy, gz);
-
-  float in[4];
+  imu.readAcceleration(ax, ay, az);
+  imu.readGyroscope(gx, gy, gz);
 
   // in[0]: Linear acceleration magnitude
   in[0] = mag(ax, ay, az);
@@ -98,7 +98,7 @@ void loop() {
   float alphaz = dwz / delta_t;
   in[2] = mag(alphax, alphay, alphaz);
 
-  // in[4] - in[6]: Linear position via double integration
+  // in[3] - in[5]: Linear position via double integration
   // 1. Velocity (v += delta_t * a)
   vx += delta_t * ax;
   vy += delta_t * ay;
@@ -123,8 +123,6 @@ void loop() {
 
 
   // Training Iris
-  float out[4];
-
 
   int taught = iris_count(k);                    // poses taught so far
 
