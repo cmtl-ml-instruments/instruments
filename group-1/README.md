@@ -5,8 +5,7 @@ Samuel Kuran
 Talal Masood  
 Caleb Onuoha  
 
-**What we're building:**  
-(Instrument Name TBD)
+**What we're building: The Violink**  
 We want to create an interactive flexible rope instrument paired with control gloves for both continuous and discrete input, respectively.
 
 **Project-Specific Resources**  
