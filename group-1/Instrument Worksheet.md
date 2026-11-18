@@ -168,6 +168,9 @@ How Grain Duration, Density, and Bandwidth, Affect the Sound
   - Determine how to set sensors upon chain with proper wiring (Sensor at base/make first link from handle a platform - linear movement, second sensor at end of chain, same as current mode, middle platform for multiplexor and ESP32)
   - Make handle more comfortable to hold for faster spin velocity (Rounded design?)
   - ~~Add another platform close to handle for microcontroller to sit so it doesn't have to be on the handle~~
+  - ESP32 Feather will need a power source to function, will need to have a powersouce at the base of the instrument as to not offset weight
+  - Inclusion of a location for a battery pack to power the ESP32 Feather, most likely near the gyroscope that will be placed at the base of the instrument.
+  - \
 
 ## 9. The timeline
 
