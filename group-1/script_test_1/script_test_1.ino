@@ -4,16 +4,23 @@
 #include "iris.h"
 
 // Board: Adafruit ESP32-S3 NO PSRAM
+// MAPPING
+// 1. handle linear acceleration -> inversely to duration: ms, 2-3000 
+// 2. end angular velocity -> exponentially to density: grain/s, 1-200
+// 3. end angular accel -> proportionally to bandwidth: midi 0-80
+// 4. handle linear height -> proportionally to pitch: midi, 12-108 (C0-C8)
+// 1-3 can be exponential, 4 linear. In between states will help solidify that.
 
 #define INPUTS  4        // numbers from the sensor
 #define OUTPUTS 4        // numbers iris controls
 #define SAVE    0        // the BOOT button
 
-/* TARGET POSES: {Duration, Density, Bandwidth, Pitch} */
+/* TARGET POSES: */
 float sounds[][4] = {
-  {0.9, 0.1, 0.0, 0.3},  // 1. Hanging still
-  {0.7, 0.9, 0.0, 0.5},  // 2. Sustained formant
-  {0.1, 0.9, 0.9, 0.9}   // 3. Fast erratic spinning
+  // {Duration, Density, Bandwidth, Pitch}
+  {1, 0, 0, 0.3},  // 1. Hanging still, low position -> Silence
+  {0.1661, 0.9, 0, 0.5},  // 2. steady, fast spinning,  medium position -> Sustained formant
+  {0.003, 1, 0.9, 0.9}   // 3. erratic fast spinning, high position -> sparse noise.
 };
 const int POSES = sizeof sounds / sizeof sounds[0];
 
@@ -33,15 +40,16 @@ float px = 0, py = 0, pz = 0; // Linear position
 float scale_val(float val, float out_low, float out_high) {
   return out_low + (val * (out_high - out_low));
 }
-
+// Vector magnitude
 float mag(float x, float y, float z) {
   return sqrt((x*x) + (y*y) + (z*z));
 }
 
 void send_scaled(const float *out) {
   // Question for Kyle: do inputs have to be 0-1 too?
+  // Consider moving this back into max for the prototypability aspect. Or keep this here and use it at the end.
   float duration  = scale_val(out[0], 2, 3000);
-  float density   = scale_val(out[1], 0, 200);
+  float density   = scale_val(out[1], 1, 200);
   float bandwidth = scale_val(out[2], 0, 80);
   float pitch     = scale_val(out[3], 12, 108);
 
@@ -73,6 +81,7 @@ void setup() {
 
 void loop() {
   float in[INPUTS], out[OUTPUTS];
+  // TODO: Move the calculations to a separate function
   // 1. Calculate delta_t from millis()
   unsigned long currentMillis = millis();
   // Convert milliseconds to seconds for accurate physics math
@@ -91,14 +100,14 @@ void loop() {
 
   // in[2]: Magnitude of angular acceleration (alpha = dw / dt)
   float dwx = gx - prev_gx;
-  float dwy = gy - prev_gy;
+float dwy = gy - prev_gy;
   float dwz = gz - prev_gz;
   float alphax = dwx / delta_t;
   float alphay = dwy / delta_t;
   float alphaz = dwz / delta_t;
   in[2] = mag(alphax, alphay, alphaz);
 
-  // in[3] - in[5]: Linear position via double integration
+  // in[3] - in[5]: Linear position via double integration (approximation)
   // 1. Velocity (v += delta_t * a)
   vx += delta_t * ax;
   vy += delta_t * ay;
@@ -112,8 +121,8 @@ void loop() {
   // position might weigh heavily on the model compared to the other inputs right now.
   // think about it later.
   // in[3] = px; // x position
-  in[3] = py; // y position
-  // in[5] = pz; // z position
+  // in[3] = py; // y position
+  in[3] = pz; // z position
 
   // Save current values for the next loop's delta math
   prevMillis = currentMillis;
