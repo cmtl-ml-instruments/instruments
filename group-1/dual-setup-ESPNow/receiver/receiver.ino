@@ -1,12 +1,10 @@
-// ESP32S3 2.8 inch Display with MAC Address 14:C1:9F:D0:32:70
-
 #include <esp_now.h>
 #include <WiFi.h>
 #include <Preferences.h>
 #include "iris.h"
 
 // Configuration
-#define INPUTS  4        // numbers from the sensor (Mag Accel, Mag Gyro, Mag angular accel., Pos Y)
+#define INPUTS  4        // numbers from the sensor (Mag Accel, Mag Gyro, Mag Alpha, Pos Y)
 #define OUTPUTS 4        // numbers iris controls
 #define POSES   3        // rows you will teach
 #define SAVE    0        // BOOT button on the display board
@@ -32,6 +30,9 @@ float prev_gx = 0, prev_gy = 0, prev_gz = 0;
 float vx = 0, vy = 0, vz = 0; 
 float px = 0, py = 0, pz = 0; 
 
+// State tracker to prevent flooding the Serial Monitor with text
+int last_taught = -1;
+
 // The incoming data packet structure (MUST exactly match the sender)
 typedef struct struct_message {
   float ax; float ay; float az;
@@ -44,7 +45,7 @@ volatile bool newData = false;
 float live_ax = 0, live_ay = 0, live_az = 0;
 float live_gx = 0, live_gy = 0, live_gz = 0;
 
-// ESP-NOW Callback (ESP32 Core 3.x syntax)
+// ESP-NOW Callback
 void OnDataRecv(const esp_now_recv_info_t *esp_now_info, const uint8_t *incoming, int len) {
   memcpy(&incomingData, incoming, sizeof(incomingData));
   live_ax = incomingData.ax; live_ay = incomingData.ay; live_az = incomingData.az;
@@ -79,10 +80,12 @@ void setup() {
   Serial.begin(115200);
   pinMode(SAVE, INPUT_PULLUP);
   
+ // Serial.println("\n--- SYSTEM BOOTING ---");
+  
   // Initialize ESP-NOW
   WiFi.mode(WIFI_STA);
   if (esp_now_init() != ESP_OK) {
-    Serial.println("Error initializing ESP-NOW");
+  //  Serial.println("Error initializing ESP-NOW");
     return;
   }
   esp_now_register_recv_cb(OnDataRecv);
@@ -93,15 +96,19 @@ void setup() {
   // flash storage, just in case board loses power
   flash.begin("iris");                                         
   size_t size = flash.getBytes("model", saved, sizeof saved);  
-  if (size > 0) iris_load(k, saved, size);                     
+  if (size > 0) {
+    iris_load(k, saved, size);    
+  //  Serial.println("Found saved model in flash! Jumping directly to PLAY MODE.");                 
+  } else {
+    // Serial.println("No saved model found. Entering TEACH MODE.");
+  }
   
   prevMillis = millis();
 }
 
 void loop() {
-  // Only run the math when a new wireless packet arrives from the Feather (~100 times a second)
   if (newData) {
-    newData = false; // Reset newData flag
+    newData = false; 
 
     unsigned long currentMillis = millis();
     float delta_t = (currentMillis - prevMillis) / 1000.0;
@@ -133,9 +140,8 @@ void loop() {
     py += vy * delta_t;
     pz += vz * delta_t;
     
-    in[3] = py; // Using Y position as the 4th input
+    in[3] = py; 
 
-    // Save current values for the next loop's calculus math
     prevMillis = currentMillis;
     prev_gx = live_gx;
     prev_gy = live_gy;
@@ -146,28 +152,54 @@ void loop() {
     int taught = iris_count(k);                    
 
     if (taught < POSES) {                          // TEACH MODE
+      
+      // Print instructions only once per pose
+      if (taught != last_taught) {
+        //Serial.println();
+        //Serial.print("--- READY FOR POSE ");
+        // Serial.print(taught + 1);
+        // Serial.println(" ---");
+        // Serial.println("Perform the physical gesture, then press BOOT to record...");
+        last_taught = taught;
+      }
+      
       send_scaled(sounds[taught]);                 
       
       // Press BOOT button on the Display Board to save the pose
-      if (digitalRead(SAVE) == LOW) {              
+      if (digitalRead(SAVE) == LOW) {     
+        // Serial.print(">> RECORDING POSE ");
+        // Serial.print(taught + 1);
+        // Serial.println("...");
+                     
         iris_record(k, in, sounds[taught]);        
         while (digitalRead(SAVE) == LOW) delay(10); // Wait until you let go
+        
+        // Serial.println(">> Pose saved!");
+
         if (taught + 1 == POSES) {                 
+          // Serial.println(">> All poses recorded! TRAINING NEURAL NETWORK...");
           iris_train(k);                           
           size_t size = iris_save(k, saved, sizeof saved);
           flash.putBytes("model", saved, size);    
+          // Serial.println(">> Training complete & saved to flash! ENTERING PLAY MODE.");
         }
       }
     } else {                                       // PLAY MODE
       iris_predict(k, in, out);                    
       send_scaled(out);
       
-      if (digitalRead(SAVE) == LOW) {              // FORGET MODE (Hold BOOT)
+      if (digitalRead(SAVE) == LOW) {              // FORGET MODE
+        // Serial.println("\n>> Hold BOOT for 3 seconds to FORGET model...");
         delay(3000);
         if (digitalRead(SAVE) == LOW) {            
+          // Serial.println(">> ERASING MODEL...");
           iris_clear(k);
           flash.clear();
+          last_taught = -1; // Reset tracker so it prints instructions again
+          // Serial.println(">> Model erased. Rebooting into TEACH MODE.");
           while (digitalRead(SAVE) == LOW) delay(10);
+        } else {
+          // Serial.println(">> Erase canceled.");
         }
       }
     }
