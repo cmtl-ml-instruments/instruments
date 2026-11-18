@@ -3,14 +3,23 @@
 #include <Preferences.h>
 #include "iris.h"
 
+// Board: Adafruit ESP32-S3 NO PSRAM
+// MAPPING
+// 1. handle linear acceleration -> inversely to duration: ms, 2-3000 
+// 2. end angular velocity -> exponentially to density: grain/s, 1-200
+// 3. end angular accel -> proportionally to bandwidth: midi 0-80
+// 4. handle linear height -> proportionally to pitch: midi, 12-108 (C0-C8)
+// 1-3 can be exponential, 4 linear. In between states will help solidify that.
+
 // Configuration
 #define INPUTS  4        // numbers from the sensor (Mag Accel, Mag Gyro, Mag Alpha, Pos Y)
 #define OUTPUTS 4        // numbers iris controls
 #define POSES   3        // rows you will teach
 #define SAVE    0        // BOOT button on the display board
 
-/* TARGET POSES: {Duration, Density, Bandwidth, Pitch} */
+/* TARGET POSES: */
 float sounds[][4] = {
+    // {Duration, Density, Bandwidth, Pitch}
   {0.9, 0.1, 0.0, 0.3},  // 1. Hanging still
   {0.7, 0.9, 0.0, 0.5},  // 2. Sustained formant
   {0.1, 0.9, 0.9, 0.9}   // 3. Fast erratic spinning
@@ -55,8 +64,6 @@ void OnDataRecv(const esp_now_recv_info_t *esp_now_info, const uint8_t *incoming
 
 // Math Helpers
 float scale_val(float val, float out_low, float out_high) {
-  if (val < 0.0) val = 0.0;
-  if (val > 1.0) val = 1.0;
   return out_low + (val * (out_high - out_low));
 }
 
@@ -65,8 +72,10 @@ float mag(float x, float y, float z) {
 }
 
 void send_scaled(const float *out) {
+  // Question for Kyle: do inputs have to be 0-1 too?
+  // Consider moving this back into max for the prototypability aspect. Or keep this here and use it at the end.
   float duration  = scale_val(out[0], 2, 3000);
-  float density   = scale_val(out[1], 0, 200);
+  float density   = scale_val(out[1], 1, 200);
   float bandwidth = scale_val(out[2], 0, 80);
   float pitch     = scale_val(out[3], 12, 108);
 
@@ -75,7 +84,7 @@ void send_scaled(const float *out) {
   Serial.print(bandwidth); Serial.print(' ');
   Serial.println(pitch);
 }
-
+// Need an SD card to save the state. Should training be part of the loop?
 void setup() {
   Serial.begin(115200);
   pinMode(SAVE, INPUT_PULLUP);
@@ -112,7 +121,6 @@ void loop() {
 
     unsigned long currentMillis = millis();
     float delta_t = (currentMillis - prevMillis) / 1000.0;
-    if (delta_t <= 0.0) delta_t = 0.001; 
 
     float in[INPUTS];
 
@@ -140,7 +148,10 @@ void loop() {
     py += vy * delta_t;
     pz += vz * delta_t;
     
-    in[3] = py; 
+    // position might weigh heavily on the model compared to the other inputs right now.
+  // think about it later.
+  // gyroscope has to be facing flat.
+    in[3] = pz; 
 
     prevMillis = currentMillis;
     prev_gx = live_gx;
