@@ -20,9 +20,9 @@
 /* TARGET POSES: */
 float sounds[][4] = {
     // {Duration, Density, Bandwidth, Pitch}
-  {0.9, 0.1, 0.0, 0.3},  // 1. Hanging still
-  {0.7, 0.9, 0.0, 0.5},  // 2. Sustained formant
-  {0.1, 0.9, 0.9, 0.9}   // 3. Fast erratic spinning
+  {1, 0, 0, 0.3},  // 1. Hanging still, low position -> Silence
+  {0.1661, 0.9, 0, 0.5},  // 2. steady, fast spinning,  medium position -> Sustained formant
+  {0.003, 1, 0.9, 0.9}   // 3. erratic fast spinning, high position -> sparse noise.
 };
 
 // Global Objects
@@ -51,8 +51,8 @@ struct_message incomingData;
 
 // Global flags and variables to safely transfer ESP-NOW data to the main loop
 volatile bool newData = false;
-float live_ax = 0, live_ay = 0, live_az = 0;
-float live_gx = 0, live_gy = 0, live_gz = 0;
+float live_ax = 0, live_ay = 0, live_az = 0; // linear acceleration of the handle gyroscope
+float live_gx = 0, live_gy = 0, live_gz = 0; // angular velocity of end gyroscope
 
 // ESP-NOW Callback
 void OnDataRecv(const esp_now_recv_info_t *esp_now_info, const uint8_t *incoming, int len) {
@@ -71,6 +71,37 @@ float mag(float x, float y, float z) {
   return sqrt((x*x) + (y*y) + (z*z));
 }
 
+
+void read_sensor(float *in) {
+  // Using and angular velocity of end gyroscope from Feather ESPNOW
+  // in: array to write to.
+  // Fill in with the physical parameter values.
+  unsigned long currentMillis = millis();
+  float delta_t = (currentMillis - prevMillis) / 1000.0;
+  // in[0]: Linear acceleration magnitude
+  in[0] = mag(live_ax, live_ay, live_az);
+  // in[1]: Magnitude of angular velocity
+  in[1] = mag(live_gx, live_gy, live_gz);
+  // in[2]: Magnitude of angular acceleration (alpha = dw / dt)
+  float dwx = live_gx - prev_gx;
+  float dwy = live_gy - prev_gy;
+  float dwz = live_gz - prev_gz;
+  float alphax = dwx / delta_t;
+  float alphay = dwy / delta_t;
+  float alphaz = dwz / delta_t;
+  in[2] = mag(alphax, alphay, alphaz);
+
+  // in[3]: Linear position via double integration
+  vx += delta_t * live_ax; vy += delta_t * live_ay; vz += delta_t * live_az;
+  px += vx * delta_t; py += vy * delta_t; pz += vz * delta_t;
+// gyroscope has to be facing flat.
+  in[3] = pz;
+  prevMillis = currentMillis;
+  prev_gx = live_gx;
+  prev_gy = live_gy;
+  prev_gz = live_gz;
+}
+
 void send_scaled(const float *out) {
   // Question for Kyle: do inputs have to be 0-1 too?
   // Consider moving this back into max for the prototypability aspect. Or keep this here and use it at the end.
@@ -79,22 +110,50 @@ void send_scaled(const float *out) {
   float bandwidth = scale_val(out[2], 0, 80);
   float pitch     = scale_val(out[3], 12, 108);
 
-  Serial.print(duration);  Serial.print(' ');
-  Serial.print(density);   Serial.print(' ');
-  Serial.print(bandwidth); Serial.print(' ');
-  Serial.println(pitch);
+  // Serial.print(duration);  Serial.print(' ');
+  // Serial.print(density);   Serial.print(' ');
+  // Serial.print(bandwidth); Serial.print(' ');
+  // Serial.println(pitch);
+  // Serial.print(test_var); // linear accel magnitude
+  Serial.println();
 }
+
+void test_input(float *in) {
+  // print all inputs
+    // "Works" for Serial plotter.
+  // Serial.print(in[0]);
+  // Serial.print(" ");
+  // Serial.print(in[1]);
+  // Serial.print(" ");
+  // Serial.print(in[2]);
+  // Serial.print(" ");
+  // Serial.println(in[3]);
+
+// Should work for both serial monitor and the plotter.
+// Plotter expects a specific format.
+  Serial.print("handle-acc:");
+  Serial.print(in[0]);
+  Serial.print(",end-w:");
+  Serial.print(in[1]);
+  Serial.print(",end-alpha:");
+  Serial.print(in[2]);
+  Serial.print(",handle-z:");
+  Serial.print(in[3]);
+
+  Serial.println();
+}
+
 // Need an SD card to save the state. Should training be part of the loop?
 void setup() {
   Serial.begin(115200);
   pinMode(SAVE, INPUT_PULLUP);
   
- // Serial.println("\n--- SYSTEM BOOTING ---");
+ Serial.println("\n--- SYSTEM BOOTING ---");
   
   // Initialize ESP-NOW
   WiFi.mode(WIFI_STA);
   if (esp_now_init() != ESP_OK) {
-  //  Serial.println("Error initializing ESP-NOW");
+   Serial.println("Error initializing ESP-NOW");
     return;
   }
   esp_now_register_recv_cb(OnDataRecv);
@@ -107,111 +166,76 @@ void setup() {
   size_t size = flash.getBytes("model", saved, sizeof saved);  
   if (size > 0) {
     iris_load(k, saved, size);    
-  //  Serial.println("Found saved model in flash! Jumping directly to PLAY MODE.");                 
+   Serial.println("Found saved model in flash! Jumping directly to PLAY MODE.");                 
   } else {
-    // Serial.println("No saved model found. Entering TEACH MODE.");
+    Serial.println("No saved model found. Entering TEACH MODE.");
   }
   
   prevMillis = millis();
 }
 
 void loop() {
-  if (newData) {
-    newData = false; 
+  if (!newData) {
+      return;
+  }
+  newData = false; 
+  float in[INPUTS];
+  read_sensor(in);
+  test_input(in);
 
-    unsigned long currentMillis = millis();
-    float delta_t = (currentMillis - prevMillis) / 1000.0;
-
-    float in[INPUTS];
-
-    // in[0]: Linear acceleration magnitude
-    in[0] = mag(live_ax, live_ay, live_az);
-
-    // in[1]: Magnitude of angular velocity
-    in[1] = mag(live_gx, live_gy, live_gz);
-
-    // in[2]: Magnitude of angular acceleration (alpha = dw / dt)
-    float dwx = live_gx - prev_gx;
-    float dwy = live_gy - prev_gy;
-    float dwz = live_gz - prev_gz;
-    float alphax = dwx / delta_t;
-    float alphay = dwy / delta_t;
-    float alphaz = dwz / delta_t;
-    in[2] = mag(alphax, alphay, alphaz);
-
-    // in[3]: Linear position via double integration
-    vx += delta_t * live_ax;
-    vy += delta_t * live_ay;
-    vz += delta_t * live_az;
+  // Training Iris
+  float out[OUTPUTS];
+  int taught = iris_count(k);                    
+   // TEACH MODE
+  if (taught < POSES) {
     
-    px += vx * delta_t;
-    py += vy * delta_t;
-    pz += vz * delta_t;
+    // Print instructions only once per pose
+    if (taught != last_taught) {
+      Serial.println();
+      Serial.print("--- READY FOR POSE ");
+      Serial.print(taught + 1);
+      Serial.println(" ---");
+      Serial.println("Perform the physical gesture, then press BOOT to record...");
+      last_taught = taught;
+    }
     
-    // position might weigh heavily on the model compared to the other inputs right now.
-  // think about it later.
-  // gyroscope has to be facing flat.
-    in[3] = pz; 
-
-    prevMillis = currentMillis;
-    prev_gx = live_gx;
-    prev_gy = live_gy;
-    prev_gz = live_gz;
-
-    // Training Iris
-    float out[OUTPUTS];
-    int taught = iris_count(k);                    
-
-    if (taught < POSES) {                          // TEACH MODE
+    send_scaled(sounds[taught]);                 
+    
+    // Press BOOT button on the Display Board to save the pose
+    if (digitalRead(SAVE) == LOW) {     
+      Serial.print(">> RECORDING POSE ");
+      Serial.print(taught + 1);
+      Serial.println("...");
+                    
+      iris_record(k, in, sounds[taught]);        
+      while (digitalRead(SAVE) == LOW) delay(10); // Wait until you let go
       
-      // Print instructions only once per pose
-      if (taught != last_taught) {
-        //Serial.println();
-        //Serial.print("--- READY FOR POSE ");
-        // Serial.print(taught + 1);
-        // Serial.println(" ---");
-        // Serial.println("Perform the physical gesture, then press BOOT to record...");
-        last_taught = taught;
+      Serial.println(">> Pose saved!");
+
+      if (taught + 1 == POSES) {                 
+        Serial.println(">> All poses recorded! TRAINING NEURAL NETWORK...");
+        iris_train(k);                           
+        size_t size = iris_save(k, saved, sizeof saved);
+        flash.putBytes("model", saved, size);    
+        Serial.println(">> Training complete & saved to flash! ENTERING PLAY MODE.");
       }
-      
-      send_scaled(sounds[taught]);                 
-      
-      // Press BOOT button on the Display Board to save the pose
-      if (digitalRead(SAVE) == LOW) {     
-        // Serial.print(">> RECORDING POSE ");
-        // Serial.print(taught + 1);
-        // Serial.println("...");
-                     
-        iris_record(k, in, sounds[taught]);        
-        while (digitalRead(SAVE) == LOW) delay(10); // Wait until you let go
-        
-        // Serial.println(">> Pose saved!");
-
-        if (taught + 1 == POSES) {                 
-          // Serial.println(">> All poses recorded! TRAINING NEURAL NETWORK...");
-          iris_train(k);                           
-          size_t size = iris_save(k, saved, sizeof saved);
-          flash.putBytes("model", saved, size);    
-          // Serial.println(">> Training complete & saved to flash! ENTERING PLAY MODE.");
-        }
-      }
-    } else {                                       // PLAY MODE
-      iris_predict(k, in, out);                    
-      send_scaled(out);
-      
-      if (digitalRead(SAVE) == LOW) {              // FORGET MODE
-        // Serial.println("\n>> Hold BOOT for 3 seconds to FORGET model...");
-        delay(3000);
-        if (digitalRead(SAVE) == LOW) {            
-          // Serial.println(">> ERASING MODEL...");
-          iris_clear(k);
-          flash.clear();
-          last_taught = -1; // Reset tracker so it prints instructions again
-          // Serial.println(">> Model erased. Rebooting into TEACH MODE.");
-          while (digitalRead(SAVE) == LOW) delay(10);
-        } else {
-          // Serial.println(">> Erase canceled.");
-        }
+    }
+  } else {                                       // PLAY MODE
+    iris_predict(k, in, out);                    
+    send_scaled(out);
+    
+    if (digitalRead(SAVE) == LOW) {              // FORGET MODE
+      Serial.println("\n>> Hold BOOT for 3 seconds to FORGET model...");
+      delay(3000);
+      if (digitalRead(SAVE) == LOW) {            
+        Serial.println(">> ERASING MODEL...");
+        iris_clear(k);
+        flash.clear();
+        last_taught = -1; // Reset tracker so it prints instructions again
+        Serial.println(">> Model erased. Rebooting into TEACH MODE.");
+        while (digitalRead(SAVE) == LOW) delay(10);
+      } else {
+        Serial.println(">> Erase canceled.");
       }
     }
   }

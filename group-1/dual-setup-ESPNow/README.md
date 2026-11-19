@@ -5,10 +5,12 @@ The Receiver then performs necessary computation, scaling, and training logic, p
 Connector Script Debugging
 - USB firmly inserted
 - USB CDC on Boot Enabled
-- Board: ESP32-S3 Feather No PSRAM
-- Serial Monitor/Plotter NOT enabled
-- Gyroscope connects via Stemma QT to the I2C port in the middle of the Feather.
-- Gyroscope has flasing green light that is sustained!
+- Board:
+	- Sender: ESP32-S3 Feather No PSRAM
+	- Receiver: ESP32S3 Dev Module
+- Serial Monitor/Plotter NOT enabled unless testing
+- Gyroscopes on the handle (MUX 7) and the end (MUX 0) of the instrument connected via Stemma QT to the multiplexer. Multiplexer connects to the feather by STEMMA. Receiver connects via USB to computer. Computer runs granular-synth.maxproj.
+- Gyroscopes has flasing green light that is sustained!
 - If you get the error that serial connection failed, hold BOOT 3 seconds then, while holding, press RESET.
 	- If make sure the green light is still on. If not, disconnect and reconnect USB.
 - Max toggle should be off while uploading. Turn it on after. 
