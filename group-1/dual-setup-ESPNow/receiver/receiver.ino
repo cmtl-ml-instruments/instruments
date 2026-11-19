@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <Preferences.h>
 #include "iris.h"
+#include <String>
 
 // Board: Adafruit ESP32-S3 NO PSRAM
 // MAPPING
@@ -10,6 +11,7 @@
 // 3. end angular accel -> proportionally to bandwidth: midi 0-80
 // 4. handle linear height -> proportionally to pitch: midi, 12-108 (C0-C8)
 // 1-3 can be exponential, 4 linear. In between states will help solidify that.
+
 
 // Configuration
 #define INPUTS  4        // numbers from the sensor (Mag Accel, Mag Gyro, Mag Alpha, Pos Y)
@@ -24,6 +26,9 @@ float sounds[][4] = {
   {0.1661, 0.9, 0, 0.5},  // 2. steady, fast spinning,  medium position -> Sustained formant
   {0.003, 1, 0.9, 0.9}   // 3. erratic fast spinning, high position -> sparse noise.
 };
+
+// Toggle helper messages for monitor
+bool monitor_debug = false;
 
 // Global Objects
 Preferences flash;
@@ -115,32 +120,31 @@ void send_scaled(const float *out) {
   // Serial.print(bandwidth); Serial.print(' ');
   // Serial.println(pitch);
   // Serial.print(test_var); // linear accel magnitude
-  Serial.println();
+  // Serial.println();
 }
 
-void test_input(float *in) {
-  // print all inputs
-    // "Works" for Serial plotter.
-  // Serial.print(in[0]);
-  // Serial.print(" ");
-  // Serial.print(in[1]);
-  // Serial.print(" ");
-  // Serial.print(in[2]);
-  // Serial.print(" ");
-  // Serial.println(in[3]);
-
-// Should work for both serial monitor and the plotter.
-// Plotter expects a specific format.
-  Serial.print("handle-acc:");
-  Serial.print(in[0]);
-  Serial.print(",end-w:");
-  Serial.print(in[1]);
-  Serial.print(",end-alpha:");
-  Serial.print(in[2]);
-  Serial.print(",handle-z:");
-  Serial.print(in[3]);
-
+void plot(float *vars, String names[], int size) {
+  // print all inputs to serial monitor labelled with names
+  // Pre: vars and names are nonempty and have the same length (size).
+  // works for the plotter.
+    // MUST NOT PRINT ANYWHERE ELSE.
+  // Plotter expects a specific format.
+  for(int i = 0; i < size; i++) {
+    Serial.print(names[i]);
+    Serial.print(":");
+    Serial.print(vars[i]);
+    Serial.print(",");
+  }
   Serial.println();
+
+  // Serial.print("handle-acc:");
+  // Serial.print(in[0]);
+  // Serial.print(",end-w:");
+  // Serial.print(in[1]);
+  // Serial.print(",end-alpha:");
+  // Serial.print(in[2]);
+  // Serial.print(",handle-z:");
+  // Serial.print(in[3]);
 }
 
 // Need an SD card to save the state. Should training be part of the loop?
@@ -148,12 +152,12 @@ void setup() {
   Serial.begin(115200);
   pinMode(SAVE, INPUT_PULLUP);
   
- Serial.println("\n--- SYSTEM BOOTING ---");
+//  Serial.println("\n--- SYSTEM BOOTING ---");
   
   // Initialize ESP-NOW
   WiFi.mode(WIFI_STA);
   if (esp_now_init() != ESP_OK) {
-   Serial.println("Error initializing ESP-NOW");
+  //  Serial.println("Error initializing ESP-NOW");
     return;
   }
   esp_now_register_recv_cb(OnDataRecv);
@@ -166,9 +170,9 @@ void setup() {
   size_t size = flash.getBytes("model", saved, sizeof saved);  
   if (size > 0) {
     iris_load(k, saved, size);    
-   Serial.println("Found saved model in flash! Jumping directly to PLAY MODE.");                 
+  //  Serial.println("Found saved model in flash! Jumping directly to PLAY MODE.");                 
   } else {
-    Serial.println("No saved model found. Entering TEACH MODE.");
+    // Serial.println("No saved model found. Entering TEACH MODE.");
   }
   
   prevMillis = millis();
@@ -181,7 +185,12 @@ void loop() {
   newData = false; 
   float in[INPUTS];
   read_sensor(in);
-  test_input(in);
+
+  String w_names[] = {"x", "y", "z"};
+  float w_val[] = {live_gx, live_gy, live_gz};
+  plot(w_val, w_names, 3);
+  // String in_names[] = {"handle-acc", "end-w", "end-alpha", "handle-z"};
+  // plot(in, in_names, 4);
 
   // Training Iris
   float out[OUTPUTS];
@@ -191,11 +200,11 @@ void loop() {
     
     // Print instructions only once per pose
     if (taught != last_taught) {
-      Serial.println();
-      Serial.print("--- READY FOR POSE ");
-      Serial.print(taught + 1);
-      Serial.println(" ---");
-      Serial.println("Perform the physical gesture, then press BOOT to record...");
+      // Serial.println();
+      // Serial.print("--- READY FOR POSE ");
+      // Serial.print(taught + 1);
+      // Serial.println(" ---");
+      // Serial.println("Perform the physical gesture, then press BOOT to record...");
       last_taught = taught;
     }
     
@@ -203,21 +212,21 @@ void loop() {
     
     // Press BOOT button on the Display Board to save the pose
     if (digitalRead(SAVE) == LOW) {     
-      Serial.print(">> RECORDING POSE ");
-      Serial.print(taught + 1);
-      Serial.println("...");
+      // Serial.print(">> RECORDING POSE ");
+      // Serial.print(taught + 1);
+      // Serial.println("...");
                     
       iris_record(k, in, sounds[taught]);        
       while (digitalRead(SAVE) == LOW) delay(10); // Wait until you let go
       
-      Serial.println(">> Pose saved!");
+      // Serial.println(">> Pose saved!");
 
       if (taught + 1 == POSES) {                 
-        Serial.println(">> All poses recorded! TRAINING NEURAL NETWORK...");
+        // Serial.println(">> All poses recorded! TRAINING NEURAL NETWORK...");
         iris_train(k);                           
         size_t size = iris_save(k, saved, sizeof saved);
         flash.putBytes("model", saved, size);    
-        Serial.println(">> Training complete & saved to flash! ENTERING PLAY MODE.");
+        // Serial.println(">> Training complete & saved to flash! ENTERING PLAY MODE.");
       }
     }
   } else {                                       // PLAY MODE
@@ -225,17 +234,17 @@ void loop() {
     send_scaled(out);
     
     if (digitalRead(SAVE) == LOW) {              // FORGET MODE
-      Serial.println("\n>> Hold BOOT for 3 seconds to FORGET model...");
+      // Serial.println("\n>> Hold BOOT for 3 seconds to FORGET model...");
       delay(3000);
       if (digitalRead(SAVE) == LOW) {            
-        Serial.println(">> ERASING MODEL...");
+        // Serial.println(">> ERASING MODEL...");
         iris_clear(k);
         flash.clear();
         last_taught = -1; // Reset tracker so it prints instructions again
-        Serial.println(">> Model erased. Rebooting into TEACH MODE.");
+        // Serial.println(">> Model erased. Rebooting into TEACH MODE.");
         while (digitalRead(SAVE) == LOW) delay(10);
       } else {
-        Serial.println(">> Erase canceled.");
+        // Serial.println(">> Erase canceled.");
       }
     }
   }

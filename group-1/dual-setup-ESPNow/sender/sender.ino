@@ -39,7 +39,7 @@ void OnDataSent(const esp_now_send_info_t *info, esp_now_send_status_t status) {
 
 // Helper function to tell the MUX which port to open
 void tcaselect(uint8_t port) {
-  if (port > 7) return;
+  //if (port > 7) return;
   Wire.beginTransmission(MUX_ADDR);
   Wire.write(1 << port);
   Wire.endTransmission();
