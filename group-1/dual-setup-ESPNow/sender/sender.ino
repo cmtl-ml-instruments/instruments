@@ -10,7 +10,7 @@
 
 // The default address is 0x6A. The one with the solder blob is 0x6B.
 #define HANDLE_IMU_ADDR 0x6A 
-#define END_IMU_ADDR    0x6B 
+#define END_IMU_ADDR    0x6A 
 
 // The standard I2C address for the Adafruit PCA9548A MUX
 #define MUX_ADDR 0x70
@@ -47,6 +47,8 @@ void tcaselect(uint8_t port) {
 
 void setup() {
   Serial.begin(115200);
+  delay(2000);
+  Serial.println("FEATHER BOOTED");
 
   // Power on the Feather's STEMMA QT port and init I2C
   pinMode(7, OUTPUT);
@@ -109,6 +111,8 @@ void loop() {
   myData.gy = gyro_e.gyro.y * 57.2958;
   myData.gz = gyro_e.gyro.z * 57.2958;
 
+  Serial.printf("A: %.2f %.2f %.2f | G: %.2f %.2f %.2f\n",
+  myData.ax, myData.ay, myData.az, myData.gx, myData.gy, myData.gz);
   // Send the combined data packet to the display board
   esp_now_send(receiverAddress, (uint8_t *) &myData, sizeof(myData));
 
