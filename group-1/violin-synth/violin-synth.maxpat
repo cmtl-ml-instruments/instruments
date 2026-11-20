@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 578.0, 62.0, 443.0, 608.0 ],
+		"rect" : [ 829.0, 109.0, 443.0, 608.0 ],
 		"default_fontname" : "Avenir",
 		"gridsize" : [ 15.0, 15.0 ],
 		"boxes" : [ 			{
@@ -72,7 +72,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 123.0, 290.0, 33.0, 25.0 ],
+					"patching_rect" : [ 83.0, 224.0, 33.0, 25.0 ],
 					"text" : "print"
 				}
 
@@ -759,16 +759,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-2", 0 ],
-					"order" : 0,
-					"source" : [ "obj-17", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-33", 0 ],
-					"order" : 1,
 					"source" : [ "obj-17", 0 ]
 				}
 
@@ -951,13 +942,13 @@
 		"dependency_cache" : [ 			{
 				"name" : "qwerty-midi.maxpat",
 				"bootpath" : "~/Docs/Max 9/MyAbstractions",
-				"patcherrelativepath" : "../../../MyAbstractions",
+				"patcherrelativepath" : "../../../../Docs/Max 9/MyAbstractions",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "violin-poly.maxpat",
-				"bootpath" : "~/Docs/Max 9/Projects/Playground/violin-synth",
+				"bootpath" : "~/git/instruments/group-1/violin-synth",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1

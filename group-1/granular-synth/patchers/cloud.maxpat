@@ -24,7 +24,7 @@
 					"patching_rect" : [ 416.0, 357.0, 109.0, 23.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 303.666678965091705, 43.000002026557922, 109.0, 23.0 ],
-					"text" : "pitch: 0"
+					"text" : "pitch: 60"
 				}
 
 			}
@@ -61,7 +61,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 199.123376369476318, 303.0, 105.0, 25.0 ],
-					"presentation_linecount" : 2,
 					"text" : "set bandwidth: $1"
 				}
 
@@ -75,7 +74,7 @@
 					"patching_rect" : [ 236.0, 470.0, 86.0, 23.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 91.0, 40.318181157112122, 89.0, 23.0 ],
-					"text" : "density: 0"
+					"text" : "density: 1"
 				}
 
 			}
@@ -87,7 +86,6 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 236.0, 442.0, 86.0, 25.0 ],
-					"presentation_linecount" : 3,
 					"text" : "set density: $1"
 				}
 
@@ -101,7 +99,7 @@
 					"patching_rect" : [ 78.0, 628.318176865577698, 86.0, 23.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 7.0, 40.318181157112122, 82.0, 23.0 ],
-					"text" : "dur: 0"
+					"text" : "dur: 500"
 				}
 
 			}
@@ -133,7 +131,7 @@
 				"box" : 				{
 					"comment" : "duration, density, bandwidth, pitch",
 					"id" : "obj-44",
-					"index" : 0,
+					"index" : 2,
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
@@ -628,11 +626,11 @@
 				"box" : 				{
 					"comment" : "On/Off Signal from ADSR",
 					"id" : "obj-5",
-					"index" : 0,
+					"index" : 1,
 					"maxclass" : "inlet",
 					"numinlets" : 0,
 					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 39.772726893424988, 195.454543590545654, 32.0, 32.0 ]
 				}
 
@@ -658,7 +656,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 17.045454382896423, 13.636363506317139, 337.0, 28.0 ],
-					"text" : "Higher-Level Organization - Cloud"
+					"text" : "Higher-Level Organization - Cloud",
+					"underline" : 1
 				}
 
 			}
@@ -989,33 +988,6 @@
 
 			}
  ],
-		"parameters" : 		{
-			"obj-22" : [ "slider", "slider", 0 ],
-			"obj-27" : [ "rslider", "rslider", 0 ],
-			"obj-46" : [ "number[1]", "number[1]", 0 ],
-			"obj-52" : [ "number", "number", 0 ],
-			"obj-82" : [ "rslider[1]", "rslider[1]", 0 ],
-			"parameterbanks" : 			{
-				"0" : 				{
-					"index" : 0,
-					"name" : "",
-					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-				}
-
-			}
-,
-			"inherited_shortname" : 1
-		}
-,
-		"dependency_cache" : [ 			{
-				"name" : "choose.maxpat",
-				"bootpath" : "~/git/instruments/group-1/granular-synth/patchers",
-				"patcherrelativepath" : ".",
-				"type" : "JSON",
-				"implicit" : 1
-			}
- ],
-		"autosave" : 0,
 		"boxgroups" : [ 			{
 				"boxes" : [ "obj-82", "obj-16" ]
 			}
